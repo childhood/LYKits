@@ -10,7 +10,9 @@
 	if (supersound_inited == NO)
 	{
 		supersound_inited = YES;
+#ifdef LY_ENABLE_OPENAL
 		se_init();
+#endif
 	}
 	return [super init];
 }
@@ -494,7 +496,9 @@
 
 - (void)play_caf
 {
+#ifdef LY_ENABLE_OPENAL
 	se_play_caf(self);
+#endif
 }
 
 - (BOOL)setting_bool

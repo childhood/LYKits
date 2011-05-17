@@ -1,6 +1,9 @@
 #import <UIKit/UIKit.h>
 #import "LYCategory.h"
+
+#ifdef LY_ENABLE_OPENAL
 #import "supersound.h"
+#endif
 
 #ifdef LY_ENABLE_SDK_ASIHTTP
 #import "ASIFormDataRequest.h"

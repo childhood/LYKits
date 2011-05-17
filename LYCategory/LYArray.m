@@ -43,7 +43,9 @@
 
 - (void)play_caf
 {
+#ifdef LY_ENABLE_OPENAL
 	se_play_caf_random(self);
+#endif
 }
 
 - (id)object_of:(id)obj offset:(int)i repeat:(BOOL)b

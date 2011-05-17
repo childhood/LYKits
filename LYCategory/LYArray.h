@@ -1,5 +1,8 @@
 #import <Foundation/Foundation.h>
+
+#ifdef LY_ENABLE_OPENAL
 #import "supersound.h"
+#endif
 
 @interface NSArray (LYArray)
 
