@@ -21,6 +21,9 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 //
 //	#define LY_ENABLE_OPENAL
 
+//	Optional modules:	supersound, map, music
+//	SDK needed modules:	ads, store, gamecenter
+
 #ifdef LY_ENABLE_MUSICKIT
 #	import "LYMusicKit.h"
 #endif
