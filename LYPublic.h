@@ -14,6 +14,7 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 //	#define LY_ENABLE_SDK_FACEBOOK						//	XXX: replaced by SHK
 //	#define LY_ENABLE_APP_STORE
 //	#define LY_ENABLE_APP_ADS
+//	#define LY_ENABLE_APP_ZIP
 //	#define LY_ENABLE_MUSICKIT
 //	#define LY_ENABLE_MAPKIT
 //	#define LY_ENABLE_SDK_ASIHTTP
@@ -38,3 +39,44 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 #ifndef _G
 #define _G(x)	NSLocalizedString(x, nil)
 #endif
+
+//	name wrap
+
+#define MQ3DImageView LY3DImageView
+#define MQES1Renderer LYES1Renderer
+#define MQAsyncImageView LYAsyncImageView
+#define MQAsyncButton LYAsyncButton
+#define MQBrowserController LYBrowserController
+#define MQButtonMatrixController LYButtonMatrixController
+#define MQImagePickerController LYImagePickerController
+#define MQKeyboardMatrixController LYKeyboardMatrixController
+#define MQLoadingViewController LYLoadingViewController
+#define MQLoading LYLoading
+#define MQMiniAppsController LYMiniAppsController
+#define MQTiledPDFView LYTiledPDFView
+#define MQPDFScrollView LYPDFScrollView
+#define MQPDFViewController LYPDFViewController
+#define MQScrollTabController LYScrollTabController
+#define MQShareController LYShareController
+#define MQTableViewProvider LYTableViewProvider
+#define MQTextAlertView LYTextAlertView
+#define MQMiniApps LYMiniApps
+#define MQSpinImageView LYSpinImageView
+#define MQMusicJukeboxController LYMusicJukeboxController
+#define MQMusicJukeboxTableViewController LYMusicJukeboxTableViewController
+#define MQAnnotation LYAnnotation
+#define MQMapViewProvider LYMapViewProvider
+#define MQAppController LYAppController
+#define MQAppDelegate LYAppDelegate
+#define MQCache LYCache
+#define MQRandom LYRandom
+#define MQSingletonClass LYSingletonClass
+#define MQSingletonViewController LYSingletonViewController
+#define MQStateMachine LYStateMachine
+#define MQXMLParser LYXMLParser
+#define MQAdsController LYAdsController
+#define MQFacebook LYFacebook
+#define MQFeedParser LYFeedParser
+#define MQGCController LYGCController
+#define MQModalAppController LYModalAppController
+#define MQStoreController LYStoreController

@@ -78,8 +78,8 @@ static MySingletonClass *my_shared_manager = nil;
 	{
 		if (my_shared_manager == nil)
 			[[self alloc] init];
+		return my_shared_manager;
 	}
-	return my_shared_manager;
 }
 + (id)allocWithZone:(NSZone *)zone
 {
@@ -90,8 +90,8 @@ static MySingletonClass *my_shared_manager = nil;
 			my_shared_manager = [super allocWithZone:zone];
 			return my_shared_manager;
 		}
+		return nil;
 	}
-	return nil;
 }
 - (id)init
 {

@@ -61,8 +61,6 @@ UIView* ly_alloc_view_loading(void);
  *
  */
 
-#import "LYFoundation.h"
-
 @interface LYMiniApps: LYSingletonClass
 {
 	UINavigationController*	nav;
