@@ -1,3 +1,4 @@
+#import <objc/message.h>
 #import <UIKit/UIKit.h>
 #import "LYPublic.h"
 
@@ -25,6 +26,7 @@
 	NSString*						current_text;
 	NSString*						accessory_name;
 	UITableViewCellAccessoryType	accessory_type;
+	NSMutableArray*					accessories;
 	UITableViewCellSelectionStyle	cell_selection;
 	//UITableViewCellSeparatorStyle	separator_style;
 	UITableViewRowAnimation			animation_delete;
@@ -74,6 +76,7 @@
 @property (nonatomic) CGFloat								cell_height;
 @property (nonatomic) UITableViewCellAccessoryType			accessory_type;
 @property (nonatomic) UITableViewCellSelectionStyle			cell_selection;
+@property (nonatomic, retain) NSMutableArray*				accessories;
 @property (nonatomic) CGRect								cell_image_rect;
 @property (nonatomic) UIViewContentMode						cell_image_mode;
 @property (nonatomic, retain) NSString*						cell_image_place;

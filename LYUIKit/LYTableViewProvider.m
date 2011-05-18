@@ -1,6 +1,7 @@
 #import "LYTableViewProvider.h"
 
 #define k_ly_table_cell_height				64
+#define k_ly_table_accessory_size			32
 #define k_ly_table_cell_image_gap			14
 #define k_ly_table_header_height_plain		21
 #define k_ly_table_footer_height_plain		21
@@ -19,6 +20,7 @@
 //	XXX: current header & details?
 @synthesize accessory_type;
 @synthesize accessory_name;
+@synthesize accessories;
 @synthesize animation_delete;
 @synthesize can_edit;
 @synthesize cell_selection;
@@ -118,7 +120,8 @@
 		indexes		= [[NSMutableArray alloc] init];
 		headers		= [[NSMutableArray alloc] init];
 		footers		= [[NSMutableArray alloc] init];
-		additional_views = [[NSMutableArray alloc] init];
+		accessories			= [[NSMutableArray alloc] init];
+		additional_views	= [[NSMutableArray alloc] init];
 
 		text_label		= [[UILabel alloc] init];
 		detail_label	= [[UILabel alloc] init];
@@ -359,6 +362,7 @@
 	NSString*	detail;
 	NSString*	image;
 	NSString*	image_url;
+	NSString*	accessory;
 	UIImage*	the_image;
 	LYAsyncImageView*	image_view;
 	UIView*				additional_view;
@@ -388,6 +392,7 @@
 		detail		= [details object_at_path:indexPath];
 		image		= [images object_at_path:indexPath];
 		image_url	= [image_urls object_at_path:indexPath];
+		accessory	= [accessories object_at_path:indexPath];
 
 		the_image = [UIImage imageNamed:image];
 		if (the_image == nil)
@@ -457,10 +462,23 @@
 			cell.detailTextLabel.backgroundColor = [UIColor clearColor];
 #endif
 
-		if (accessory_name != nil)
-			cell.accessoryView = [[[UIImageView alloc] initWithImageNamed:accessory_name] autorelease];
+		if (accessory != nil)
+		{
+			//UIButton* button = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size)] autorelease];
+			UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+			button.frame = CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size);
+			[button setImage:[UIImage imageNamed:accessory] forState:UIControlStateNormal];
+			[button addTarget:self action:@selector(action_accessory:event:) forControlEvents:UIControlEventTouchUpInside];
+			cell.accessoryView = button;
+		}
 		else
-			cell.accessoryType = accessory_type;
+		{
+			if (accessory_name != nil)
+				cell.accessoryView = [[[UIImageView alloc] initWithImageNamed:accessory_name] autorelease];
+			else
+				cell.accessoryType = accessory_type;
+		}
+
 		cell.selectionStyle = cell_selection;
 
 		if ([delegate respondsToSelector:@selector(table_provider:append_cell:at_path:)])
@@ -469,6 +487,14 @@
 	}
 
 	return cell;
+}
+
+- (void)action_accessory:(UIButton*)button event:(UIEvent*)event
+{
+	NSIndexPath* indexPath = [self.view indexPathForRowAtPoint:[[[event touchesForView:button] anyObject] locationInView:self.view]];
+	if (indexPath == nil)
+		return;
+	[self tableView:self.view accessoryButtonTappedForRowWithIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -494,21 +520,21 @@
 
 #pragma mark actions
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView*)table didSelectRowAtIndexPath:(NSIndexPath*)path
 {
-	if ([self get_additional_view:indexPath] != nil)
+	if ([self get_additional_view:path] != nil)
 		return;
 
-	current_path = indexPath;
-	current_text = [texts object_at_path:indexPath];
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	[delegate perform_string:@"tableView:didSelectRowAtIndexPath:" with:tableView with:indexPath];
+	current_path = path;
+	current_text = [texts object_at_path:path];
+	[table deselectRowAtIndexPath:path animated:YES];
+	[delegate perform_string:@"tableView:didSelectRowAtIndexPath:" with:table with:path];
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView*)table accessoryButtonTappedForRowWithIndexPath:(NSIndexPath*)path
 {
-	NSLog(@"xxx");
-	[delegate perform_string:@"tableView:accessoryButtonTappedForRowWithIndexPath:" with:tableView with:indexPath];
+	//	NSLog(@"accessory tapped: %@", path);
+	[delegate perform_string:@"tableView:accessoryButtonTappedForRowWithIndexPath:" with:table with:path];
 }
 
 #pragma index
@@ -633,6 +659,10 @@
 		if (array != nil)
 			[array removeObjectAtIndex:indexPath.row];
 
+		array = [accessories object_at_index:indexPath.section];
+		if (array != nil)
+			[array removeObjectAtIndex:indexPath.row];
+
 		[view delete_path:indexPath animation:animation_delete];
 	}
 }
@@ -650,6 +680,7 @@
 	[indexes release];
 	[headers release];
 	[footers release];
+	[accessories release];
 
 	[text_label release];
 	[detail_label release];
