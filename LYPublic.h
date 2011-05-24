@@ -3,7 +3,6 @@
 #import "LYUIKit.h"
 #import "LYAppKit.h"
 
-//	test
 void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 
 //	#define LY_ENABLE_CATEGORY_NAVIGATIONBAR_BACKGROUND
