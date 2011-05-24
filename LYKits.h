@@ -24,4 +24,14 @@
 + (CGFloat)screen_height;
 + (CGFloat)screen_max;
 
+#ifdef LY_ENABLE_MUSICKIT
++ (NSInteger)media_count_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title;
++ (NSObject*)alloc_media_item_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title;
+#endif
+
++ (NSDictionary*)dict_itunes_country;
++ (NSDictionary*)dict_itunes_genre;
++ (NSDictionary*)dict_itunes_limit;
++ (NSDictionary*)dict_country_code2;
+
 @end

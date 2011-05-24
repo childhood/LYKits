@@ -607,6 +607,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+	NSString* s = [footers object_at_index:section];
+	if (s == nil)
+		return 0;
+	if ([s isEqualToString:@""])
+		return 0;
+
 	if (footer_label.hidden == NO)
 		return footer_label.frame.size.height;
 	else
@@ -701,12 +707,16 @@
 		[indexes release];
 		[headers release];
 		[footers release];
+		[image_urls release];
+		[accessories release];
 		texts	= [[NSMutableArray alloc] initWithArray:[array objectAtIndex:0]];
 		details	= [[NSMutableArray alloc] initWithArray:[array objectAtIndex:1]];
 		images	= [[NSMutableArray alloc] initWithArray:[array objectAtIndex:2]];
 		indexes	= [[NSMutableArray alloc] initWithArray:[array objectAtIndex:3]];
 		headers	= [[NSMutableArray alloc] initWithArray:[array objectAtIndex:4]];
 		footers	= [[NSMutableArray alloc] initWithArray:[array objectAtIndex:5]];
+		image_urls	= [[NSMutableArray alloc] initWithArray:[array objectAtIndex:6]];
+		accessories	= [[NSMutableArray alloc] initWithArray:[array objectAtIndex:7]];
 		return YES;
 	}
 	return NO;
@@ -715,7 +725,7 @@
 - (void)save_to:(NSString*)filename
 {
 	NSMutableArray* array = [NSMutableArray arrayWithObjects:
-		texts, details, images, indexes, headers, footers, nil];
+		texts, details, images, indexes, headers, footers, image_urls, accessories, nil];
 	[array writeToFile:[filename filename_document] atomically:YES];
 }
 
@@ -780,6 +790,18 @@
 {
 	if ([delegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
 		[delegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+}
+
+#pragma mark extra
+
+- (void)apply_alphabet
+{
+	/*
+	NSMutableArray*	array;
+	for (NSString* s in texts)
+	{
+	}
+	*/
 }
 
 @end

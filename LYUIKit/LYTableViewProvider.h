@@ -131,4 +131,7 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
 - (NSString*)text_for_path:(NSIndexPath*)path;
 
+//	strings only, 1 section only
+- (void)apply_alphabet;
+
 @end

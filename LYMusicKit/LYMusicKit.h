@@ -1,3 +1,4 @@
+#import <MediaPlayer/MediaPlayer.h>
 #import "LYMusicJukeboxController.h"
 
 /*
@@ -21,12 +22,13 @@
 
 //	TODO: move tested codes elsewhere
 
+#if 0
 @interface MPMediaQuery (LYMediaQuery)
-- (void)initWithArtist:(NSString*)album album:(NSString*)album title:(NSString*)title;
+- (id)initWithArtist:(NSString*)album album:(NSString*)album title:(NSString*)title;
 @end
 
 @implementation MPMediaQuery (LYMediaQuery)
-- (void)initWithArtist:(NSString*)album album:(NSString*)album title:(NSString*)title
+- (id)initWithArtist:(NSString*)artist album:(NSString*)album title:(NSString*)title
 {
 	NSMutableSet* set = [NSMutableSet setWithCapacity:3];
 
@@ -37,7 +39,7 @@
 	if (title != nil)
 		[set addObject:[MPMediaPropertyPredicate predicateWithValue:title forProperty:MPMediaItemPropertyTitle]];
 
-	self = [super initWithFilterPredicates:set];
 	return self;
 }
 @end
+#endif
