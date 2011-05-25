@@ -120,6 +120,7 @@
 		indexes		= [[NSMutableArray alloc] init];
 		headers		= [[NSMutableArray alloc] init];
 		footers		= [[NSMutableArray alloc] init];
+		header_counts		= [[NSMutableArray alloc] init];
 		accessories			= [[NSMutableArray alloc] init];
 		additional_views	= [[NSMutableArray alloc] init];
 
@@ -794,14 +795,105 @@
 
 #pragma mark extra
 
+- (void)add_header_item:(char)c count:(int)count
+{
+	if (count > 0)
+	{
+		[headers addObject:[NSString stringWithFormat:@"%c", c]];
+		[header_counts addObject:[NSNumber numberWithInteger:count]];
+	}
+}
+
 - (void)apply_alphabet
 {
-	/*
-	NSMutableArray*	array;
-	for (NSString* s in texts)
+	int		i, ii, count, index;
+	int		total = [[texts objectAtIndex:0] count];
+	char	c;
+	NSString*		name;
+	NSMutableArray*	alphabet_texts = [NSMutableArray array];
+
+	//	NSLog(@"reset headers");
+	[header_counts removeAllObjects];
+	[headers removeAllObjects];
+	index = 0;
+
+	//	build header: add numbers & others
+	count = 0;
+	for (i = index; i < total; i++)
 	{
+		//base = [self get_name_index:i];
+		//name = [data objectAtIndex:base];
+		name = [[texts objectAtIndex:0] objectAtIndex:i];
+		c = [[name uppercaseString] characterAtIndex:0];
+		if ((c < 65) || (c > 90 ))
+		{
+			count++;
+			//	NSLog(@"count %c: %i", c, count);
+		}
+		else
+		{
+			//	NSLog(@"%i<>%i count of %c: %i", c, [[name uppercaseString] characterAtIndex:0], c, count);
+			index += count;
+			[self add_header_item:35 count:count];
+			count = 0;
+			break;
+		}
 	}
-	*/
+
+	//	build header: add alphabet
+	for (c = 65; c < 65 + 26; c++)
+	{
+		//	NSLog(@"processing %c", c);
+		count = 0;
+		for (i = index; i < total; i++)
+		{
+			//	base = [self get_name_index:i];
+			//	base = 1 + i * 8;
+			//	name = [data objectAtIndex:base];
+			name = [[texts objectAtIndex:0] objectAtIndex:i];
+			//	NSLog(@"comparing %i: %i and %i - %@", base, c, [[name uppercaseString] characterAtIndex:0], name);
+			if (c != [[name uppercaseString] characterAtIndex:0])
+			{
+				//	NSLog(@"%i<>%i count of %c: %i", c, [[name uppercaseString] characterAtIndex:0], c, count);
+				index += count;
+				[self add_header_item:c count:count];
+				count = 0;
+				break;
+			}
+			else
+			{
+				count++;
+				//	NSLog(@"count %c: %i", c, count);
+			}
+		}
+		if (count > 0)
+		{
+			index += count;
+			[self add_header_item:c count:count];
+		}
+	}
+	//	if (count == 0)
+	//		[self add_header_item:35 count:total - index];
+	//	else
+		[self add_header_item:90 count:total - index];
+
+	//	rebuild table - TODO: currently texts only, and texts should be already sorted, with numbers in front
+	index = 0;
+	for (i = 0; i < header_counts.count; i++)
+	{
+		count = [[header_counts objectAtIndex:i] intValue];
+		[alphabet_texts addObject:[NSMutableArray arrayWithObjects:nil]];
+		for (ii = 0; ii < count; ii++)
+		{
+			[[alphabet_texts objectAtIndex:i] addObject:[[texts objectAtIndex:0] objectAtIndex:index]];
+			index++;
+		}
+	}
+	[texts setArray:alphabet_texts];
+
+	//	rebuild indexes
+	[indexes setArray:headers];
+	//	NSLog(@"headers: %@\n%@", headers, header_counts);
 }
 
 @end
