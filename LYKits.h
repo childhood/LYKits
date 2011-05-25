@@ -1,6 +1,5 @@
 #import "LYPublic.h"
 
-//	test
 #define ly	LYKits
 
 //	LYKits.h = MYPublic.h + LYKits Singleton Class
