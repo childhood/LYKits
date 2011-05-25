@@ -48,6 +48,7 @@
 	NSMutableArray*		indexes;
 	NSInteger			index_length;
 	NSMutableArray*		headers;
+	NSMutableArray*		header_counts;
 	UILabel*			header_label;
 	//UIImageView*		header_bg;
 
