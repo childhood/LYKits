@@ -810,7 +810,7 @@
 	int		total = [[texts objectAtIndex:0] count];
 	char	c;
 	NSString*		name;
-	NSMutableArray*	alphabet_texts = [[NSMutableArray alloc] init];
+	NSMutableArray*	alphabet_texts = [NSMutableArray array];
 
 	//	NSLog(@"reset headers");
 	[header_counts removeAllObjects];
