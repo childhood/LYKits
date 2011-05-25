@@ -90,6 +90,9 @@ BOOL supersound_inited;
 - (void)setting_string:(NSString*)s;
 - (void)setting_object:(id)obj;
 
+//	calendar
+- (NSString*)buddhist_to_christian;
+
 #ifdef LY_ENABLE_SDK_ASIHTTP
 - (NSString*)blob_post_dictionary:(NSDictionary*)dict;
 - (NSString*)http_post_dictionary:(NSDictionary*)dict;

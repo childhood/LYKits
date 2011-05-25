@@ -51,9 +51,8 @@
 - (void)sort_by_key:(NSString*)key ascending:(BOOL)b
 {
 	NSSortDescriptor*   descriptor;
-	descriptor = [[NSSortDescriptor alloc] initWithKey:key ascending:b];
+	descriptor = [NSSortDescriptor sortDescriptorWithKey:key ascending:b];
 	[self sortUsingDescriptors:[NSArray arrayWithObject:descriptor]];
-	[descriptor release];
 }
 
 @end
