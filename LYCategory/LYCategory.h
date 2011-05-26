@@ -14,6 +14,9 @@
 #import "LYDevice.h"
 #import "LYControl.h"
 #import "LYImagePickerController.h"
+#import "LYDate.h"
+#import "LYMutableDictionary.h"
+#import "LYSwitch.h"
 
 /*
  * enable the macros below to enable navigation background, rotation, etc.
@@ -36,75 +39,6 @@
 
 #pragma mark OTHERS
 
-#pragma mark LYSwitch
-
-@interface UISwitch (LYSwitch)
-- (void)bind_setting:(NSString*)key;
-@end
-
-@implementation UISwitch (LYSwitch)
-- (void)bind_setting:(NSString*)key
-{
-	[key setting_set_switch:self];
-	[self associate:@"ly-setting-name" with:key];
-	[self addTarget:self action:@selector(value_changed) forControlEvents:UIControlEventValueChanged];
-}
-- (void)value_changed
-{
-	[[self associated:@"ly-setting-name"] setting_bool:self.on];
-}
-@end
-
-#pragma mark LYMutableDictionary
-
-@interface NSMutableDictionary (LYMutableDictionary)
-- (void)set_string:(NSString*)str key:(NSString*)key;
-@end
-
-@implementation NSMutableDictionary (LYMutableDictionary)
-- (void)set_string:(NSString*)str key:(NSString*)key
-{
-	if (str != nil)
-		if ([str isKindOfClass:[NSString class]])
-		{
-			[self setValue:str forKey:key];
-			return;
-		}
-	[self setValue:@"" forKey:key];
-}
-@end
-
-#pragma mark LYDate
-
-@interface NSDate (LYDate)
-- (BOOL)is_same_date:(NSDate*)date1;
-- (BOOL)is_same_month:(NSDate*)date1;
-@end
-
-@implementation NSDate (LYDate)
-- (BOOL)is_same_month:(NSDate*)date1
-{
-	NSCalendar* calendar = [NSCalendar currentCalendar];
-
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-	NSDateComponents* comp1 = [calendar components:unitFlags fromDate:date1];
-	NSDateComponents* comp2 = [calendar components:unitFlags fromDate:self];
-
-	return [comp1 month] == [comp2 month] && [comp1 year] == [comp2 year];
-}
-- (BOOL)is_same_date:(NSDate*)date1
-{
-	NSCalendar* calendar = [NSCalendar currentCalendar];
-
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-	NSDateComponents* comp1 = [calendar components:unitFlags fromDate:date1];
-	NSDateComponents* comp2 = [calendar components:unitFlags fromDate:self];
-
-	return [comp1 day] == [comp2 day] &&
-		[comp1 month] == [comp2 month] &&
-		[comp1 year]  == [comp2 year];
-}
-@end
 
 //	TODO: this is not needed so far. Let it be here for a while...
 
