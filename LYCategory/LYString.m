@@ -564,6 +564,13 @@
 	return [NSString stringWithFormat:@"%i%@", year, [self substringFromIndex:4]];
 }
 
+- (NSString*)japanese_to_christian
+{
+	int year = [[self substringToIndex:4] intValue];
+	year += 1988;
+	return [NSString stringWithFormat:@"%i%@", year, [self substringFromIndex:4]];
+}
+
 #ifdef LY_ENABLE_SDK_ASIHTTP
 - (NSString*)blob_post_dictionary:(NSDictionary*)dict
 {

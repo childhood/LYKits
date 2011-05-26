@@ -94,6 +94,7 @@ BOOL supersound_inited;
 
 //	calendar
 - (NSString*)buddhist_to_christian;
+- (NSString*)japanese_to_christian;
 
 #ifdef LY_ENABLE_SDK_ASIHTTP
 - (NSString*)blob_post_dictionary:(NSDictionary*)dict;
