@@ -12,6 +12,7 @@
 #import "LYPDFViewController.h"
 #import "LYMiniAppsController.h"
 #import "LY3DImageView.h"
+#import "LYListController.h"
 //#import "LYTableController.h"
 
 BOOL CGPointInRect(CGPoint point, CGRect rect);
