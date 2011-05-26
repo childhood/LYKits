@@ -501,6 +501,8 @@
 #endif
 }
 
+#pragma mark settings
+
 - (BOOL)setting_bool
 {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:self];
@@ -539,6 +541,18 @@
 - (void)setting_object:(id)obj
 {
 	[[NSUserDefaults standardUserDefaults] setObject:obj forKey:self];
+}
+
+//	setting + ui
+
+- (void)setting_set_switch:(UISwitch*)a_switch
+{
+	a_switch.on = [self setting_bool];
+}
+
+- (void)setting_get_switch:(UISwitch*)a_switch
+{
+	[self setting_bool:a_switch.on];
 }
 
 #pragma mark calendar
