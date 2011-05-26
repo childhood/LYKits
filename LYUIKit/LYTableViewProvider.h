@@ -68,6 +68,14 @@
 
 	CGFloat				table_header_height;
 	CGFloat				table_footer_height;
+
+	NSMutableArray*		tmp_texts;
+	NSMutableArray*		tmp_details;
+	NSMutableArray*		tmp_images;
+	NSMutableArray*		tmp_image_urls;
+	NSMutableArray*		tmp_accessories;
+	NSMutableArray*		tmp_headers;
+	NSMutableArray*		tmp_footers;
 }
 @property (nonatomic, retain) IBOutlet UITableView*			view;
 @property (nonatomic, retain) IBOutlet UIViewController*	controller;
@@ -134,5 +142,9 @@
 
 //	strings only, 1 section only
 - (void)apply_alphabet;
+
+//	filter is experimental and may have problem with additional view, etc.
+- (void)filter_apply:(NSString*)filter;
+- (void)filter_restore;
 
 @end

@@ -896,4 +896,13 @@
 	//	NSLog(@"headers: %@\n%@", headers, header_counts);
 }
 
+- (void)filter_apply:(NSString*)filter
+{
+}
+
+- (void)filter_restore
+{
+	
+}
+
 @end
