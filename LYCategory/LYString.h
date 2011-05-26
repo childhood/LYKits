@@ -89,7 +89,7 @@ BOOL supersound_inited;
 - (void)setting_integer:(NSInteger)i;
 - (void)setting_string:(NSString*)s;
 - (void)setting_object:(id)obj;
-- (void)setting_set_switch:(UISwitch*)a_switch;
+- (void)setting_set_switch:(UISwitch*)a_switch;		//	use [UISwitch bind_setting] instead
 - (void)setting_get_switch:(UISwitch*)a_switch;
 
 //	calendar
