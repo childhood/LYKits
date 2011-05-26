@@ -12,4 +12,8 @@
 - (id)perform_selector:(SEL)selector;
 - (id)perform_selector:(SEL)selector with:(id)obj;
 
+//	category instance variables
+- (void)associate:(NSString*)key with:(id)obj;
+- (id)associated:(NSString*)key;
+
 @end

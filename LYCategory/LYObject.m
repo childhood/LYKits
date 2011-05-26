@@ -2,6 +2,8 @@
 
 @implementation NSObject (LYObject)
 
+#pragma mark selector
+
 - (id)perform_string:(NSString*)string
 {
 	return [self perform_selector:NSSelectorFromString(string)];
@@ -41,6 +43,18 @@
 		return nil;
 
 	return [self performSelector:selector withObject:obj1 withObject:obj2];
+}
+
+#pragma mark associate
+
+- (void)associate:(NSString*)key with:(id)obj
+{
+	objc_setAssociatedObject(self, key, obj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (id)associated:(NSString*)key
+{
+	return objc_getAssociatedObject(self, key);
 }
 
 @end
