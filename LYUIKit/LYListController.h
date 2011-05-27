@@ -25,6 +25,7 @@
 	//IBOutlet UINavigationBar*	navigationBar;
 	IBOutlet UITableView*		table;
 	IBOutlet UIPickerView*		picker;
+	IBOutlet UINavigationBar*	bar_table;
 	IBOutlet UINavigationBar*	bar_picker;
 	IBOutlet UIView*			view_table;
 	IBOutlet UIView*			view_picker;

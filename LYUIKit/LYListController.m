@@ -78,6 +78,8 @@
 	if ([self isViewLoaded] == NO)
 		[self viewDidLoad];
 
+	bar_table.topItem.title = a_name;
+	bar_picker.topItem.title = a_name;
 	name = a_name;
 
 	if (dict != nil)
