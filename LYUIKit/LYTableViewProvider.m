@@ -993,7 +993,7 @@
 	}
 	view.contentOffset = CGPointMake(0, 0);
 	[view reloadData];
-	NSLog(@"mapping: %@", backup_dict);
+	//	NSLog(@"mapping: %@", backup_dict);
 }
 
 - (void)filter_remove

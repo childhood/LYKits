@@ -1,3 +1,4 @@
+#import <objc/message.h>
 #import <UIKit/UIKit.h>
 #import "LYScrollTabController.h"
 #import "LYTableViewProvider.h"
@@ -61,6 +62,19 @@ UIView* ly_alloc_view_loading(void);
  * 		customizable loading view
  *
  */
+
+@interface LYPickerViewProvider: NSObject <UIPickerViewDelegate, UIPickerViewDataSource>
+{
+	NSMutableArray*		titles;
+	NSObject*			delegate;
+}
+@property (nonatomic, retain) NSMutableArray*	titles;
+@property (nonatomic, retain) NSObject*			delegate;
+
+- (id)initWithPicker:(UIPickerView*)picker;
+//	- (id)initWithTitles:(NSArray*)titles;
+
+@end
 
 @interface LYMiniApps: LYSingletonClass
 {
