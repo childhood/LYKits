@@ -2,6 +2,8 @@
 
 @interface NSObject (LYObject)
 
+- (id)release_nil;		//	obj = [obj release_nil];
+
 //	safely perform a selector as string
 - (id)perform_string:(NSString*)string;
 - (id)perform_string:(NSString*)string with:(id)obj;

@@ -292,6 +292,11 @@
 
 - (BOOL)has_substring:(NSString*)sub
 {
+	if (sub == nil)
+		return NO;
+	if (sub.length == 0)
+		return YES;
+
 	NSRange range = [self rangeOfString:sub];
 	if ((range.location == NSNotFound) && (range.length == 0))
 		return NO;

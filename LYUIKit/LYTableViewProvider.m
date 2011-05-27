@@ -55,6 +55,8 @@
 @synthesize cell_bg_bottom_selected;
 @synthesize cell_bg_color_interlace;
 
+@synthesize search_bar;
+
 - (id)initWithStyle:(UITableViewStyle)table_style
 {
 	//CGRect rect = [[UIScreen mainScreen] bounds];
@@ -123,6 +125,15 @@
 		header_counts		= [[NSMutableArray alloc] init];
 		accessories			= [[NSMutableArray alloc] init];
 		additional_views	= [[NSMutableArray alloc] init];
+
+		backup_texts = nil;
+		backup_details = nil;
+		backup_images = nil;
+		backup_image_urls = nil;
+		backup_accessories = nil;
+		backup_headers = nil;
+		backup_footers = nil;
+		search_bar = nil;
 
 		text_label		= [[UILabel alloc] init];
 		detail_label	= [[UILabel alloc] init];
@@ -521,19 +532,31 @@
 
 #pragma mark actions
 
-- (void)tableView:(UITableView*)table didSelectRowAtIndexPath:(NSIndexPath*)path
+- (void)tableView:(UITableView*)table didSelectRowAtIndexPath:(NSIndexPath*)a_path
 {
+	NSIndexPath* path;
+	if (backup_dict != nil)
+		path = [backup_dict objectForKey:a_path];
+	else
+		path = a_path;
+
 	if ([self get_additional_view:path] != nil)
 		return;
 
 	current_path = path;
 	current_text = [texts object_at_path:path];
-	[table deselectRowAtIndexPath:path animated:YES];
+	[table deselectRowAtIndexPath:a_path animated:YES];
 	[delegate perform_string:@"tableView:didSelectRowAtIndexPath:" with:table with:path];
 }
 
-- (void)tableView:(UITableView*)table accessoryButtonTappedForRowWithIndexPath:(NSIndexPath*)path
+- (void)tableView:(UITableView*)table accessoryButtonTappedForRowWithIndexPath:(NSIndexPath*)a_path
 {
+	NSIndexPath* path;
+	if (backup_dict != nil)
+		path = [backup_dict objectForKey:a_path];
+	else
+		path = a_path;
+
 	//	NSLog(@"accessory tapped: %@", path);
 	[delegate perform_string:@"tableView:accessoryButtonTappedForRowWithIndexPath:" with:table with:path];
 }
@@ -678,6 +701,11 @@
 
 - (void)dealloc
 {
+	if (search_bar != nil)
+		[search_bar release];
+	if (backup_dict != nil)
+		[self filter_remove];
+
 	[additional_views release];
 
 	[texts release];
@@ -898,11 +926,139 @@
 
 - (void)filter_apply:(NSString*)filter
 {
+	int section, row;
+	int backup_section	= 0;
+	int backup_row		= 0;
+	NSArray*		array;
+	//NSIndexPath*	path;
+	//NSString*		s;
+
+	if (backup_texts == nil)
+		backup_texts = [[NSMutableArray alloc] initWithArray:texts];
+	[texts removeAllObjects];
+	if (backup_details == nil)
+		backup_details = [[NSMutableArray alloc] initWithArray:details];
+	[details removeAllObjects];
+	if (backup_images == nil)
+		backup_images = [[NSMutableArray alloc] initWithArray:images];
+	[images removeAllObjects];
+	if (backup_image_urls == nil)
+		backup_image_urls = [[NSMutableArray alloc] initWithArray:image_urls];
+	[image_urls removeAllObjects];
+	if (backup_accessories == nil)
+		backup_accessories = [[NSMutableArray alloc] initWithArray:accessories];
+	[accessories removeAllObjects];
+	//	TODO: hide sections with no items in
+	
+	if (backup_dict == nil)
+		backup_dict = [[NSMutableDictionary alloc] init];
+	else
+		[backup_dict removeAllObjects];
+	
+	for (section = 0; section < backup_texts.count; section++)
+	{
+		array = [backup_texts objectAtIndex:section];
+
+		[texts addObject:[NSMutableArray array]];
+		[details addObject:[NSMutableArray array]];
+		[images addObject:[NSMutableArray array]];
+		[image_urls addObject:[NSMutableArray array]];
+		[accessories addObject:[NSMutableArray array]];
+
+		for (row = 0; row < array.count; row++)
+		{
+			NSIndexPath* path = [NSIndexPath indexPathForRow:row inSection:section];
+			NSIndexPath* backup_path = [NSIndexPath indexPathForRow:backup_row inSection:backup_section];
+
+			if (([[[backup_texts object_at_path:path] lowercaseString] has_substring:[filter lowercaseString]]) ||
+				([[[backup_details object_at_path:path] lowercaseString] has_substring:[filter lowercaseString]]))
+			{
+				[backup_dict setObject:path forKey:backup_path];
+
+				if ([backup_texts object_at_path:path] != nil)
+					[[texts objectAtIndex:backup_section] addObject:[backup_texts object_at_path:path]];
+				if ([backup_details object_at_path:path] != nil)
+					[[details objectAtIndex:backup_section] addObject:[backup_details object_at_path:path]];
+				if ([backup_images object_at_path:path] != nil)
+					[[images objectAtIndex:backup_section] addObject:[backup_images object_at_path:path]];
+				if ([backup_image_urls object_at_path:path] != nil)
+					[[image_urls objectAtIndex:backup_section] addObject:[backup_image_urls object_at_path:path]];
+				if ([backup_accessories object_at_path:path] != nil)
+					[[accessories objectAtIndex:backup_section] addObject:[backup_accessories object_at_path:path]];
+
+				backup_row++;
+			}
+		}
+		backup_section++;
+	}
+	view.contentOffset = CGPointMake(0, 0);
+	[view reloadData];
+	NSLog(@"mapping: %@", backup_dict);
 }
 
-- (void)filter_restore
+- (void)filter_remove
 {
-	
+	[texts setArray:backup_texts];
+	[details setArray:backup_details];
+	[images setArray:backup_images];
+	[image_urls setArray:backup_image_urls];
+	[accessories setArray:backup_accessories];
+
+	backup_texts = [backup_texts release_nil];
+	backup_details = [backup_details release_nil];
+	backup_images = [backup_images release_nil];
+	backup_image_urls = [backup_image_urls release_nil];
+	backup_accessories = [backup_accessories release_nil];
+
+	backup_dict = [backup_dict release_nil];
+#if 0
+	[backup_headers release_nil];
+	[backup_footers release_nil];
+#endif
+}
+
+#pragma mark search
+
+- (void)enable_search
+{
+	search_bar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, -44, view.frame.size.width, 44)];
+	search_bar.delegate = self;
+	search_bar.placeholder = @"Keywords here...";
+	search_bar.barStyle = UIBarStyleBlack;
+	search_bar.showsCancelButton = YES;
+	[view addSubview:search_bar];
+	view.contentInset = UIEdgeInsetsMake(search_bar.frame.size.height, 0, 0, 0);
+}
+
+- (void)searchBar:(UISearchBar*)search textDidChange:(NSString*)text
+{
+	NSLog(@"filter: %@", text);
+	[self filter_apply:text];
+	self.view.contentOffset = CGPointMake(0, -44);
+#if 0
+	[[self.texts objectAtIndex:0] removeObjectAtIndex:1];
+	//	[self action_local_refresh];
+
+	[table_local beginUpdates];
+	[table_local deleteRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:1 inSection:0], nil] withRowAnimation:UITableViewRowAnimationMiddle];
+	[table_local endUpdates];
+#endif
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar*)search
+{
+	search.text = @"";
+	[self filter_remove];
+	[UIView begin_animations:0.3];
+	self.view.contentOffset = CGPointMake(0, 0);
+	[UIView commitAnimations];
+	[search resignFirstResponder];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar*)search
+{
+	[search resignFirstResponder];
+	self.view.contentOffset = CGPointMake(0, -44);
 }
 
 @end

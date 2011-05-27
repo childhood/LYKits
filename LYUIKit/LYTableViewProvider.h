@@ -15,9 +15,10 @@
 	[provider_menu.details add_array:@"Another Plain 2", @"Another Grouped 2", nil];
 #endif
 
-@interface LYTableViewProvider: NSObject <UITableViewDelegate, UITableViewDataSource>
+@interface LYTableViewProvider: NSObject <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 {
 	UITableView*					view;
+	UISearchBar*					search_bar;
 	UIViewController*				controller;
 	UITableViewCellStyle			style;
 	NSString*						theme;
@@ -69,13 +70,14 @@
 	CGFloat				table_header_height;
 	CGFloat				table_footer_height;
 
-	NSMutableArray*		tmp_texts;
-	NSMutableArray*		tmp_details;
-	NSMutableArray*		tmp_images;
-	NSMutableArray*		tmp_image_urls;
-	NSMutableArray*		tmp_accessories;
-	NSMutableArray*		tmp_headers;
-	NSMutableArray*		tmp_footers;
+	NSMutableArray*			backup_texts;
+	NSMutableArray*			backup_details;
+	NSMutableArray*			backup_images;
+	NSMutableArray*			backup_image_urls;
+	NSMutableArray*			backup_accessories;
+	NSMutableArray*			backup_headers;
+	NSMutableArray*			backup_footers;
+	NSMutableDictionary*	backup_dict;
 }
 @property (nonatomic, retain) IBOutlet UITableView*			view;
 @property (nonatomic, retain) IBOutlet UIViewController*	controller;
@@ -121,6 +123,8 @@
 @property (nonatomic, retain) IBOutlet UIColor*				cell_bg_color_interlace;
 @property (nonatomic, retain) IBOutlet NSString*			accessory_name;
 
+@property (nonatomic, retain) IBOutlet UISearchBar*			search_bar;
+
 - (id)initWithStyle:(UITableViewStyle)table_style;
 - (id)initWithTableView:(UITableView*)table_view;
 
@@ -140,11 +144,10 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
 - (NSString*)text_for_path:(NSIndexPath*)path;
 
-//	strings only, 1 section only
-- (void)apply_alphabet;
-
-//	filter is experimental and may have problem with additional view, etc.
+//	extra functions
+- (void)apply_alphabet;					 //	strings only, 1 section only
 - (void)filter_apply:(NSString*)filter;
-- (void)filter_restore;
+- (void)filter_remove;
+- (void)enable_search;
 
 @end
