@@ -22,6 +22,7 @@
 
 - (void)viewDidLoad
 {
+	NSLog(@"list load");
 	[super viewDidLoad];
 	self.view.frame = CGRectMake(0, 20, [ly screen_width], [ly screen_height] - 20);
 
@@ -38,8 +39,9 @@
 		provider_table.delegate = self;
 		[provider_table.texts add_array:@"No Entry", nil];
 	}
-	[table reloadData];
+	//	[table reloadData];
 
+	picker.showsSelectionIndicator = YES;
 	if (provider_picker != nil)
 	{
 		picker.delegate = provider_picker;
@@ -50,13 +52,24 @@
 		provider_picker = [[LYPickerViewProvider alloc] initWithPicker:picker];
 		provider_picker.delegate = self;
 	}
+	//	[picker reloadAllComponents];
 }
 
 - (void)viewDidUnload
 {
-	provider_table = [provider_table release_nil];
-	provider_picker = [provider_picker release_nil];
+#if 1
+	[table retain];
+	[picker retain];
+	[bar_table retain];
+	[bar_picker retain];
+	[view_table retain];
+	[view_picker retain];
+#else
+	//	provider_table = [provider_table release_nil];
+	//	provider_picker = [provider_picker release_nil];
 	[super viewDidUnload];
+#endif
+		NSLog(@"list unload");
 }
 
 - (void)dealloc
@@ -75,9 +88,15 @@
 
 - (void)refresh_named:(NSString*)a_name dict:(NSDictionary*)a_dict
 {
+	[self refresh_named:a_name dict:a_dict default:nil];
+}
+
+- (void)refresh_named:(NSString*)a_name dict:(NSDictionary*)a_dict default:(NSString*)a_default
+{
 	if ([self isViewLoaded] == NO)
 		[self viewDidLoad];
 
+	//	table
 	bar_table.topItem.title = a_name;
 	bar_picker.topItem.title = a_name;
 	name = a_name;
@@ -90,9 +109,15 @@
 	[provider_table.texts addObject:[NSArray arrayWithArray:[[a_dict allKeys] sortedArrayUsingSelector:@selector(compare:)]]];
 	[table reloadData];
 
+	//	picker
 	[provider_picker.titles removeAllObjects];
 	[provider_picker.titles addObject:[[a_dict allKeys] sortedArrayUsingSelector:@selector(compare:)]];
 	[picker reloadAllComponents];
+
+	if (a_default != nil)
+	{
+		[picker selectRow:[[provider_picker.titles objectAtIndex:0] indexOfObject:a_default] inComponent:0 animated:NO];
+	}
 }
 
 - (void)show_table

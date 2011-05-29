@@ -46,12 +46,16 @@
 @property (nonatomic, retain) NSString*				name;
 
 - (id)initWithNav:(UINavigationController*)a_nav;
+//- (void)init_data;
 
 - (void)show_table;
 - (void)show_picker;
 
 - (void)refresh_named:(NSString*)a_name dict:(NSDictionary*)a_dict;
+- (void)refresh_named:(NSString*)a_name dict:(NSDictionary*)a_dict default:(NSString*)a_default;
 - (BOOL)is_named:(NSString*)a_name;
+
 - (IBAction)action_dismiss;
+- (IBAction)action_done;
 
 @end
