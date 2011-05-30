@@ -2,6 +2,25 @@
 
 @implementation UIButton (LYButton)
 
+#pragma mark binding
+
+- (void)bind_setting:(NSString*)key target:(id)target action:(NSString*)action
+{
+	self.selected = [key setting_bool];
+	[self associate:@"ly-setting-name" with:key];
+	[self associate:@"ly-setting-target" with:target];
+	[self associate:@"ly-setting-action" with:action];
+	[self addTarget:self action:@selector(pressed) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)pressed
+{
+	self.selected = !self.selected;
+	[[self associated:@"ly-setting-name"] setting_bool:self.selected];
+	//	NSLog(@"toggle: %@ - %i", [self associated:@"ly-setting-name"], self.selected);
+	[[self associated:@"ly-setting-target"] perform_string:[self associated:@"ly-setting-action"] with:self];
+}
+
 #pragma mark state control
 
 - (void)switch_state:(UIControlState)state1 state:(UIControlState)state2
@@ -16,6 +35,14 @@
 	UIColor*	title_shadow2;
 	UIImage*	image2;
 	UIImage*	image_bg2;
+#if 0
+	NSNumber*	flipped;
+
+	flipped = [self associated:@"flipped"];
+	if (flipped == nil)
+		flipped = [NSNumber numberWithBOOL:NO];
+	[self associate:@"flipped" with:flipped];
+#endif
 
 	title			= [self titleForState:state1];
 	title_color		= [self titleColorForState:state1];
