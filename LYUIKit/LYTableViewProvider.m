@@ -90,6 +90,10 @@
 			//[controller.view addSubview:view];
 		}
 
+		button_mask = [[UIButton alloc] initWithFrame:view.frame];
+		[button_mask addTarget:self action:@selector(action_search_resign) forControlEvents:UIControlEventTouchUpInside];
+		button_mask.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+
 		switch (view.style)
 		{
 			case UITableViewStylePlain:
@@ -1043,6 +1047,17 @@
 	[table_local deleteRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:1 inSection:0], nil] withRowAnimation:UITableViewRowAnimationMiddle];
 	[table_local endUpdates];
 #endif
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+	[view addSubview:button_mask];
+}
+
+- (void)action_search_resign
+{
+	[self searchBarSearchButtonClicked:search_bar];
+	[button_mask removeFromSuperview];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar*)search

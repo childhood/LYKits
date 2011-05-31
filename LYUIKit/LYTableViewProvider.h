@@ -19,6 +19,7 @@
 {
 	UITableView*					view;
 	UISearchBar*					search_bar;
+	UIButton*						button_mask;
 	UIViewController*				controller;
 	UITableViewCellStyle			style;
 	NSString*						theme;
