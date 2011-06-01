@@ -74,6 +74,30 @@
 	return newImage;
 }
 
+- (UIImage*)image_overlay_center:(UIImage*)another_image
+{
+	CGRect rect = CGRectMake((self.size.width - another_image.size.width) / 2, 
+			(self.size.height - another_image.size.height) / 2, 
+			another_image.size.width,
+			another_image.size.height);
+	return [self image_overlay:another_image rect:rect mode:kCGBlendModeNormal alpha:1];
+}
+
+- (UIImage*)image_overlay:(UIImage*)another_image rect:(CGRect)a_rect mode:(CGBlendMode)mode alpha:(CGFloat)alpha
+{
+	UIGraphicsBeginImageContext(self.size);  
+
+	CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);
+
+	[self drawInRect:rect];  
+	[another_image drawInRect:a_rect blendMode:mode alpha:alpha];
+
+	UIImage *ret = UIGraphicsGetImageFromCurrentImageContext();  
+	UIGraphicsEndImageContext();  
+
+	return ret;
+}
+
 - (UIImage*)image_blur_at:(CGPoint)point
 {
 	CGRect             bnds = CGRectZero;
