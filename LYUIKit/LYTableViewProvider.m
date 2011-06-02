@@ -91,8 +91,8 @@
 		}
 
 		button_mask = [[UIButton alloc] initWithFrame:view.frame];
-		[button_mask addTarget:self action:@selector(action_search_resign) forControlEvents:UIControlEventTouchUpInside];
 		button_mask.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+		[button_mask addTarget:self action:@selector(action_search_resign) forControlEvents:UIControlEventTouchUpInside];
 
 		switch (view.style)
 		{
@@ -1036,7 +1036,7 @@
 
 - (void)searchBar:(UISearchBar*)search textDidChange:(NSString*)text
 {
-	NSLog(@"filter: %@", text);
+	//	NSLog(@"filter: %@", text);
 	[self filter_apply:text];
 	self.view.contentOffset = CGPointMake(0, -44);
 #if 0
