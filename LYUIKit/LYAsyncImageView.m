@@ -4,8 +4,12 @@
 
 - (id)init
 {
-	filename = @"";
-	is_downloading = NO;
+	self = [super init];
+	if (self != nil)
+	{
+		filename = nil;
+		is_downloading = NO;
+	}
 
 	return [super init];
 }
@@ -13,20 +17,29 @@
 - (void)load_url:(NSString*)s
 {
 	NSURLRequest*	request;
-
 	if (is_downloading == YES)
 		return;
 
-	filename = [[s url_to_filename] retain];
+	filename = [[NSString alloc] initWithFormat:@"%ix%i-%@",
+			 (int)self.frame.size.width, (int)self.frame.size.height, [s url_to_filename]];
+	NSLog(@"xx %@", filename);
 	//	[self.image release], self.image = nil;
 
 	if ([filename file_exists] == YES)
 	{
 		//	NSLog(@"loading from cache: %@", [filename filename_document]);
 		self.image = [UIImage imageWithContentsOfFile:[filename filename_document]];
+		[filename release];
 	}
 	else
 	{
+		if (self.frame.size.width < 128)
+			self.image = [UIImage imageNamed:@"ly-placeholder-2.png"];
+		else if (self.frame.size.width < 256)
+			self.image = [UIImage imageNamed:@"ly-placeholder-4.png"];
+		else
+			self.image = [UIImage imageNamed:@"ly-placeholder-8.png"];
+
 		//	NSLog(@"downloading from: %@", s);
 		is_downloading = YES;
 		request = [NSURLRequest requestWithURL:[NSURL URLWithString:s] 
@@ -53,9 +66,13 @@
 	//	NSLog(@"got data: %@", self);
 	if (the_image != nil)
 	{
+		[UIView begin_animations:0.3];
+		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
 		[data writeToFile:[filename filename_document] atomically:YES];
 		self.image = the_image;
+		[UIView commitAnimations];
 	}
+	[filename release], filename = nil;
     [data release], data = nil;
 	[connection release], connection = nil;
 }
@@ -68,6 +85,7 @@
 }
 
 @end
+
 
 @implementation LYAsyncButton
 
@@ -96,6 +114,13 @@
 	}
 	else
 	{
+		if (self.frame.size.width < 128)
+			[self setImage:[UIImage imageNamed:@"ly-placeholder-2.png"] forState:UIControlStateNormal];
+		else if (self.frame.size.width < 256)
+			[self setImage:[UIImage imageNamed:@"ly-placeholder-4.png"] forState:UIControlStateNormal];
+		else
+			[self setImage:[UIImage imageNamed:@"ly-placeholder-8.png"] forState:UIControlStateNormal];
+
 		//	NSLog(@"downloading from: %@", s);
 		is_downloading = YES;
 		request = [NSURLRequest requestWithURL:[NSURL URLWithString:s] 
@@ -122,8 +147,11 @@
 	//	NSLog(@"got data: %@", self);
 	if (the_image != nil)
 	{
+		[UIView begin_animations:0.3];
+		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
 		[data writeToFile:[filename filename_document] atomically:YES];
 		[self setImage:the_image forState:UIControlStateNormal];
+		[UIView commitAnimations];
 	}
     [data release], data = nil;
 	[connection release], connection = nil;
