@@ -9,6 +9,8 @@
 	{
 		filename = nil;
 		is_downloading = NO;
+		data = nil;
+		connection = nil;
 	}
 
 	return [super init];
@@ -22,7 +24,6 @@
 
 	filename = [[NSString alloc] initWithFormat:@"%ix%i-%@",
 			 (int)self.frame.size.width, (int)self.frame.size.height, [s url_to_filename]];
-	NSLog(@"xx %@", filename);
 	//	[self.image release], self.image = nil;
 
 	if ([filename file_exists] == YES)
@@ -79,8 +80,8 @@
 
 - (void)dealloc
 {
-	[data release];
-	[connection release];
+	//[data release];
+	//[connection release];
     [super dealloc];
 }
 
@@ -91,10 +92,16 @@
 
 - (id)init
 {
-	filename = @"";
-	is_downloading = NO;
+	self = [super init];
+	if (self != nil)
+	{
+		filename = nil;
+		is_downloading = NO;
+		data = nil;
+		connection = nil;
+	}
 
-	return [super init];
+	return self;
 }
 
 - (void)load_url:(NSString*)s
@@ -111,6 +118,7 @@
 	{
 		//	NSLog(@"loading from cache: %@", [filename filename_document]);
 		[self setImage:[UIImage imageWithContentsOfFile:[filename filename_document]] forState:UIControlStateNormal];
+		[filename release];
 	}
 	else
 	{
@@ -153,14 +161,15 @@
 		[self setImage:the_image forState:UIControlStateNormal];
 		[UIView commitAnimations];
 	}
+	[filename release], filename = nil;
     [data release], data = nil;
 	[connection release], connection = nil;
 }
 
 - (void)dealloc
 {
-	[data release];
-	[connection release];
+	//	[data release];
+	//	[connection release];
     [super dealloc];
 }
 
