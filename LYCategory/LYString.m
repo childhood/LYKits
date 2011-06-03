@@ -626,13 +626,22 @@
 #ifdef LY_ENABLE_SDK_TOUCHJSON
 - (NSDictionary*)dictionary_json
 {
-	NSData*		data;
-	data = [self dataUsingEncoding:NSUTF32BigEndianStringEncoding];
-	return [[CJSONDeserializer deserializer] deserializeAsDictionary:data error:nil];
+	NSData*			data;
+	NSError*		error;
+	NSDictionary*	ret;
+	NSRange			range = [self rangeOfString:@"{"];
+	NSString*		s = [self substringFromIndex:range.location];
+
+	//data = [self dataUsingEncoding:NSUTF8StringEncoding];
+	data = [s dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	ret = [[CJSONDeserializer deserializer] deserializeAsDictionary:data error:&error];
+	//	NSLog(@"json error: %@", error);
+	return ret;
 }
 - (NSArray*)array_json
 {
 	NSData*		data;
+	//data = [self dataUsingEncoding:NSUTF8StringEncoding];
 	data = [self dataUsingEncoding:NSUTF32BigEndianStringEncoding];
 	return [[CJSONDeserializer deserializer] deserializeAsArray:data error:nil];
 }
