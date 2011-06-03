@@ -7,6 +7,9 @@
 	self = [super init];
 	if (self != nil)
 	{
+		self.contentMode = UIViewContentModeScaleAspectFill;
+		self.clipsToBounds = YES;
+		filename_original = nil;
 		filename = nil;
 		is_downloading = NO;
 		data = nil;
@@ -34,19 +37,35 @@
 	}
 	else
 	{
-		if (self.frame.size.width < 128)
-			self.image = [UIImage imageNamed:@"ly-placeholder-2.png"];
-		else if (self.frame.size.width < 256)
-			self.image = [UIImage imageNamed:@"ly-placeholder-4.png"];
+		filename_original = [[NSString alloc] initWithString:[s url_to_filename]];
+		if ([filename_original file_exists])
+		{
+			UIImage* the_image = [UIImage imageWithContentsOfFile:[filename_original filename_document]];
+			UIImage* resized_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+			[UIView begin_animations:0.3];
+			[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
+			[UIImagePNGRepresentation(resized_image) writeToFile:[filename filename_document] atomically:YES];
+			self.image = resized_image;
+			[UIView commitAnimations];
+			[filename_original release], filename_original = nil;
+			[filename release], filename = nil;
+		}
 		else
-			self.image = [UIImage imageNamed:@"ly-placeholder-8.png"];
+		{
+			if (self.frame.size.width < 128)
+				self.image = [UIImage imageNamed:@"ly-placeholder-2.png"];
+			else if (self.frame.size.width < 256)
+				self.image = [UIImage imageNamed:@"ly-placeholder-4.png"];
+			else
+				self.image = [UIImage imageNamed:@"ly-placeholder-8.png"];
 
-		//	NSLog(@"downloading from: %@", s);
-		is_downloading = YES;
-		request = [NSURLRequest requestWithURL:[NSURL URLWithString:s] 
-								   cachePolicy:NSURLRequestReturnCacheDataElseLoad 
-							   timeoutInterval:30.0];
-		connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+			//	NSLog(@"downloading from: %@", s);
+			is_downloading = YES;
+			request = [NSURLRequest requestWithURL:[NSURL URLWithString:s] 
+									   cachePolicy:NSURLRequestReturnCacheDataElseLoad 
+								   timeoutInterval:30.0];
+			connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+		}
 	}
 }
 
@@ -69,10 +88,13 @@
 	{
 		[UIView begin_animations:0.3];
 		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
-		[data writeToFile:[filename filename_document] atomically:YES];
+		the_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+		[data writeToFile:[filename_original filename_document] atomically:YES];
+		[UIImagePNGRepresentation(the_image) writeToFile:[filename filename_document] atomically:YES];
 		self.image = the_image;
 		[UIView commitAnimations];
 	}
+	[filename_original release], filename_original = nil;
 	[filename release], filename = nil;
     [data release], data = nil;
 	[connection release], connection = nil;
@@ -95,6 +117,9 @@
 	self = [super init];
 	if (self != nil)
 	{
+		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+		self.imageView.clipsToBounds = YES;
+		filename_original = nil;
 		filename = nil;
 		is_downloading = NO;
 		data = nil;
@@ -111,30 +136,48 @@
 	if (is_downloading == YES)
 		return;
 
-	filename = [[s url_to_filename] retain];
+	filename = [[NSString alloc] initWithFormat:@"%ix%i-%@",
+			 (int)self.frame.size.width, (int)self.frame.size.height, [s url_to_filename]];
 	//	[self.image release], self.image = nil;
 
 	if ([filename file_exists] == YES)
 	{
 		//	NSLog(@"loading from cache: %@", [filename filename_document]);
-		[self setImage:[UIImage imageWithContentsOfFile:[filename filename_document]] forState:UIControlStateNormal];
+		[self setBackgroundImage:[UIImage imageWithContentsOfFile:[filename filename_document]] forState:UIControlStateNormal];
 		[filename release];
 	}
 	else
 	{
-		if (self.frame.size.width < 128)
-			[self setImage:[UIImage imageNamed:@"ly-placeholder-2.png"] forState:UIControlStateNormal];
-		else if (self.frame.size.width < 256)
-			[self setImage:[UIImage imageNamed:@"ly-placeholder-4.png"] forState:UIControlStateNormal];
+		filename_original = [[NSString alloc] initWithString:[s url_to_filename]];
+		if ([filename_original file_exists])
+		{
+			//	NSLog(@"loading from original...");
+			UIImage* the_image = [UIImage imageWithContentsOfFile:[filename_original filename_document]];
+			UIImage* resized_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+			[UIView begin_animations:0.3];
+			[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
+			[UIImagePNGRepresentation(resized_image) writeToFile:[filename filename_document] atomically:YES];
+			[self setBackgroundImage:resized_image forState:UIControlStateNormal];
+			[UIView commitAnimations];
+			[filename_original release], filename_original = nil;
+			[filename release], filename = nil;
+		}
 		else
-			[self setImage:[UIImage imageNamed:@"ly-placeholder-8.png"] forState:UIControlStateNormal];
+		{
+			if (self.frame.size.width < 128)
+				[self setBackgroundImage:[UIImage imageNamed:@"ly-placeholder-2.png"] forState:UIControlStateNormal];
+			else if (self.frame.size.width < 256)
+				[self setBackgroundImage:[UIImage imageNamed:@"ly-placeholder-4.png"] forState:UIControlStateNormal];
+			else
+				[self setBackgroundImage:[UIImage imageNamed:@"ly-placeholder-8.png"] forState:UIControlStateNormal];
 
-		//	NSLog(@"downloading from: %@", s);
-		is_downloading = YES;
-		request = [NSURLRequest requestWithURL:[NSURL URLWithString:s] 
-								   cachePolicy:NSURLRequestReturnCacheDataElseLoad 
-							   timeoutInterval:30.0];
-		connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+			//	NSLog(@"downloading from: %@", s);
+			is_downloading = YES;
+			request = [NSURLRequest requestWithURL:[NSURL URLWithString:s] 
+									   cachePolicy:NSURLRequestReturnCacheDataElseLoad 
+								   timeoutInterval:30.0];
+			connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+		}
 	}
 }
 
@@ -157,10 +200,14 @@
 	{
 		[UIView begin_animations:0.3];
 		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
-		[data writeToFile:[filename filename_document] atomically:YES];
-		[self setImage:the_image forState:UIControlStateNormal];
+		the_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+		[data writeToFile:[filename_original filename_document] atomically:YES];
+		[UIImagePNGRepresentation(the_image) writeToFile:[filename filename_document] atomically:YES];
+		[self setBackgroundImage:the_image forState:UIControlStateNormal];
 		[UIView commitAnimations];
+		//	NSLog(@"saving %@", [filename filename_document]);
 	}
+	[filename_original release], filename_original = nil;
 	[filename release], filename = nil;
     [data release], data = nil;
 	[connection release], connection = nil;

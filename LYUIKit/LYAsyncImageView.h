@@ -5,6 +5,7 @@
 {
     NSURLConnection*	connection;
     NSMutableData*		data;
+	NSString*			filename_original;
 	NSString*			filename;
 	BOOL				is_downloading;
 }
@@ -18,6 +19,7 @@
 {
     NSURLConnection*	connection;
     NSMutableData*		data;
+	NSString*			filename_original;
 	NSString*			filename;
 	BOOL				is_downloading;
 }

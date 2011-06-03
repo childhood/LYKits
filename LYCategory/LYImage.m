@@ -65,6 +65,33 @@
 	return newImage;
 }
 
+- (UIImage*)image_with_size_aspect_fill:(CGSize)newSize
+{
+	CGFloat	w	= self.size.width;
+	CGFloat	h	= self.size.height;
+	CGFloat	ww	= newSize.width;
+	CGFloat	hh	= newSize.height;
+
+	if (w < h)
+	{
+		h = h * hh / w;
+		w = ww;
+	}
+	else
+	{
+		w = w * ww / h;
+		h = hh;
+	}
+	//	NSLog(@"new image size: %f, %f", w, h);
+	UIGraphicsBeginImageContext(newSize);
+	[[UIImage image_flip_horizontally:self] drawInRect:CGRectMake((ww - w) / 2, (hh - h) / 2, w, h)];
+	UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();    
+	UIGraphicsEndImageContext();
+	//	NSLog(@"new image: %@", newImage);
+
+	return newImage;
+}
+
 - (UIImage*)image_with_size:(CGSize)newSize
 {
 	UIGraphicsBeginImageContext(newSize);
