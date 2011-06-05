@@ -84,7 +84,7 @@
 	}
 	//	NSLog(@"new image size: %f, %f", w, h);
 	UIGraphicsBeginImageContext(newSize);
-	[[UIImage image_flip_horizontally:self] drawInRect:CGRectMake((ww - w) / 2, (hh - h) / 2, w, h)];
+	[self drawInRect:CGRectMake((ww - w) / 2, (hh - h) / 2, w, h)];
 	UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();    
 	UIGraphicsEndImageContext();
 	//	NSLog(@"new image: %@", newImage);

@@ -48,6 +48,16 @@
 	return NO;
 }
 
+- (BOOL)insert_unique:(id)obj at:(int)index
+{
+	if ([self containsObject:obj] == NO)
+	{
+		[self insertObject:obj atIndex:index];
+		return YES;
+	}
+	return NO;
+}
+
 - (void)sort_by_key:(NSString*)key ascending:(BOOL)b
 {
 	NSSortDescriptor*   descriptor;

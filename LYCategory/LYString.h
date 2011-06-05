@@ -84,10 +84,12 @@ BOOL supersound_inited;
 - (BOOL)setting_bool;
 - (NSInteger)setting_integer;
 - (NSString*)setting_string;
+- (id)setting_obj;
 - (id)setting_object;
 - (void)setting_bool:(BOOL)b;
 - (void)setting_integer:(NSInteger)i;
 - (void)setting_string:(NSString*)s;
+- (void)setting_obj:(UIColor*)color;
 - (void)setting_object:(id)obj;
 - (void)setting_set_switch:(UISwitch*)a_switch;		//	use [UISwitch bind_setting] instead
 - (void)setting_get_switch:(UISwitch*)a_switch;

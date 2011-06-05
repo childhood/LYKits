@@ -523,6 +523,11 @@
 	return [[NSUserDefaults standardUserDefaults] stringForKey:self];
 }
 
+- (id)setting_obj
+{
+	return [NSKeyedUnarchiver unarchiveObjectWithData:[self setting_object]];
+}
+
 - (id)setting_object
 {
 	return [[NSUserDefaults standardUserDefaults] objectForKey:self];
@@ -541,6 +546,11 @@
 - (void)setting_string:(NSString*)s
 {
 	[[NSUserDefaults standardUserDefaults] setObject:s forKey:self];
+}
+
+- (void)setting_obj:(UIColor*)color
+{
+	[self setting_object:[NSKeyedArchiver archivedDataWithRootObject:color]];
 }
 
 - (void)setting_object:(id)obj
