@@ -17,6 +17,7 @@
 @synthesize theme;
 @synthesize current_path;
 @synthesize current_text;
+@synthesize data;
 //	XXX: current header & details?
 @synthesize accessory_type;
 @synthesize accessory_name;
@@ -126,6 +127,7 @@
 		indexes		= [[NSMutableArray alloc] init];
 		headers		= [[NSMutableArray alloc] init];
 		footers		= [[NSMutableArray alloc] init];
+		data		= [[NSMutableDictionary alloc] init];
 		header_counts		= [[NSMutableArray alloc] init];
 		accessories			= [[NSMutableArray alloc] init];
 		additional_views	= [[NSMutableArray alloc] init];
@@ -698,6 +700,16 @@
 			[array removeObjectAtIndex:indexPath.row];
 
 		[view delete_path:indexPath animation:animation_delete];
+
+		//	XXX
+		if ([data v:@"source-data"] != nil)
+		{
+			[[data v:@"source-data"] removeObjectAtIndex:indexPath.row];
+			if ([data v:@"source-filename"] != nil)
+			{
+				[[data v:@"source-data"] writeToFile:[data v:@"source-filename"] atomically:YES];
+			}
+		}
 	}
 }
 

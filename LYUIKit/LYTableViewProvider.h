@@ -24,6 +24,7 @@
 	UITableViewCellStyle			style;
 	NSString*						theme;
 	id								delegate;
+	NSMutableDictionary*			data;
 	NSIndexPath*					current_path;
 	NSString*						current_text;
 	NSString*						accessory_name;
@@ -89,6 +90,7 @@
 @property (nonatomic) UITableViewCellAccessoryType			accessory_type;
 @property (nonatomic) UITableViewCellSelectionStyle			cell_selection;
 @property (nonatomic, retain) NSMutableArray*				accessories;
+@property (nonatomic, retain) NSMutableDictionary*			data;
 @property (nonatomic) CGRect								cell_image_rect;
 @property (nonatomic) UIViewContentMode						cell_image_mode;
 @property (nonatomic, retain) NSString*						cell_image_place;
@@ -152,3 +154,13 @@
 - (void)enable_search;
 
 @end
+
+/*
+ * TODO new data scheme
+ *
+ * array	source-data
+ * string	source-filename
+ *
+//	editing
+- (void)bind_data:(NSMutableArray*)array filename:(NSString*)filename;
+ */

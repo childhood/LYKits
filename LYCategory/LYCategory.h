@@ -39,6 +39,16 @@
 
 #pragma mark OTHERS
 
+@interface NSDictionary (LYDictionary)
+- (id)v:(NSString*)key;
+@end
+
+@implementation NSDictionary (LYDictionary)
+- (id)v:(NSString*)key
+{
+	return [self valueForKey:key];
+}
+@end
 
 //	TODO: this is not needed so far. Let it be here for a while...
 

@@ -6,8 +6,11 @@
 
 @interface NSArray (LYArray)
 
+//	name warp
+- (id)i:(NSUInteger)index;
+
 //	"safe" version of objectAtIndex
-- (id)object_at_index:(NSInteger)index;
+- (id)object_at_index:(NSUInteger)index;
 - (id)object_at_path:(NSIndexPath*)path;
 
 //	suppose obj is the Xth object in array, return the Xth object of self

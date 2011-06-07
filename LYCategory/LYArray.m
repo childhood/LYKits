@@ -2,7 +2,12 @@
 
 @implementation NSArray (LYArray)
 
-- (id)object_at_index:(NSInteger)index
+- (id)i:(NSUInteger)index
+{
+	return [self objectAtIndex:index];
+}
+
+- (id)object_at_index:(NSUInteger)index
 {
 	if (self.count > index)
 		return [self objectAtIndex:index];
