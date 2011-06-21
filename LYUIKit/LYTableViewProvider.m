@@ -704,11 +704,12 @@
 		//	XXX
 		if ([data v:@"source-data"] != nil)
 		{
+			//	NSLog(@"removing %i from %@", indexPath.row, [data v:@"source-data"]);
 			[[data v:@"source-data"] removeObjectAtIndex:indexPath.row];
 			if ([data v:@"source-filename"] != nil)
-			{
 				[[data v:@"source-data"] writeToFile:[data v:@"source-filename"] atomically:YES];
-			}
+			else if ([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)])
+				objc_msgSend(delegate, @selector(tableView:commitEditingStyle:forRowAtIndexPath:), view, editingStyle, indexPath);
 		}
 	}
 }
