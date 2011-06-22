@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
 /*
- * 'Scroll tab' is a 'scroll bar' that contains a series of buttons.
+ * 'Scroll tab' is a 'scroll bar' that contains series of buttons.
  */
 @protocol LYScrollTabControllerDelegate;
 
