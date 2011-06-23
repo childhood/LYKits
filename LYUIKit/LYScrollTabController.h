@@ -58,5 +58,7 @@
 @property(nonatomic)			CGFloat					height;
 
 - (void)reload;
+- (void)show:(CGFloat)duration;
+- (void)hide:(CGFloat)duration;
 
 @end
