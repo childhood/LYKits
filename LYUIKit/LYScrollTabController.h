@@ -1,18 +1,21 @@
 #import <UIKit/UIKit.h>
+#import "LYKits.h"
 
 /*
  * 'Scroll tab' is a 'scroll bar' that contains series of buttons.
  */
+
 @protocol LYScrollTabControllerDelegate;
 
 @interface LYScrollTabController: UIViewController
 {
 	id <LYScrollTabControllerDelegate>	delegate;
 	UIScrollView*						scroll_view;
-	NSMutableArray*						array_buttons;
+	NSMutableArray*						buttons;
 	NSInteger							count;
 }
 @property(nonatomic,retain)	UIScrollView*	scroll_view;
+@property(nonatomic,retain)	NSMutableArray*	buttons;
 @property(nonatomic,retain)	id				delegate;
 
 //	interface
@@ -34,5 +37,26 @@
 
 //	event handler
 - (void)scroll_tab:(LYScrollTabController*)controller_tab did_select_index:(NSInteger)index;
+
+@end
+
+
+/*
+ * LYScrollTabBarController - based on LYScrollTabController, with similar interface as UITabBarController
+ */
+
+@interface LYScrollTabBarController: UIViewController <LYScrollTabControllerDelegate>
+{
+	LYScrollTabController*	scroll_tab;
+	NSMutableArray*			data;
+	NSUInteger				index;
+	CGFloat					height;
+}
+@property(nonatomic, retain)	LYScrollTabController*	scroll_tab;
+@property(nonatomic, retain)	NSMutableArray*			data;
+@property(nonatomic)			NSUInteger				index;
+@property(nonatomic)			CGFloat					height;
+
+- (void)reload;
 
 @end
