@@ -43,6 +43,23 @@
 
 /*
  * LYScrollTabBarController - based on LYScrollTabController, with similar interface as UITabBarController
+ *
+ * sample code
+ *
+	tab_main = [[LYScrollTabBarController alloc] init];
+	tab_main.height = 60;
+	[tab_main.data addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"tab_start.png",
+		@"bg-normal",
+		@"Icon.png",
+		@"bg-selected",
+		nav_start,
+		@"controller",
+		nil]];
+	tab_main.index = 0;
+	[self.window addSubview:tab_main.view];
+	[tab_main reload];
+ *
  */
 
 @interface LYScrollTabBarController: UIViewController <LYScrollTabControllerDelegate>

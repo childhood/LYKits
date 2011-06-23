@@ -832,8 +832,25 @@
 	[delegate perform_string:@"scrollViewDidEndDecelerating:" with:scrollView];
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+	//	NSLog(@"SCROLL will drag");
+	scroll_drag_begin = view.contentOffset.y;
+	[delegate perform_string:@"scrollViewWillBeginDragging:" with:scrollView];
+}
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+	if ((search_bar != nil) && (view.contentOffset.y < 0))
+	{
+		NSLog(@"drag from %f", scroll_drag_begin);
+		[UIView begin_animations:0.3];
+		if (scroll_drag_begin == -44)
+			view.contentOffset = CGPointMake(0, 0);
+		[UIView commitAnimations];
+	}
+
+	//	NSLog(@"SCROLL end dragging");
 	if ([delegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
 		[delegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }

@@ -80,6 +80,8 @@
 	NSMutableArray*			backup_headers;
 	NSMutableArray*			backup_footers;
 	NSMutableDictionary*	backup_dict;
+
+	CGFloat				scroll_drag_begin;
 }
 @property (nonatomic, retain) IBOutlet UITableView*			view;
 @property (nonatomic, retain) IBOutlet UIViewController*	controller;
