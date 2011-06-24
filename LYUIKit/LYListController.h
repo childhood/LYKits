@@ -30,7 +30,7 @@
 	IBOutlet UIView*			view_table;
 	IBOutlet UIView*			view_picker;
 
-	UINavigationController*	nav;
+	UIViewController*		controller_parent;
 	LYTableViewProvider*	provider_table;
 	LYPickerViewProvider*	provider_picker;
 	NSObject*				delegate;
@@ -45,6 +45,7 @@
 @property (nonatomic, retain) NSObject*				delegate;
 @property (nonatomic, retain) NSString*				name;
 
+- (id)initWithController:(UIViewController*)controller;
 - (id)initWithNav:(UINavigationController*)a_nav;
 //- (void)init_data;
 

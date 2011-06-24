@@ -8,21 +8,26 @@
 @synthesize delegate;
 @synthesize name;
 
-- (id)initWithNav:(UINavigationController*)a_nav
+- (id)initWithController:(UIViewController*)controller
 {
 	self = [super initWithNibName:@"LYListController" bundle:nil];
 	if (self != nil)
 	{
-		nav = a_nav;
+		controller_parent = controller;
 		dict = nil;
 		provider_table = nil;
 	}
 	return self;
 }
 
+- (id)initWithNav:(UINavigationController*)a_nav
+{
+	return [self initWithController:a_nav];
+}
+
 - (void)viewDidLoad
 {
-	NSLog(@"list load");
+	//	NSLog(@"list load: %@", controller_parent);
 	[super viewDidLoad];
 	self.view.frame = CGRectMake(0, 20, [ly screen_width], [ly screen_height] - 20);
 
@@ -125,7 +130,7 @@
 	mode = @"table";
 	[self.view remove_subviews];
 	[self.view addSubview:view_table];
-	[nav presentModalViewController:self animated:YES];
+	[controller_parent presentModalViewController:self animated:YES];
 }
 
 - (void)show_picker
@@ -135,12 +140,15 @@
 #if 0
 	[self.view remove_subviews];
 	[self.view addSubview:view_picker];
-	[nav presentModalViewController:self animated:YES];
+	[controller_parent presentModalViewController:self animated:YES];
 #endif
 	self.view.frame = CGRectMake(0, 20, [ly screen_width], [ly screen_height] - 20);
-	[nav.view addSubview:view_picker];
+	[controller_parent.view addSubview:view_picker];
 
-	[bar_picker set_y:20 - bar_picker.frame.size.height];
+	if ([controller_parent isKindOfClass:NSClassFromString(@"LYScrollTabBarController")])
+		[bar_picker set_y:0 - bar_picker.frame.size.height];
+	else
+		[bar_picker set_y:20 - bar_picker.frame.size.height];
 	[picker set_y:264 + picker.frame.size.height];
 	view_picker.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
 	[UIView begin_animations:0.3];
@@ -177,7 +185,10 @@
 - (IBAction)action_dismiss
 {
 	if ([mode isEqualToString:@"table"])
-		[nav dismissModalViewControllerAnimated:YES];
+	{
+		[controller_parent dismissModalViewControllerAnimated:YES];
+		//	if ([controller_parent isKindOfClass:NSClassFromString(@"LYScrollTabBarController")]) [controller_parent.view set_y:20];
+	}
 	else
 	{
 		[UIView begin_animations:0.3];
@@ -187,6 +198,7 @@
 		[UIView commitAnimations];
 		[view_picker performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];
 	}
+	[delegate perform_string:@"list_dismissed"];
 }
 
 @end

@@ -94,6 +94,7 @@
 
 @implementation LYScrollTabBarController
 
+@synthesize delegate;
 @synthesize scroll_tab;
 @synthesize data;
 @synthesize index;
@@ -108,6 +109,7 @@
 		scroll_tab = [[LYScrollTabController alloc] initWithFrame:CGRectMake(0, 0, [ly screen_width], height) delegate:self];
 		index = 0;
 		data = [[NSMutableArray alloc] init];
+		delegate = nil;
 
 		self.view.backgroundColor = [UIColor grayColor];
 	}
@@ -219,6 +221,8 @@
 {
 	index = an_index;
 	[self reload];
+	if (delegate != nil)
+		[delegate perform_string:@"scroll_tab_changed:" with:self];
 }
 
 @end

@@ -68,7 +68,9 @@
 	NSMutableArray*			data;
 	NSUInteger				index;
 	CGFloat					height;
+	id						delegate;
 }
+@property(nonatomic, retain)	id						delegate;
 @property(nonatomic, retain)	LYScrollTabController*	scroll_tab;
 @property(nonatomic, retain)	NSMutableArray*			data;
 @property(nonatomic)			NSUInteger				index;
