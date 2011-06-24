@@ -847,6 +847,8 @@
 		[UIView begin_animations:0.3];
 		if (scroll_drag_begin == -44)
 			view.contentOffset = CGPointMake(0, 0);
+		else
+			view.contentOffset = CGPointMake(0, -44);
 		[UIView commitAnimations];
 	}
 
