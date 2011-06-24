@@ -437,7 +437,8 @@
 		}
 		if (image_url != nil)
 		{
-			cell.imageView.image = [UIImage imageNamed:@"ly_blank_64x64.png"];
+			//cell.imageView.image = [UIImage imageNamed:@"ly_blank_64x64.png"];
+			cell.imageView.image = [UIImage imageNamed:@"ly_transparent_64x64.png"];
 			image_view = [[LYAsyncImageView alloc] initWithFrame:cell_image_rect];
 			image_view.contentMode = cell_image_mode;
 			//[image_view autoresizing_add_width:YES height:YES];

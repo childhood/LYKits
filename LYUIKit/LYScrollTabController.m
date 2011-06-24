@@ -208,7 +208,8 @@
 - (UIButton*)scroll_tab:(LYScrollTabController*)controller_tab alloc_button_for_index:(NSInteger)an_index
 {
 	UIButton* button;
-	button = [[UIButton alloc] initWithFrame:CGRectMake(80 * an_index, 0, 80, height)];
+	CGFloat	width = [ly screen_width] / data.count;
+	button = [[UIButton alloc] initWithFrame:CGRectMake(width * an_index, 0, width, height)];
 	//	button.autoresizingMask = 0;
 	[button setBackgroundImage:[UIImage imageNamed:[[data i:an_index] v:@"bg-normal"]] forState:UIControlStateNormal];
 	[button setBackgroundImage:[UIImage imageNamed:[[data i:an_index] v:@"bg-selected"]] forState:UIControlStateSelected];
