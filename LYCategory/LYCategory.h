@@ -17,6 +17,7 @@
 #import "LYDate.h"
 #import "LYMutableDictionary.h"
 #import "LYSwitch.h"
+#import "LYNavigationItem.h"
 
 /*
  * enable the macros below to enable navigation background, rotation, etc.
@@ -49,6 +50,33 @@
 	return [self valueForKey:key];
 }
 @end
+
+
+#if 0
+@interface UIBarButtonItem (LYBarButtonItem)
+- (void)setButton:(NSString*)filename;
+- (UIButton*)button;
+@end
+
+@implementation UIBarButtonItem (LYBarButtonItem)
+- (void)setButton:(NSString*)filename
+{
+
+	UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+	[button setBackgroundImage:[UIImage imageNamed:filename] forState:UIControlStateNormal];
+	self.customView = button;
+	[self associate:@"custom-button" with:button];
+	[button release];
+	//	NSLog(@"DEBUG navigation item %@\n%@\n%@", title, self.titleView, self.leftBarButtonItem);
+}
+- (UIButton*)button
+{
+	UIButton* button = [self associated:@"custom-button"];
+	//	NSLog(@"title label: %@, %i", label.text, (int)label);
+	return button;
+}
+@end
+#endif
 
 //	TODO: this is not needed so far. Let it be here for a while...
 

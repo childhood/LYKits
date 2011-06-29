@@ -127,6 +127,23 @@ static LYKits*	ly_shared_manager = nil;
 	}
 }
 
++ (UIBarButtonItem*)alloc_item_named:(NSString*)filename target:(id)target action:(SEL)action
+{
+	@synchronized(self)
+	{
+		UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+		[button setBackgroundImage:[UIImage imageNamed:filename] forState:UIControlStateNormal];
+		//[button addTarget:controller_local.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UICont
+		[button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+		UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithCustomView:button];
+		//controller_local.navigationItem.hidesBackButton = YES;
+		//controller_local.navigationItem.leftBarButtonItem = item;
+		[button release];
+
+		return [item autorelease];
+	}
+}
+
 #ifdef LY_ENABLE_MUSICKIT
 + (NSInteger)media_count_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title
 {

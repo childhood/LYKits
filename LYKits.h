@@ -24,6 +24,8 @@
 + (CGFloat)screen_height;
 + (CGFloat)screen_max;
 
++ (UIBarButtonItem*)alloc_item_named:(NSString*)filename target:(id)target action:(SEL)action;
+
 #ifdef LY_ENABLE_MUSICKIT
 + (NSInteger)media_count_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title;
 + (NSObject*)alloc_media_item_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title;

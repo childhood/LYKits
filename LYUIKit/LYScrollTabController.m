@@ -158,7 +158,7 @@
 	[self.view addSubview:controller.view];
 	[self.view bringSubviewToFront:scroll_tab.view];
 	[controller.view set_y:-k_ly_scroll_height_fix];
-	[controller.view set_h:screen_height() - height];
+	[controller.view set_h:screen_height() - height - 20];
 	//	NSLog(@"subview added: %@", controller.view);
 
 	[scroll_tab.view removeFromSuperview];
@@ -172,6 +172,7 @@
 	[scroll_tab.view set_y:[ly screen_height] - height - k_ly_scroll_height_fix - 20 animation:duration];
 	[self performSelector:@selector(show_end) withObject:nil afterDelay:duration];
 #else
+	UIViewController* controller = [[data i:index] v:@"controller"];
 	[UIView begin_animations:duration];
 	[scroll_tab.view set_y:[ly screen_height] - height - k_ly_scroll_height_fix - 20];
 	[controller.view set_h:screen_height() - height];
@@ -182,7 +183,7 @@
 - (void)show_end
 {
 	UIViewController* controller = [[data i:index] v:@"controller"];
-	[controller.view set_h:screen_height() - height];
+	[controller.view set_h:screen_height() - height - 20];
 }
 
 - (void)hide:(CGFloat)duration
@@ -203,7 +204,7 @@
 - (void)hide_end
 {
 	UIViewController* controller = [[data i:index] v:@"controller"];
-	[controller.view set_h:screen_height()];
+	[controller.view set_h:screen_height() - 20];
 }
 
 #pragma mark data source
