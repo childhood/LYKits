@@ -6,11 +6,17 @@
 
 - (void)bind_setting:(NSString*)key target:(id)target action:(NSString*)action
 {
-	self.selected = [key setting_bool];
+	//	self.selected = [key setting_bool];
 	[self associate:@"ly-setting-name" with:key];
 	[self associate:@"ly-setting-target" with:target];
 	[self associate:@"ly-setting-action" with:action];
 	[self addTarget:self action:@selector(pressed) forControlEvents:UIControlEventTouchUpInside];
+	[self reload_setting];
+}
+
+- (void)reload_setting
+{
+	self.selected = [[self associated:@"ly-setting-name"] setting_bool];
 }
 
 - (void)pressed

@@ -47,6 +47,8 @@
 	{
 		self.frame	= target.frame;
 		self.alpha	= target.alpha;
+		self.opaque	= target.opaque;
+		self.layer.opaque		= target.layer.opaque;
 		self.autoresizingMask	= target.autoresizingMask;
 		self.backgroundColor	= target.backgroundColor;
 	}

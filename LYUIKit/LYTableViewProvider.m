@@ -132,6 +132,7 @@
 		accessories			= [[NSMutableArray alloc] init];
 		additional_views	= [[NSMutableArray alloc] init];
 
+		[data setValue:[NSNumber numberWithFloat:k_ly_table_accessory_size] forKey:@"accessory-size"];
 		backup_texts = nil;
 		backup_details = nil;
 		backup_images = nil;
@@ -483,9 +484,11 @@
 
 		if (accessory != nil)
 		{
+			CGFloat accessory_size = [[data v:@"accessory-size"] floatValue];
 			//UIButton* button = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size)] autorelease];
 			UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-			button.frame = CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size);
+			//button.frame = CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size);
+			button.frame = CGRectMake(0, 0, accessory_size, accessory_size);
 			[button setImage:[UIImage imageNamed:accessory] forState:UIControlStateNormal];
 			[button addTarget:self action:@selector(action_accessory:event:) forControlEvents:UIControlEventTouchUpInside];
 			cell.accessoryView = button;
@@ -1090,7 +1093,7 @@
 - (void)action_search_resign
 {
 	[self searchBarSearchButtonClicked:search_bar];
-	[button_mask removeFromSuperview];
+	//	[button_mask removeFromSuperview];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar*)search
@@ -1101,12 +1104,14 @@
 	self.view.contentOffset = CGPointMake(0, 0);
 	[UIView commitAnimations];
 	[search resignFirstResponder];
+	[button_mask removeFromSuperview];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar*)search
 {
 	[search resignFirstResponder];
 	self.view.contentOffset = CGPointMake(0, -44);
+	[button_mask removeFromSuperview];
 }
 
 @end
