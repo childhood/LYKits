@@ -1,6 +1,7 @@
 #import "LYObject.h"
 #import "LYString.h"
 #import "LYArray.h"
+#import "LYDictionary.h"
 #import "LYMutableArray.h"
 #import "LYColor.h"
 #import "LYView.h"
@@ -18,6 +19,8 @@
 #import "LYMutableDictionary.h"
 #import "LYSwitch.h"
 #import "LYNavigationItem.h"
+#import "LYBarButtonItem.h"
+#import "LYTableViewCell.h"
 
 /*
  * enable the macros below to enable navigation background, rotation, etc.
@@ -40,90 +43,7 @@
 
 #pragma mark OTHERS
 
-@interface NSDictionary (LYDictionary)
-- (id)v:(NSString*)key;
-@end
-
-@implementation NSDictionary (LYDictionary)
-- (id)v:(NSString*)key
-{
-	return [self valueForKey:key];
-}
-@end
-
-
-#if 0
-@interface UIBarButtonItem (LYBarButtonItem)
-- (void)setButton:(NSString*)filename;
-- (UIButton*)button;
-@end
-
-@implementation UIBarButtonItem (LYBarButtonItem)
-- (void)setButton:(NSString*)filename
-{
-
-	UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-	[button setBackgroundImage:[UIImage imageNamed:filename] forState:UIControlStateNormal];
-	self.customView = button;
-	[self associate:@"custom-button" with:button];
-	[button release];
-	//	NSLog(@"DEBUG navigation item %@\n%@\n%@", title, self.titleView, self.leftBarButtonItem);
-}
-- (UIButton*)button
-{
-	UIButton* button = [self associated:@"custom-button"];
-	//	NSLog(@"title label: %@, %i", label.text, (int)label);
-	return button;
-}
-@end
-#endif
-
-//	TODO: this is not needed so far. Let it be here for a while...
-
-#if 1
-@interface UITableViewCell (LYTableViewCell)
-- (void)copy_style:(UITableViewCell*)target;
-@end
-
-@implementation UITableViewCell (LYTableViewCell)
-
-- (void)copy_style:(UITableViewCell*)target
-{
-	if (target.hidden == NO)
-	{
-		[super copy_style:target];
-		self.backgroundView			= target.backgroundView;
-		self.selectedBackgroundView	= target.selectedBackgroundView;
-		self.accessoryType			= target.accessoryType		;
-		self.accessoryView			= target.accessoryView;
-		self.editingAccessoryType	= target.editingAccessoryType		;
-		self.editingAccessoryView	= target.editingAccessoryView;
-	}
-}
-
-- (void)didTransitionToState:(UITableViewCellStateMask)state
-{
-	//	[super didTransitionToState:state];
-	if (state == UITableViewCellStateShowingDeleteConfirmationMask || state == UITableViewCellStateDefaultMask)
-	{
-		for (UIView *subview in self.subviews)
-		{
-			if ([NSStringFromClass([subview class]) isEqualToString:@"UITableViewCellDeleteConfirmationControl"])
-			{
-				UIView *deleteButtonView = (UIView *)[subview.subviews objectAtIndex:0];
-				CGRect f = deleteButtonView.frame;
-				f.origin.x -= 10;
-				deleteButtonView.frame = f;
-			}
-		}
-	}
-}
-
-@end
-#endif
-
-
-//	TODO: forget about this for now...
+//	TODO: forget about this for now. need really nice code to do this.
 
 #if 0
 #import "FontLabel.h"
