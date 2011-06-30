@@ -4,7 +4,7 @@
 - (void)setButton:(NSString*)filename
 {
 
-	UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+	UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 55, 30)];
 	[button setBackgroundImage:[UIImage imageNamed:filename] forState:UIControlStateNormal];
 	self.customView = button;
 	[self associate:@"custom-button" with:button];

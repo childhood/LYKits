@@ -132,7 +132,18 @@
 		accessories			= [[NSMutableArray alloc] init];
 		additional_views	= [[NSMutableArray alloc] init];
 
+		UILabel* label_badge = [[UILabel alloc] init];
+		label_badge.hidden = YES;
+
+		UIImageView* image_badge = [[UIImageView alloc] init];
+		image_badge.hidden = YES;
+
 		[data setValue:[NSNumber numberWithFloat:k_ly_table_accessory_size] forKey:@"accessory-size"];
+		[data setValue:label_badge forKey:@"badge-label"];
+		[data setValue:image_badge forKey:@"badge-image"];
+		[label_badge release];
+		[image_badge release];
+
 		backup_texts = nil;
 		backup_details = nil;
 		backup_images = nil;
@@ -453,6 +464,26 @@
 				NSLog(@"TABLE warning: unknown cell image place");
 			//NSLog(@"table image url: %@\n%@", image_url, image_view);
 		}
+#if 1
+		if (([[data v:@"badge-image"] isHidden] == NO) &&
+			([[data v:@"badge-label"] isHidden] == NO))
+		{
+			UIImageView* image_badge = [[UIImageView alloc] init];
+			UILabel* label_badge = [[UILabel alloc] init];
+
+			[image_badge copy_style:[data v:@"badge-image"]];
+			[label_badge copy_style:[data v:@"badge-label"]];
+
+			label_badge.text = [NSString stringWithFormat:@"%i", indexPath.row + 1];
+			if (indexPath.row < 10)
+				[label_badge reset_x:-1];
+
+			[image_badge addSubview:label_badge];
+			[cell addSubview:image_badge];
+			[label_badge release];
+			[image_badge release];
+		}
+#endif
 
 		if ((indexPath.row == 0) && (cell_bg_top != nil))
 		{

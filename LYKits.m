@@ -5,6 +5,7 @@ static LYKits*	ly_shared_manager = nil;
 @implementation LYKits
 
 @synthesize version;
+@synthesize data;
 
 + (id)shared
 {
@@ -31,8 +32,20 @@ static LYKits*	ly_shared_manager = nil;
 {
 	self = [super init];
 	if (self != nil)
+	{
 		version = @"LYKits v0.1";
+		data = [[NSMutableDictionary alloc] init];
+		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-delete-fix-x"];
+	}
 	return self;
+}
+
++ (NSMutableDictionary*)data
+{
+	@synchronized(self)
+	{
+		return (NSMutableDictionary*)[[ly shared] data];
+	}
 }
 
 + (NSString*)version_string
@@ -131,8 +144,18 @@ static LYKits*	ly_shared_manager = nil;
 {
 	@synchronized(self)
 	{
-		UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+		return [ly alloc_item_named:filename highlighted:nil target:target action:action];
+	}
+}
+
++ (UIBarButtonItem*)alloc_item_named:(NSString*)filename highlighted:(NSString*)filename_highlighted target:(id)target action:(SEL)action
+{
+	@synchronized(self)
+	{
+		UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 55, 30)];
 		[button setBackgroundImage:[UIImage imageNamed:filename] forState:UIControlStateNormal];
+		if (filename_highlighted != nil)
+			[button setBackgroundImage:[UIImage imageNamed:filename_highlighted] forState:UIControlStateHighlighted];
 		//[button addTarget:controller_local.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UICont
 		[button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 		UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithCustomView:button];
@@ -197,6 +220,136 @@ static LYKits*	ly_shared_manager = nil;
 	}
 }
 #endif
+
++ (NSDictionary*)dict_itunes_country_music
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+		//@"AR",
+		//@"Argentina",
+		@"AU",
+		@"Australia", 
+		@"AT",
+		@"Austria", 
+		@"BE",
+		@"Belgium", 
+		//@"BR",
+		//@"Brazil", 
+		@"CA",
+		@"Canada", 
+		//@"CL",
+		//@"Chile", 
+		//@"CN",
+		//@"China", 
+		//@"CO",
+		//@"Colombia", 
+		//@"CR",
+		//@"Costa Rica", 
+		//@"HR",
+		//@"Croatia", 
+		//@"CZ",
+		//@"Czech Republic", 
+		@"DK",
+		@"Denmark", 
+		//@"SV",
+		//@"El Salvador", 
+		@"FI",
+		@"Finland", 
+		@"FR",
+		@"France", 
+		@"DE",
+		@"Germany", 
+		@"GR",
+		@"Greece", 
+		//@"GT",
+		//@"Guatemala", 
+		//@"HK",
+		//@"Hong Kong", 
+		//@"HU",
+		//@"Hungary", 
+		//@"IN",
+		//@"India", 
+		//@"ID",
+		//@"Indonesia", 
+		@"IE",
+		@"Ireland", 
+		//@"IL",
+		//@"Israel", 
+		@"IT",
+		@"Italy", 
+		@"JP",
+		@"Japan", 
+		//@"KR",
+		//@"Korea, Republic Of", 
+		//@"KW",
+		//@"Kuwait", 
+		//@"LB",
+		//@"Lebanon", 
+		@"LU",
+		@"Luxembourg", 
+		//@"MY",
+		//@"Malaysia", 
+		@"MX",
+		@"Mexico", 
+		@"NL",
+		@"Netherlands", 
+		@"NZ",
+		@"New Zealand", 
+		@"NO",
+		@"Norway", 
+		//@"PK",
+		//@"Pakistan", 
+		//@"PA",
+		//@"Panama", 
+		//@"PE",
+		//@"Peru", 
+		//@"PH",
+		//@"Philippines", 
+		//@"PL",
+		//@"Poland", 
+		@"PT",
+		@"Portugal", 
+		//@"QA",
+		//@"Qatar", 
+		//@"RO",
+		//@"Romania", 
+		//@"RU",
+		//@"Russia", 
+		//@"SA",
+		//@"Saudi Arabia", 
+		//@"SG",
+		//@"Singapore", 
+		//@"SK",
+		//@"Slovakia", 
+		//@"SI",
+		//@"Slovenia", 
+		//@"ZA",
+		//@"South Africa", 
+		@"ES",
+		@"Spain", 
+		//@"LK",
+		//@"Sri Lanka", 
+		@"SE",
+		@"Sweden", 
+		@"CH",
+		@"Switzerland", 
+		//@"TW",
+		//@"Taiwan", 
+		//@"TH",
+		//@"Thailand", 
+		//@"TR",
+		//@"Turkey", 
+		@"GB",
+		@"United Kingdom", 
+		@"US",
+		@"United States", 
+		//@"AE",
+		//@"United Arab Emirates", 
+		//@"VE",
+		//@"Venezuela", 
+		//@"VN",
+		//@"Vietnam",
+		nil];
+}
 
 + (NSDictionary*)dict_itunes_country
 {

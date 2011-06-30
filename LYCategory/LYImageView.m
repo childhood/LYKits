@@ -8,6 +8,16 @@
 	return self;
 }
 
+- (void)copy_style:(UIImageView*)target
+{
+	if (target.hidden == NO)
+	{
+		[super copy_style:target];
+		self.image					= target.image;
+		self.highlightedImage		= target.highlightedImage;
+	}
+}
+
 - (void)draw_frame_with_r:(CGFloat)r g:(CGFloat)g b:(CGFloat)b a:(CGFloat)a width:(CGFloat)width
 {
 	CGRect inner_frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);

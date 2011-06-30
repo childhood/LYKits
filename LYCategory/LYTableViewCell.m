@@ -25,9 +25,9 @@
 		{
 			if ([NSStringFromClass([subview class]) isEqualToString:@"UITableViewCellDeleteConfirmationControl"])
 			{
-				UIView *deleteButtonView = (UIView *)[subview.subviews objectAtIndex:0];
+				UIView *deleteButtonView = (UIView*)[subview.subviews objectAtIndex:0];
 				CGRect f = deleteButtonView.frame;
-				f.origin.x -= 10;
+				f.origin.x -= [[[ly data] v:@"cell-delete-fix-x"] floatValue];
 				deleteButtonView.frame = f;
 			}
 		}

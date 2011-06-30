@@ -6,12 +6,16 @@
 
 @interface LYKits: LYSingletonClass
 {
-    NSString*		version;
+    NSString*				version;
+	NSMutableDictionary*	data;
 }
-@property (nonatomic, retain) NSString*		version;
+@property (nonatomic, retain) NSString*				version;
+@property (nonatomic, retain) NSMutableDictionary*	data;
 + (id)shared;
 
 + (NSString*)version_string;
++ (NSMutableDictionary*)data;
+
 + (BOOL)is_phone;
 + (BOOL)is_pad;
 
@@ -25,12 +29,14 @@
 + (CGFloat)screen_max;
 
 + (UIBarButtonItem*)alloc_item_named:(NSString*)filename target:(id)target action:(SEL)action;
++ (UIBarButtonItem*)alloc_item_named:(NSString*)filename highlighted:(NSString*)filename_highlighted target:(id)target action:(SEL)action;
 
 #ifdef LY_ENABLE_MUSICKIT
 + (NSInteger)media_count_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title;
 + (NSObject*)alloc_media_item_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title;
 #endif
 
++ (NSDictionary*)dict_itunes_country_music;
 + (NSDictionary*)dict_itunes_country;
 + (NSDictionary*)dict_itunes_genre;
 + (NSDictionary*)dict_itunes_limit;
