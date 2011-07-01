@@ -92,7 +92,10 @@ static LYLoadingViewController *ly_loading_view_controller_manager = nil;
 		//	NSLog(@"loading nav check: %@", [[LYLoadingViewController shared] nav]);
 		//	NSLog(@"loading nav check: %@", [LYLoadingViewController view]);
 		if ([[LYLoadingViewController shared] nav] == nil)
+		{
+			[[LYLoadingViewController view] setFrame:CGRectMake(0, 0, screen_width(), screen_height())];
 			[(UIWindow*)[[[UIApplication sharedApplication] delegate] performSelector:@selector(window)] addSubview:[LYLoadingViewController view]];
+		}
 		else
 		{
 			//NSLog(@"LOADING nav size: %@", [[[[LYLoadingViewController shared] nav] view] frame]);

@@ -290,6 +290,11 @@
 
 #pragma mark String
 
+- (BOOL)is:(NSString*)s
+{
+	return [self isEqualToString:s];
+}
+
 - (BOOL)has_substring:(NSString*)sub
 {
 	if (sub == nil)
