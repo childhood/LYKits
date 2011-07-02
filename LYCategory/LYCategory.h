@@ -50,6 +50,47 @@
 }
 @end
 
+
+#if 0
+@interface UITabBarController (LYTabBarController)
+@end
+
+@implementation UITabBarController (LYTabBarController)
+#ifdef LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_ROTATE
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+		NSLog(@"tab should rotate: %i, %f, %f", rotatable, screen_width(), screen_height());
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+	{
+		if (interfaceOrientation == UIInterfaceOrientationPortrait)
+			return YES;
+		else
+#ifdef LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_ROTATEPHONE
+			return YES;
+#else
+			return NO;
+#endif
+	}
+	else
+		return YES;
+}
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	//	NSLog(@"nav did rotate: %i - %@, delegate %@", fromInterfaceOrientation, self.delegate, self.delegate);
+	NSObject <LYRotatableViewControllerDelegate>*	the_delegate = (NSObject<LYRotatableViewControllerDelegate>*)self.delegate;
+	if (the_delegate == nil)
+		return;
+	//	NSLog(@"delegate: %@", the_delegate);
+	//	this is a workaround for the LYImagePickerController recursive delegate problem
+	if ([the_delegate isKindOfClass:[UIImagePickerController class]])
+		return;
+	if ([the_delegate respondsToSelector:@selector(didRotateFromInterfaceOrientation:)])
+		[the_delegate didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+#endif
+@end
+#endif
+
 //	TODO: this is not needed so far. Let it be here for a while...
 
 #if 0
