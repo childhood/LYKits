@@ -1,5 +1,7 @@
 #import "LYScrollTabController.h"
 
+#define k_ly_scroll_height_fix	0
+
 @implementation LYScrollTabController
 
 @synthesize delegate;
@@ -111,7 +113,7 @@
 		data = [[NSMutableArray alloc] init];
 		delegate = nil;
 
-		self.view.backgroundColor = [UIColor grayColor];
+		self.view.backgroundColor = [UIColor blackColor];
 	}
 
 	return self;
@@ -129,7 +131,7 @@
 	int i;
 	UIViewController* controller;
 
-	[scroll_tab.view set_y:[ly screen_height] - height - 20];
+	[scroll_tab.view set_y:[ly screen_height] - height - k_ly_scroll_height_fix - 20];
 	[scroll_tab.view set_h:height];
 	[scroll_tab.scroll_view set_h:height];
 	[scroll_tab reload_data];
@@ -155,8 +157,8 @@
 	controller = [[data i:index] v:@"controller"];
 	[self.view addSubview:controller.view];
 	[self.view bringSubviewToFront:scroll_tab.view];
-	[controller.view set_y:-20];
-	[controller.view set_h:screen_height() - height];
+	[controller.view set_y:-k_ly_scroll_height_fix];
+	[controller.view set_h:screen_height() - height - 20];
 	//	NSLog(@"subview added: %@", controller.view);
 
 	[scroll_tab.view removeFromSuperview];
@@ -165,32 +167,44 @@
 
 - (void)show:(CGFloat)duration
 {
-	UIViewController* controller = [[data i:index] v:@"controller"];
 	//	scroll_tab.view.hidden = NO;
 #if 1
-	[scroll_tab.view set_y:[ly screen_height] - height - 20 animation:duration];
-	[controller.view set_h:screen_height() - height];
+	[scroll_tab.view set_y:[ly screen_height] - height - k_ly_scroll_height_fix - 20 animation:duration];
+	[self performSelector:@selector(show_end) withObject:nil afterDelay:duration];
 #else
+	UIViewController* controller = [[data i:index] v:@"controller"];
 	[UIView begin_animations:duration];
-	[scroll_tab.view set_y:[ly screen_height] - height - 20];
+	[scroll_tab.view set_y:[ly screen_height] - height - k_ly_scroll_height_fix - 20];
 	[controller.view set_h:screen_height() - height];
 	[UIView commitAnimations];
 #endif
 }
 
-- (void)hide:(CGFloat)duration
+- (void)show_end
 {
 	UIViewController* controller = [[data i:index] v:@"controller"];
+	[controller.view set_h:screen_height() - height - 20];
+}
+
+- (void)hide:(CGFloat)duration
+{
 	//	scroll_tab.view.hidden = YES;
 #if 1
-	[scroll_tab.view set_y:[ly screen_height] - 20 animation:duration];
-	[controller.view set_h:screen_height()];
+	[scroll_tab.view set_y:[ly screen_height] - k_ly_scroll_height_fix - 20 animation:duration];
+	[self hide_end];
+	//[self performSelector:@selector(hide_end) withObject:nil afterDelay:duration];
 #else
 	[UIView begin_animations:duration];
-	[scroll_tab.view set_y:[ly screen_height] - 20];
+	[scroll_tab.view set_y:[ly screen_height] - k_ly_scroll_height_fix - 20];
 	[controller.view set_h:screen_height()];
 	[UIView commitAnimations];
 #endif
+}
+
+- (void)hide_end
+{
+	UIViewController* controller = [[data i:index] v:@"controller"];
+	[controller.view set_h:screen_height() - 20];
 }
 
 #pragma mark data source

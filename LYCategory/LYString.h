@@ -59,6 +59,7 @@ BOOL supersound_inited;
 - (BOOL)is_english_name;
 
 //	string
+- (BOOL)is:(NSString*)s;
 - (BOOL)has_substring:(NSString*)sub;
 - (NSString*)string_without_leading_space;
 - (NSString*)string_replace:(NSString*)substring with:(NSString*)replacement;

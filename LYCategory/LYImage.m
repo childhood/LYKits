@@ -176,4 +176,50 @@
 	return copy;
 }
 
+/*
+	UIImage template, // the badge is drawn on this image
+	string text, // this text is drawn in the badge
+	PointF textCenter, // center of the badge relative to the template,
+	float textHeight, // eight of the text
+	string fontName // the badge font to use
+*/
+#if 0
+- (UIImage*)badge_on:(UIImage*)template text:(NSString*)text at:(CGPoint*)textCenter height:(float)textHeight
+{
+	UIGraphicsBeginImageContext(CGSizeMake(30, 30));
+	CGContextRef context = UIGraphicsGetCurrentContext();
+
+	CGContextTranslateCTM(context, 0f, 0f);
+	CGContextScaleCTM(context, 0.75f, 0.75f);
+	CGContextDrawImage(context, CGRectMake(0, 0, template.size.width, template.size.height), template.CGImage);
+	CGContextScaleCTM(context, 1.0f, -1.0f);
+	CGContextTranslateCTM(context, 0f, -template.size.height);
+
+	// set up text drawing parameters
+	//	context.SelectFont(fontName, textHeight, CGTextEncoding.MacRoman);
+	CGContextSetTextDrawingMode(context, kCGTextInvisible);
+
+	// compute the width of the text.
+	float startX = CGContextGetTextPosition(context);
+	CGContextShowText(context, text );
+	float textWidth = CGContextGetTextPosition(context) - startX;
+
+	float radius = textHeight / 2.0f;
+	float a = Convert.ToSingle(Math.PI / 2f);
+	float b = Convert.ToSingle(3f * Math.PI / 2f);
+	context.SetFillColorWithColor (UIColor.Red.CGColor);
+
+	context.AddArc( textCenter.X - (textWidth / 2) + (radius/2), textCenter.Y, radius, a, b, false);
+	context.AddArc( textCenter.X + (textWidth / 2) - (radius/2), textCenter.Y, radius, b, a, false);
+	context.ClosePath();
+	context.FillPath();
+	context.SetBlendMode( CGBlendMode.Normal);
+	context.SelectFont(fontName, textHeight, CGTextEncoding.MacRoman);
+	context.SetTextDrawingMode(CGTextDrawingMode.Fill);
+	context.SetFillColorWithColor (UIColor.White.CGColor);
+	context.ShowTextAtPoint( textCenter.X - (textWidth / 2), textCenter.Y - ( textHeight/2) +2,text);
+	return UIGraphics.GetImageFromCurrentImageContext();
+}
+#endif
+
 @end

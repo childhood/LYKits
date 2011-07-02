@@ -79,5 +79,7 @@
 - (void)reload;
 - (void)show:(CGFloat)duration;
 - (void)hide:(CGFloat)duration;
+- (void)show_end;
+- (void)hide_end;
 
 @end

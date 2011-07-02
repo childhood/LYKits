@@ -1,6 +1,7 @@
 #import "LYObject.h"
 #import "LYString.h"
 #import "LYArray.h"
+#import "LYDictionary.h"
 #import "LYMutableArray.h"
 #import "LYColor.h"
 #import "LYView.h"
@@ -17,6 +18,9 @@
 #import "LYDate.h"
 #import "LYMutableDictionary.h"
 #import "LYSwitch.h"
+#import "LYNavigationItem.h"
+#import "LYBarButtonItem.h"
+#import "LYTableViewCell.h"
 
 /*
  * enable the macros below to enable navigation background, rotation, etc.
@@ -38,17 +42,6 @@
 @end
 
 #pragma mark OTHERS
-
-@interface NSDictionary (LYDictionary)
-- (id)v:(NSString*)key;
-@end
-
-@implementation NSDictionary (LYDictionary)
-- (id)v:(NSString*)key
-{
-	return [self valueForKey:key];
-}
-@end
 
 
 #if 0
@@ -118,7 +111,7 @@
 #endif
 
 
-//	TODO: forget about this for now...
+//	TODO: forget about this for now. need really nice code to do this.
 
 #if 0
 #import "FontLabel.h"
