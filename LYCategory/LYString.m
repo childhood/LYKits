@@ -490,6 +490,30 @@
 	return dateStr;
 }
 
+- (NSString*)convert_date_from:(NSString*)format_old to:(NSString*)format_new timezone:(NSTimeZone*)timezone_source
+{
+	NSString* dateStr = self;
+
+	//	Convert string to date object
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setDateFormat:format_old];
+	NSDate *date = [dateFormat dateFromString:dateStr];  
+
+	//NSTimeZone* timezone_source = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+	NSTimeZone* timezone_dest = [NSTimeZone systemTimeZone];
+	NSInteger sourceGMTOffset = [timezone_source secondsFromGMTForDate:date];
+	NSInteger destinationGMTOffset = [timezone_dest secondsFromGMTForDate:date];
+	NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset;
+	NSDate* date_dest = [[[NSDate alloc] initWithTimeInterval:interval sinceDate:date] autorelease];
+
+	//	Convert date object to desired output format
+	[dateFormat setDateFormat:format_new];
+	dateStr = [dateFormat stringFromDate:date_dest];  
+	[dateFormat release];
+
+	return dateStr;
+}
+
 - (NSString*)format_date:(NSDate*)date
 {
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];

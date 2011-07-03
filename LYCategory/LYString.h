@@ -76,6 +76,7 @@ BOOL supersound_inited;
 
 //	date and time
 - (NSString*)convert_date_from:(NSString*)format_old to:(NSString*)format_new;
+- (NSString*)convert_date_from:(NSString*)format_old to:(NSString*)format_new timezone:(NSTimeZone*)timezone_source;
 - (NSString*)format_date:(NSDate*)date;
 
 //	sound - external/supersound needed
