@@ -1064,4 +1064,109 @@ static LYKits*	ly_shared_manager = nil;
 		nil];
 }
 
+#ifdef LY_ENABLE_MAPKIT
++ (CLLocationCoordinate2D)location_of_city:(NSString*)city
+{
+	NSDictionary* dict = nil;
+	CLLocationDegrees lat = FLT_MAX;
+	CLLocationDegrees lon = FLT_MAX;
+	for (dict in [ly array_location_city])
+	{
+		if ([[dict v:@"name"] is:city])
+		{
+			lat = [[dict v:@"lat"] floatValue];
+			lon = [[dict v:@"lon"] floatValue];
+			break;
+		}
+	}
+	return CLLocationCoordinate2DMake(lat, lon);
+}
+#endif
+
++ (NSArray*)array_location_city
+{
+	return [NSArray arrayWithObjects:
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Sydney",
+			@"name",
+			[NSNumber numberWithFloat:-33.87],
+			@"lat",
+			[NSNumber numberWithFloat:151.21],
+			@"lon",
+			nil],
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Melbourne",
+			@"name",
+			[NSNumber numberWithFloat:-37.81],
+			@"lat",
+			[NSNumber numberWithFloat:144.96],
+			@"lon",
+			nil],
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Perth",
+			@"name",
+			[NSNumber numberWithFloat:-31.94],
+			@"lat",
+			[NSNumber numberWithFloat:115.86],
+			@"lon",
+			nil],
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Vienna",
+			@"name",
+			[NSNumber numberWithFloat:48.21],
+			@"lat",
+			[NSNumber numberWithFloat:16.37],
+			@"lon",
+			nil],
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Brussels",
+			@"name",
+			[NSNumber numberWithFloat:50.85],
+			@"lat",
+			[NSNumber numberWithFloat:4.35],
+			@"lon",
+			nil],
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Toronto",
+			@"name",
+			[NSNumber numberWithFloat:43.66],
+			@"lat",
+			[NSNumber numberWithFloat:-79.83],
+			@"lon",
+			nil],
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Copenhagen",
+			@"name",
+			[NSNumber numberWithFloat:55.69],
+			@"lat",
+			[NSNumber numberWithFloat:12.58],
+			@"lon",
+			nil],
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Auckland",
+			@"name",
+			[NSNumber numberWithFloat:-36.85],
+			@"lat",
+			[NSNumber numberWithFloat:174.77],
+			@"lon",
+			nil],
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"California",
+			@"name",
+			[NSNumber numberWithFloat:36.79],
+			@"lat",
+			[NSNumber numberWithFloat:-119.41],
+			@"lon",
+			nil],
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			@"London",
+			@"name",
+			[NSNumber numberWithFloat:51.50],
+			@"lat",
+			[NSNumber numberWithFloat:-0.13],
+			@"lon",
+			nil],
+		nil];
+}
+
 @end

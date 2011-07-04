@@ -37,6 +37,7 @@
 	{
 		//	NSLog(@"location: %@", manager);
 		reverse_geocoder = [[MKReverseGeocoder alloc] initWithCoordinate:new.coordinate];
+		//reverse_geocoder = [[MKReverseGeocoder alloc] initWithCoordinate:[ly location_of_city:@"Auckland"]];
 		reverse_geocoder.delegate = self;
 		[reverse_geocoder start];
 		[location_manager stopUpdatingLocation];
@@ -54,7 +55,7 @@
 {
 	if ([mode is:@"once"])
 	{
-		//	NSLog(@"place: %@", a_placemark);
+		//	NSLog(@"place: %@", a_placemark.country);
 		placemark = a_placemark;
 		if (delegate != nil)
 			[delegate perform_string:@"reverseGeocoder:didFindPlacemark:" with:geocoder with:a_placemark];

@@ -475,8 +475,8 @@
 			[label_badge copy_style:[data v:@"badge-label"]];
 
 			label_badge.text = [NSString stringWithFormat:@"%i", indexPath.row + 1];
-			if (indexPath.row < 10)
-				[label_badge reset_x:-1];
+			//	if (indexPath.row < 10)
+			//		[label_badge reset_x:-1];
 
 			[image_badge addSubview:label_badge];
 			[cell addSubview:image_badge];
@@ -641,6 +641,8 @@
 		return 0;
 	if ([s isEqualToString:@""])
 		return 0;
+	if ([[texts objectAtIndex:section] count] == 0)
+		return 0;
 
 	if (header_label.hidden == NO)
 		return header_label.frame.size.height;
@@ -676,6 +678,8 @@
 	if (s == nil)
 		return 0;
 	if ([s isEqualToString:@""])
+		return 0;
+	if ([[texts objectAtIndex:section] count] == 0)
 		return 0;
 
 	if (footer_label.hidden == NO)

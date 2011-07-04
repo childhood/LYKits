@@ -1,5 +1,9 @@
 #import "LYPublic.h"
 
+#ifdef LY_ENABLE_MAPKIT
+#	import <MapKit/MapKit.h>
+#endif
+
 #define ly	LYKits
 
 //	LYKits.h = MYPublic.h + LYKits Singleton Class
@@ -36,10 +40,15 @@
 + (NSObject*)alloc_media_item_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title;
 #endif
 
+#ifdef LY_ENABLE_MAPKIT
++ (CLLocationCoordinate2D)location_of_city:(NSString*)city;
+#endif
+
 + (NSDictionary*)dict_itunes_country_music;
 + (NSDictionary*)dict_itunes_country;
 + (NSDictionary*)dict_itunes_genre;
 + (NSDictionary*)dict_itunes_limit;
 + (NSDictionary*)dict_country_code2;
++ (NSArray*)array_location_city;
 
 @end
