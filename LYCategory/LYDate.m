@@ -1,6 +1,16 @@
 #import "LYDate.h"
 
 @implementation NSDate (LYDate)
+
++ (NSDate*)date_from_string:(NSString*)string format:(NSString*)format
+{
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setDateFormat:format];
+	NSDate *date = [dateFormat dateFromString:string];
+	[dateFormat release];
+	return date;
+}
+
 - (BOOL)is_same_month:(NSDate*)date1
 {
 	NSCalendar* calendar = [NSCalendar currentCalendar];
@@ -23,5 +33,5 @@
 		[comp1 month] == [comp2 month] &&
 		[comp1 year]  == [comp2 year];
 }
-@end
 
+@end
