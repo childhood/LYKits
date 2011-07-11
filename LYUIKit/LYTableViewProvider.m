@@ -139,6 +139,7 @@
 		image_badge.hidden = YES;
 
 		[data setValue:[NSNumber numberWithFloat:k_ly_table_accessory_size] forKey:@"accessory-size"];
+		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
 		[data setValue:label_badge forKey:@"badge-label"];
 		[data setValue:image_badge forKey:@"badge-image"];
 		[label_badge release];
@@ -474,7 +475,12 @@
 			[image_badge copy_style:[data v:@"badge-image"]];
 			[label_badge copy_style:[data v:@"badge-label"]];
 
-			label_badge.text = [NSString stringWithFormat:@"%i", indexPath.row + 1];
+			NSString* badge_string = [[data v:@"badge-array"] object_at_path:indexPath];
+			//	NSLog(@"badge: %@", badge_string);
+			if (badge_string != nil)
+				label_badge.text = badge_string;
+			else
+				label_badge.text = [NSString stringWithFormat:@"%i", indexPath.row + 1];
 			//	if (indexPath.row < 10)
 			//		[label_badge reset_x:-1];
 
