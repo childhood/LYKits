@@ -140,6 +140,7 @@
 
 		[data setValue:[NSNumber numberWithFloat:k_ly_table_accessory_size] forKey:@"accessory-size"];
 		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
+		[data setValue:[NSMutableArray array] forKey:@"filter-array"];
 		[data setValue:label_badge forKey:@"badge-label"];
 		[data setValue:image_badge forKey:@"badge-image"];
 		[label_badge release];
@@ -347,12 +348,18 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return texts.count;
+	if ([[data v:@"state"] is:@"refresh"])
+		return 1;
+	else
+		return texts.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return [[texts objectAtIndex:section] count];
+	if ([[data v:@"state"] is:@"refresh"])
+		return 1;
+	else
+		return [[texts objectAtIndex:section] count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -429,67 +436,98 @@
 		if (the_image == nil)
 			the_image = [UIImage imageWithContentsOfFile:image];
 
-		if ([text isEqual:[NSNull null]] == NO)
-			cell.textLabel.text = text;
-		if ([detail isEqual:[NSNull null]] == NO)
-			cell.detailTextLabel.text = detail;
-		if (the_image != nil)
+		if ([[data v:@"state"] is:@"refresh"])
 		{
-			//	NSLog(@"cell image %@: %@", image, the_image);
-			if ([UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)])
-			{
-				cell.imageView.image = [UIImage imageWithCGImage:the_image.CGImage scale:(the_image.size.height / (cell_height - k_ly_table_cell_image_gap)) orientation:UIImageOrientationUp];
-				//	NSLog(@"used 4.0 scaling: %@, %f", cell.imageView.image, the_image.size.height / (cell_height - k_ly_table_cell_image_gap));
-				cell.imageView.contentMode = UIViewContentModeCenter;
-			}
-			else
-			{
-				//	NSLog(@"4.0 scale not supported");
-				cell.imageView.image = the_image;
-			}
+			cell.textLabel.text = @"  Loading...";
 		}
-		if (image_url != nil)
+		else
 		{
-			//cell.imageView.image = [UIImage imageNamed:@"ly_blank_64x64.png"];
-			cell.imageView.image = [UIImage imageNamed:@"ly_transparent_64x64.png"];
-			image_view = [[LYAsyncImageView alloc] initWithFrame:cell_image_rect];
-			image_view.contentMode = cell_image_mode;
-			//[image_view autoresizing_add_width:YES height:YES];
-			image_view.clipsToBounds = YES;
-			[image_view load_url:image_url];
-			if ([cell_image_place isEqualToString:@"image"])
-				[cell.imageView addSubview:image_view];
-			else if ([cell_image_place isEqualToString:@"cell"])
-				[cell addSubview:image_view];
-			else
-				NSLog(@"TABLE warning: unknown cell image place");
-			//NSLog(@"table image url: %@\n%@", image_url, image_view);
-		}
+			if ([text isEqual:[NSNull null]] == NO)
+				cell.textLabel.text = text;
+			if ([detail isEqual:[NSNull null]] == NO)
+				cell.detailTextLabel.text = detail;
+			if (the_image != nil)
+			{
+				//	NSLog(@"cell image %@: %@", image, the_image);
+				if ([UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)])
+				{
+					cell.imageView.image = [UIImage imageWithCGImage:the_image.CGImage scale:(the_image.size.height / (cell_height - k_ly_table_cell_image_gap)) orientation:UIImageOrientationUp];
+					//	NSLog(@"used 4.0 scaling: %@, %f", cell.imageView.image, the_image.size.height / (cell_height - k_ly_table_cell_image_gap));
+					cell.imageView.contentMode = UIViewContentModeCenter;
+				}
+				else
+				{
+					//	NSLog(@"4.0 scale not supported");
+					cell.imageView.image = the_image;
+				}
+			}
+			if (image_url != nil)
+			{
+				//cell.imageView.image = [UIImage imageNamed:@"ly_blank_64x64.png"];
+				cell.imageView.image = [UIImage imageNamed:@"ly_transparent_64x64.png"];
+				image_view = [[LYAsyncImageView alloc] initWithFrame:cell_image_rect];
+				image_view.contentMode = cell_image_mode;
+				//[image_view autoresizing_add_width:YES height:YES];
+				image_view.clipsToBounds = YES;
+				[image_view load_url:image_url];
+				if ([cell_image_place isEqualToString:@"image"])
+					[cell.imageView addSubview:image_view];
+				else if ([cell_image_place isEqualToString:@"cell"])
+					[cell addSubview:image_view];
+				else
+					NSLog(@"TABLE warning: unknown cell image place");
+				//NSLog(@"table image url: %@\n%@", image_url, image_view);
+			}
 #if 1
-		if (([[data v:@"badge-image"] isHidden] == NO) &&
-			([[data v:@"badge-label"] isHidden] == NO))
-		{
-			UIImageView* image_badge = [[UIImageView alloc] init];
-			UILabel* label_badge = [[UILabel alloc] init];
+			if (([[data v:@"badge-image"] isHidden] == NO) &&
+				([[data v:@"badge-label"] isHidden] == NO))
+			{
+				UIImageView* image_badge = [[UIImageView alloc] init];
+				UILabel* label_badge = [[UILabel alloc] init];
 
-			[image_badge copy_style:[data v:@"badge-image"]];
-			[label_badge copy_style:[data v:@"badge-label"]];
+				[image_badge copy_style:[data v:@"badge-image"]];
+				[label_badge copy_style:[data v:@"badge-label"]];
 
-			NSString* badge_string = [[data v:@"badge-array"] object_at_path:indexPath];
-			//	NSLog(@"badge: %@", badge_string);
-			if (badge_string != nil)
-				label_badge.text = badge_string;
-			else
-				label_badge.text = [NSString stringWithFormat:@"%i", indexPath.row + 1];
-			//	if (indexPath.row < 10)
-			//		[label_badge reset_x:-1];
+				NSString* badge_string = [[data v:@"badge-array"] object_at_path:indexPath];
+				//	NSLog(@"badge: %@", badge_string);
+				if (badge_string != nil)
+					label_badge.text = badge_string;
+				else
+					label_badge.text = [NSString stringWithFormat:@"%i", indexPath.row + 1];
+				//	if (indexPath.row < 10)
+				//		[label_badge reset_x:-1];
 
-			[image_badge addSubview:label_badge];
-			[cell addSubview:image_badge];
-			[label_badge release];
-			[image_badge release];
-		}
+				[image_badge addSubview:label_badge];
+				[cell addSubview:image_badge];
+				[label_badge release];
+				[image_badge release];
+			}
 #endif
+
+			if (accessory != nil)
+			{
+				if ([accessory is:@"default"] == NO)
+				{
+					CGFloat accessory_size = [[data v:@"accessory-size"] floatValue];
+					//UIButton* button = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size)] autorelease];
+					UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+					//button.frame = CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size);
+					button.frame = CGRectMake(0, 0, accessory_size, accessory_size);
+					[button setImage:[UIImage imageNamed:accessory] forState:UIControlStateNormal];
+					[button addTarget:self action:@selector(action_accessory:event:) forControlEvents:UIControlEventTouchUpInside];
+					cell.accessoryView = button;
+				}
+				else
+					cell.accessoryType = accessory_type;
+			}
+			else
+			{
+				if (accessory_name != nil)
+					cell.accessoryView = [[[UIImageView alloc] initWithImageNamed:accessory_name] autorelease];
+				else
+					cell.accessoryType = accessory_type;
+			}
+		}
 
 		if ((indexPath.row == 0) && (cell_bg_top != nil))
 		{
@@ -518,25 +556,6 @@
 		else
 			cell.detailTextLabel.backgroundColor = [UIColor clearColor];
 #endif
-
-		if (accessory != nil)
-		{
-			CGFloat accessory_size = [[data v:@"accessory-size"] floatValue];
-			//UIButton* button = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size)] autorelease];
-			UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-			//button.frame = CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size);
-			button.frame = CGRectMake(0, 0, accessory_size, accessory_size);
-			[button setImage:[UIImage imageNamed:accessory] forState:UIControlStateNormal];
-			[button addTarget:self action:@selector(action_accessory:event:) forControlEvents:UIControlEventTouchUpInside];
-			cell.accessoryView = button;
-		}
-		else
-		{
-			if (accessory_name != nil)
-				cell.accessoryView = [[[UIImageView alloc] initWithImageNamed:accessory_name] autorelease];
-			else
-				cell.accessoryType = accessory_type;
-		}
 
 		cell.selectionStyle = cell_selection;
 
@@ -888,7 +907,7 @@
 {
 	if ((search_bar != nil) && (view.contentOffset.y < 0))
 	{
-		NSLog(@"drag from %f", scroll_drag_begin);
+		//	NSLog(@"drag from %f", scroll_drag_begin);
 		[UIView begin_animations:0.3];
 		if (scroll_drag_begin == -44)
 			view.contentOffset = CGPointMake(0, 0);
@@ -1007,6 +1026,29 @@
 
 - (void)filter_apply:(NSString*)filter
 {
+	if (backup_texts == nil)
+		backup_texts = [[NSMutableArray alloc] initWithArray:texts];
+	if (backup_details == nil)
+		backup_details = [[NSMutableArray alloc] initWithArray:details];
+	[[data v:@"filter-array"] removeAllObjects];
+	for (int section = 0; section < backup_texts.count; section++)
+	{
+		NSArray* array = [backup_texts objectAtIndex:section];
+		for (int row = 0; row < array.count; row++)
+		{
+			NSIndexPath* path = [NSIndexPath indexPathForRow:row inSection:section];
+			if (([[[backup_texts object_at_path:path] lowercaseString] has_substring:[filter lowercaseString]]) ||
+				([[[backup_details object_at_path:path] lowercaseString] has_substring:[filter lowercaseString]]))
+			{
+				[[data v:@"filter-array"] addObject:path];
+			}
+		}
+	}
+	[self filter_apply];
+}
+
+- (void)filter_apply
+{
 	int section, row;
 	int backup_section	= 0;
 	int backup_row		= 0;
@@ -1051,8 +1093,11 @@
 			NSIndexPath* path = [NSIndexPath indexPathForRow:row inSection:section];
 			NSIndexPath* backup_path = [NSIndexPath indexPathForRow:backup_row inSection:backup_section];
 
+#if 0
 			if (([[[backup_texts object_at_path:path] lowercaseString] has_substring:[filter lowercaseString]]) ||
 				([[[backup_details object_at_path:path] lowercaseString] has_substring:[filter lowercaseString]]))
+#endif
+			if ([[data v:@"filter-array"] containsObject:path])
 			{
 				[backup_dict setObject:path forKey:backup_path];
 
@@ -1096,6 +1141,7 @@
 	[backup_headers release_nil];
 	[backup_footers release_nil];
 #endif
+	[view reloadData];
 }
 
 #pragma mark search
@@ -1153,6 +1199,20 @@
 	[search resignFirstResponder];
 	self.view.contentOffset = CGPointMake(0, -44);
 	[button_mask removeFromSuperview];
+}
+
+#pragma mark async refresh
+
+- (void)refresh_begin
+{
+	[data setValue:@"refresh" forKey:@"state"];
+	[view reloadData];
+}
+
+- (void)refresh_end
+{
+	[data setValue:@"" forKey:@"state"];
+	[view reloadData];
 }
 
 @end

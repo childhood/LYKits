@@ -11,6 +11,26 @@
 	return date;
 }
 
++ (NSDate*)yesterday
+{
+	return [NSDate dateWithTimeIntervalSinceNow:-86400.0];
+}
+
++ (NSDate*)tomorrow
+{
+	return [NSDate dateWithTimeIntervalSinceNow:-86400.0];
+}
+
+- (NSDate*)yesterday
+{
+	return [NSDate dateWithTimeInterval:-86400.0 sinceDate:self];
+}
+
+- (NSDate*)tomorrow
+{
+	return [NSDate dateWithTimeInterval:86400.0 sinceDate:self];
+}
+
 - (BOOL)is_same_month:(NSDate*)date1
 {
 	NSCalendar* calendar = [NSCalendar currentCalendar];

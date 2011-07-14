@@ -152,8 +152,12 @@
 //	extra functions
 - (void)apply_alphabet;					 //	strings only, 1 section only
 - (void)filter_apply:(NSString*)filter;
+- (void)filter_apply;
 - (void)filter_remove;
 - (void)enable_search;
+
+- (void)refresh_begin;
+- (void)refresh_end;
 
 @end
 

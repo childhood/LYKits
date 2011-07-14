@@ -146,6 +146,44 @@ static LYCache *ly_cache_manager = nil;
 	return ret;
 }
 
+#ifdef LY_ENABLE_SDK_ASIHTTP
++ (NSString*)async_download_string:(NSString*)url block:(void (^)(BOOL success))a_block
+{
+	return [LYCache async_download_string:url block:a_block progress:nil];
+}
+
++ (NSString*)async_download_string:(NSString*)string_url block:(void (^)(BOOL success))a_block progress:(UIProgressView*)progress
+{
+	NSString*	ret = [self get_object_for_key:string_url];
+	if (ret != nil)
+		if ([ret length] != 0)
+		{
+			a_block(NO);
+			return ret;
+		}
+
+	NSURL *url = [NSURL URLWithString:string_url];
+	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+	if (progress != nil)
+		[request setDownloadProgressDelegate:progress];
+	[request setCompletionBlock:^
+	{
+		//	NSString *responseString = [request responseString];
+		[LYCache set:request.responseString key:string_url];
+		a_block(YES);
+	}];
+	[request setFailedBlock:^
+	{
+		//	NSError *error = [request error];
+		//	[LYCache nil:nil key:string_url];
+		a_block(NO);
+	}];
+	[request startAsynchronous];
+
+	return nil;
+}
+#endif
+
 + (id)get_object_for_url:(NSString*)url
 {
 	id	ret = [self get_object_for_key:url];

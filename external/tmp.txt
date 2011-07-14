@@ -1,0 +1,14 @@
+user
+----
+email/account (unique);
+password;
+display name;
+permission (open / anyone can follow me / approval needed / white list / private);
+data (optional)
+{
+	logo image;
+	blacklist;
+	friends;
+	gender;
+	...
+}
