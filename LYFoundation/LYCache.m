@@ -156,11 +156,13 @@ static LYCache *ly_cache_manager = nil;
 {
 	NSString*	ret = [self get_object_for_key:string_url];
 	if (ret != nil)
-		if ([ret length] != 0)
-		{
+	{
+		if (([ret is:@""]) || ([ret is:@"null"]))
 			a_block(NO);
-			return ret;
-		}
+		else
+			a_block(YES);
+		return ret;
+	}
 
 	NSURL *url = [NSURL URLWithString:string_url];
 	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
@@ -169,8 +171,17 @@ static LYCache *ly_cache_manager = nil;
 	[request setCompletionBlock:^
 	{
 		//	NSString *responseString = [request responseString];
-		[LYCache set:request.responseString key:string_url];
-		a_block(YES);
+		if (([request.responseString is:@""]) ||
+			([request.responseString is:@"null"]))
+		{
+			//	nothing new
+			a_block(NO);
+		}
+		else
+		{
+			[LYCache set:request.responseString key:string_url];
+			a_block(YES);
+		}
 	}];
 	[request setFailedBlock:^
 	{

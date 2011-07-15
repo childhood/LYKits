@@ -132,19 +132,32 @@
 		accessories			= [[NSMutableArray alloc] init];
 		additional_views	= [[NSMutableArray alloc] init];
 
+		[data setValue:[NSNumber numberWithFloat:k_ly_table_accessory_size] forKey:@"accessory-size"];
+		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
+		[data setValue:[NSMutableArray array] forKey:@"filter-array"];
+		[data setValue:@"Loading..." forKey:@"refresh-text"];
+		[data setValue:nil forKey:@"source-deleted-object"];
+		//	[data setValue:nil forKey:@"source-deleted-row"];
+
+		//	init preset ui
 		UILabel* label_badge = [[UILabel alloc] init];
 		label_badge.hidden = YES;
 
 		UIImageView* image_badge = [[UIImageView alloc] init];
 		image_badge.hidden = YES;
 
-		[data setValue:[NSNumber numberWithFloat:k_ly_table_accessory_size] forKey:@"accessory-size"];
-		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
-		[data setValue:[NSMutableArray array] forKey:@"filter-array"];
+		UIProgressView* progress_refresh = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+		progress_refresh.frame = CGRectMake(18, 34, 200, 20);
+		progress_refresh.progress = 0;
+
 		[data setValue:label_badge forKey:@"badge-label"];
 		[data setValue:image_badge forKey:@"badge-image"];
+		[data setValue:progress_refresh forKey:@"refresh-progress"];
+
+		//	release preset ui
 		[label_badge release];
 		[image_badge release];
+		[progress_refresh release];
 
 		backup_texts = nil;
 		backup_details = nil;
@@ -438,7 +451,10 @@
 
 		if ([[data v:@"state"] is:@"refresh"])
 		{
-			cell.textLabel.text = @"  Loading...";
+			cell.textLabel.text = [data v:@"refresh-text"];
+			cell.detailTextLabel.text = @" ";
+			[cell addSubview:[data v:@"refresh-progress"]];
+			//	[cell.detailTextLabel addSubview:[data v:@"refresh-progress"]];
 		}
 		else
 		{
@@ -768,6 +784,8 @@
 		//	XXX
 		if ([data v:@"source-data"] != nil)
 		{
+			[data setObject:[[data v:@"source-data"] i:indexPath.row] forKey:@"source-deleted-object"];
+			//	[data setObject:[NSNumber numberWithInt:indexPath.row] forKey:@"source-deleted-row"];
 			//	NSLog(@"removing %i from %@", indexPath.row, [data v:@"source-data"]);
 			[[data v:@"source-data"] removeObjectAtIndex:indexPath.row];
 			if ([data v:@"source-filename"] != nil)
