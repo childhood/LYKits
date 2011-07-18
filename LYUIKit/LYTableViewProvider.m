@@ -451,10 +451,12 @@
 
 		if ([[data v:@"state"] is:@"refresh"])
 		{
+			//	NSLog(@"cell: refreshing");
 			cell.textLabel.text = [data v:@"refresh-text"];
 			cell.detailTextLabel.text = @" ";
 			[cell addSubview:[data v:@"refresh-progress"]];
 			//	[cell.detailTextLabel addSubview:[data v:@"refresh-progress"]];
+			cell.selectionStyle	= UITableViewCellSelectionStyleNone;
 		}
 		else
 		{
@@ -543,6 +545,7 @@
 				else
 					cell.accessoryType = accessory_type;
 			}
+			cell.selectionStyle = cell_selection;
 		}
 
 		if ((indexPath.row == 0) && (cell_bg_top != nil))
@@ -572,8 +575,6 @@
 		else
 			cell.detailTextLabel.backgroundColor = [UIColor clearColor];
 #endif
-
-		cell.selectionStyle = cell_selection;
 
 		if ([delegate respondsToSelector:@selector(table_provider:append_cell:at_path:)])
 			objc_msgSend(delegate, @selector(table_provider:append_cell:at_path:), self, cell, indexPath);
@@ -616,6 +617,9 @@
 
 - (void)tableView:(UITableView*)table didSelectRowAtIndexPath:(NSIndexPath*)a_path
 {
+	if ([[data v:@"state"] is:@"refresh"])
+		return;
+
 	NSIndexPath* path;
 	if (backup_dict != nil)
 		path = [backup_dict objectForKey:a_path];
@@ -633,6 +637,9 @@
 
 - (void)tableView:(UITableView*)table accessoryButtonTappedForRowWithIndexPath:(NSIndexPath*)a_path
 {
+	if ([[data v:@"state"] is:@"refresh"])
+		return;
+
 	NSIndexPath* path;
 	if (backup_dict != nil)
 		path = [backup_dict objectForKey:a_path];
@@ -1224,6 +1231,7 @@
 - (void)refresh_begin
 {
 	[data setValue:@"refresh" forKey:@"state"];
+	view.contentOffset = CGPointMake(0, 0);
 	[view reloadData];
 }
 

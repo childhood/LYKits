@@ -166,6 +166,9 @@ static LYCache *ly_cache_manager = nil;
 
 	NSURL *url = [NSURL URLWithString:string_url];
 	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+	//	[request setNumberOfTimesToRetryOnTimeout:2];
+	//	[request setPersistentConnectionTimeoutSeconds:30];
+	//	[request setShouldAttemptPersistentConnection:NO];
 	if (progress != nil)
 		[request setDownloadProgressDelegate:progress];
 	[request setCompletionBlock:^
@@ -187,6 +190,7 @@ static LYCache *ly_cache_manager = nil;
 	{
 		//	NSError *error = [request error];
 		//	[LYCache nil:nil key:string_url];
+		NSLog(@"CACHE async error: %@", request.error);
 		a_block(NO);
 	}];
 	[request startAsynchronous];
