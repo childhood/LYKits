@@ -33,3 +33,12 @@ NSString* setting_string(NSString* key);
  * 		can be used to passing objects between multiple classes
  *
  */
+
+@interface LYDatabase: NSObject
+{
+	NSMutableDictionary* data;
+}
+@property (nonatomic, retain) NSMutableDictionary*	data;
+- (id)initWithData:(NSDictionary*)data;
+- (NSArray*)array_with_name:(NSString*)name query:(NSString*)query;
+@end

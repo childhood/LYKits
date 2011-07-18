@@ -45,3 +45,16 @@ NSString* setting_string(NSString* key)
 {
 	return [[NSUserDefaults standardUserDefaults] stringForKey:key];
 }
+
+@implementation LYDatabase
+@synthesize data;
+- (id)initWithData:(NSDictionary*)data
+{
+	return self;
+}
+- (NSArray*)array_with_name:(NSString*)name query:(NSString*)query
+{
+	NSArray* ret;
+	return ret;
+}
+@end
