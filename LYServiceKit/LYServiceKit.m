@@ -1,4 +1,4 @@
-#import <LYServiceKit.h>
+#import "LYServiceKit.h"
 
 @implementation LYDatabase
 
@@ -47,23 +47,37 @@
 
 - (void)name:(NSString*)name insert:(NSArray*)array block:(void (^)(NSArray* keys, NSError* error))callback
 {
-	NSString* url;
+	NSString*		url;
+	NSDictionary*	dict;
+	dict = [NSDictionary dictionaryWithObjectsAndKeys:
+	   [NSDictionary dictionaryWithObjectsAndKeys:
+		   array, name, nil],
+	   @"list", nil];
 	url = [NSString stringWithFormat:@"%@/%@", [data v:@"host"], name];
 	NSLog(@"url: %@", url);
-	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+	__block ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
 	[request setPostValue:[data v:@"username"] forKey:@"username"];
 	[request setPostValue:[data v:@"password"] forKey:@"password"];
-	[request appendPostData:[@"This is my data" dataUsingEncoding:NSUTF8StringEncoding]];
+	[request appendPostData:[[CJSONDataSerializer serializer] serializeDictionary:dict]];
+	//[request appendPostData:[@"This is my data" dataUsingEncoding:NSUTF8StringEncoding]];
 	[request setCompletionBlock:^{
-		NSArray* contents = [[[request.responseString dictionary_json] v:@"list"] v:name];
-		//	NSLog(@"contents: %@", contents);
+		NSLog(@"response: %@", request.responseString);
+		NSArray* contents = [request.responseString componentsSeparatedByString:@","];
+		NSLog(@"contents: %@", contents);
 		callback(contents, nil);
 	}];
 	[request setFailedBlock:^{
-		//	NSLog(@"error: %@", request.error);
+		NSLog(@"error: %@", request.error);
 		callback(nil, request.error);
 	}];
 	[request startAsynchronous];
 }
+
+#if 0	//	test code
+LYDatabase* db = [[LYDatabase alloc] init];
+[db name:@"database_model" insert:[NSArray arrayWithObjects:
+					[NSDictionary dictionaryWithObjectsAndKeys:@"id-002", @"id", @"desc-002", @"desc", @"data-002", @"data", nil],
+													nil] block:nil];
+#endif
 
 @end

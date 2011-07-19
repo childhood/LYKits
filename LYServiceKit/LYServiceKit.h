@@ -1,5 +1,6 @@
 #import "LYCategory.h"
 #import "ASIHTTPRequest.h"
+#import "CJSONDataSerializer.h"
 
 @interface LYDatabase: NSObject
 {
