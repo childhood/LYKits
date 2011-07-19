@@ -668,11 +668,22 @@
 	NSData*			data;
 	NSError*		error;
 	NSDictionary*	ret;
-	NSRange			range = [self rangeOfString:@"{"];
-	NSString*		s = [self substringFromIndex:range.location];
+#if 1
+	NSRange			range;
+	NSString*		s;
 
-	//data = [self dataUsingEncoding:NSUTF8StringEncoding];
+	if (self == nil)
+		return nil;
+
+	range = [self rangeOfString:@"{"];
+	if (range.location == NSNotFound)
+		return nil;
+
+	s = [self substringFromIndex:range.location];
 	data = [s dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+#else
+	data = [[self string_without_leading_space] dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+#endif
 	ret = [[CJSONDeserializer deserializer] deserializeAsDictionary:data error:&error];
 	//	NSLog(@"json error: %@", error);
 	return ret;

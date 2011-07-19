@@ -18,6 +18,7 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 //	#define LY_ENABLE_APP_ZIP
 //	#define LY_ENABLE_MUSICKIT
 //	#define LY_ENABLE_MAPKIT
+//	#define LY_ENABLE_SERVICEKIT
 //	#define LY_ENABLE_SDK_ASIHTTP
 //	#define LY_ENABLE_SDK_TOUCHJSON
 //
@@ -31,6 +32,9 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 #endif
 #ifdef LY_ENABLE_MAPKIT
 	#import "LYMapKit.h"
+#endif
+#ifdef LY_ENABLE_SERVICEKIT
+	#import "LYServiceKit.h"
 #endif
 
 #ifndef _g

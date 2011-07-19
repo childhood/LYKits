@@ -348,7 +348,7 @@
 
 	if (is_pad())
 	{
-		[view setBackgroundView:nil];
+		[view setBackgroundView:nil];	//	TODO: "view.backgroundView?
 		[view setBackgroundView:[[[UIView alloc] init] autorelease]];
 		[view setBackgroundColor:bg_color];
 	}
@@ -1230,13 +1230,23 @@
 
 - (void)refresh_begin
 {
+	//	search_bar.hidden = YES;
+	[data setValue:view.tableHeaderView forKey:@"backup-header"];
+	[data setValue:view.tableFooterView forKey:@"backup-footer"];
+	view.tableHeaderView = nil;
+	view.tableFooterView = nil;
+	view.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 	[data setValue:@"refresh" forKey:@"state"];
-	view.contentOffset = CGPointMake(0, 0);
 	[view reloadData];
 }
 
 - (void)refresh_end
 {
+	//	search_bar.hidden = NO;
+	view.tableHeaderView = [data v:@"backup-header"];
+	view.tableFooterView = [data v:@"backup-footer"];
+	view.contentInset = UIEdgeInsetsMake(search_bar.frame.size.height, 0, 0, 0);
+	view.contentOffset = CGPointMake(0, 0);
 	[data setValue:@"" forKey:@"state"];
 	[view reloadData];
 }
