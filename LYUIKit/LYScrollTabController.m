@@ -101,6 +101,7 @@
 @synthesize data;
 @synthesize index;
 @synthesize height;
+@synthesize bottom_space;
 
 - (id)init
 {
@@ -108,6 +109,7 @@
 	if (self)
 	{
 		height = 49;
+		bottom_space = 0;
 		scroll_tab = [[LYScrollTabController alloc] initWithFrame:CGRectMake(0, 0, [ly screen_width], height) delegate:self];
 		index = 0;
 		data = [[NSMutableArray alloc] init];
@@ -183,7 +185,9 @@
 - (void)show_end
 {
 	UIViewController* controller = [[data i:index] v:@"controller"];
+	NSLog(@"xxx1 %@", controller.view);
 	[controller.view set_h:screen_height() - height - 20];
+	NSLog(@"xxx2 %@", controller.view);
 }
 
 - (void)hide:(CGFloat)duration
@@ -204,7 +208,9 @@
 - (void)hide_end
 {
 	UIViewController* controller = [[data i:index] v:@"controller"];
+	NSLog(@"xxx3 %@", controller.view);
 	[controller.view set_h:screen_height() - 20];
+	NSLog(@"xxx4 %@", controller.view);
 }
 
 #pragma mark data source
@@ -223,7 +229,7 @@
 {
 	UIButton* button;
 	CGFloat	width = [ly screen_width] / data.count;
-	button = [[UIButton alloc] initWithFrame:CGRectMake(width * an_index, 0, width, height)];
+	button = [[UIButton alloc] initWithFrame:CGRectMake(width * an_index, 0, width, height - bottom_space)];
 	//	button.autoresizingMask = 0;
 	[button setBackgroundImage:[UIImage imageNamed:[[data i:an_index] v:@"bg-normal"]] forState:UIControlStateNormal];
 	[button setBackgroundImage:[UIImage imageNamed:[[data i:an_index] v:@"bg-selected"]] forState:UIControlStateSelected];

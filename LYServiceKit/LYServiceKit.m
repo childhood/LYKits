@@ -54,30 +54,42 @@
 		   array, name, nil],
 	   @"list", nil];
 	url = [NSString stringWithFormat:@"%@/%@", [data v:@"host"], name];
-	NSLog(@"url: %@", url);
 	__block ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+	NSLog(@"url: %@", url);
+	[request addRequestHeader:@"Content-Type" value:@"application/json"];
 	[request setPostValue:[data v:@"username"] forKey:@"username"];
 	[request setPostValue:[data v:@"password"] forKey:@"password"];
-	[request appendPostData:[[CJSONDataSerializer serializer] serializeDictionary:dict]];
+	NSString* tmp = [[NSString alloc] initWithData:[[CJSONDataSerializer serializer] serializeDictionary:dict error:nil] encoding:NSUTF8StringEncoding];
+	NSLog(@"xxx %@", tmp);
+	[request appendPostData:[[CJSONDataSerializer serializer] serializeDictionary:dict error:nil]];
 	//[request appendPostData:[@"This is my data" dataUsingEncoding:NSUTF8StringEncoding]];
 	[request setCompletionBlock:^{
 		NSLog(@"response: %@", request.responseString);
 		NSArray* contents = [request.responseString componentsSeparatedByString:@","];
 		NSLog(@"contents: %@", contents);
-		callback(contents, nil);
+		//	callback(contents, nil);
 	}];
 	[request setFailedBlock:^{
 		NSLog(@"error: %@", request.error);
-		callback(nil, request.error);
+		//	callback(nil, request.error);
 	}];
 	[request startAsynchronous];
 }
 
-#if 0	//	test code
-LYDatabase* db = [[LYDatabase alloc] init];
-[db name:@"database_model" insert:[NSArray arrayWithObjects:
-					[NSDictionary dictionaryWithObjectsAndKeys:@"id-002", @"id", @"desc-002", @"desc", @"data-002", @"data", nil],
-													nil] block:nil];
+/*
+#if 0
+	LYDatabase* db = [[LYDatabase alloc] init];
+	[db name:@"database_model" select:@"" block:^(NSArray* array, NSError* error)
+	{
+		NSLog(@"result: %@ - %@", error, array);
+	}];
 #endif
+#if 1
+	LYDatabase* db = [[LYDatabase alloc] init];
+	[db name:@"database_model" insert:[NSArray arrayWithObjects:
+		[NSDictionary dictionaryWithObjectsAndKeys:@"id-003", @"id", @"desc-002", @"desc", @"data-002", @"data", nil],
+		nil] block:nil];
+#endif
+*/
 
 @end

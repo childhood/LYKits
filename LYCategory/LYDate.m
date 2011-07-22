@@ -18,7 +18,7 @@
 
 + (NSDate*)tomorrow
 {
-	return [NSDate dateWithTimeIntervalSinceNow:-86400.0];
+	return [NSDate dateWithTimeIntervalSinceNow:86400.0];
 }
 
 - (NSDate*)yesterday
