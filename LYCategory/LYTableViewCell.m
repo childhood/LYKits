@@ -19,17 +19,19 @@
 - (void)didTransitionToState:(UITableViewCellStateMask)state
 {
 	//	[super didTransitionToState:state];
-	if (state == UITableViewCellStateShowingDeleteConfirmationMask || state == UITableViewCellStateDefaultMask)
+	//	if (state == UITableViewCellStateShowingDeleteConfirmationMask || state == UITableViewCellStateDefaultMask)
 	{
 		for (UIView *subview in self.subviews)
 		{
+			//	UIView *view = (UIView*)[subview.subviews objectAtIndex:0];
+			CGRect f = subview.frame;
 			if ([NSStringFromClass([subview class]) isEqualToString:@"UITableViewCellDeleteConfirmationControl"])
-			{
-				UIView *deleteButtonView = (UIView*)[subview.subviews objectAtIndex:0];
-				CGRect f = deleteButtonView.frame;
 				f.origin.x -= [[[ly data] v:@"cell-delete-fix-x"] floatValue];
-				deleteButtonView.frame = f;
-			}
+			else if ([NSStringFromClass([subview class]) isEqualToString:@"UITableViewCellReorderControl"])
+				f.origin.x -= [[[ly data] v:@"cell-move-fix-x"] floatValue];
+			else if ([NSStringFromClass([subview class]) isEqualToString:@"UITableViewCellEditControl"])
+				f.origin.x += [[[ly data] v:@"cell-edit-fix-x"] floatValue];
+			subview.frame = f;
 		}
 	}
 }

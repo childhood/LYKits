@@ -132,10 +132,12 @@
 		accessories			= [[NSMutableArray alloc] init];
 		additional_views	= [[NSMutableArray alloc] init];
 
-		[data setValue:[NSNumber numberWithFloat:k_ly_table_accessory_size] forKey:@"accessory-size"];
+		[data setValue:NSStringFromCGSize(CGSizeMake(k_ly_table_accessory_size, k_ly_table_accessory_size)) forKey:@"accessory-size"];
+		[data setValue:[NSNumber numberWithBool:NO] forKey:@"move-enabled"];
 		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
 		[data setValue:[NSMutableArray array] forKey:@"filter-array"];
 		[data setValue:@"Loading..." forKey:@"refresh-text"];
+		[data setValue:@"ly_transparent_64x64.png" forKey:@"image-placeholder"];
 		[data setValue:nil forKey:@"source-deleted-object"];
 		//	[data setValue:nil forKey:@"source-deleted-row"];
 
@@ -482,7 +484,7 @@
 			if (image_url != nil)
 			{
 				//cell.imageView.image = [UIImage imageNamed:@"ly_blank_64x64.png"];
-				cell.imageView.image = [UIImage imageNamed:@"ly_transparent_64x64.png"];
+				cell.imageView.image = [UIImage imageNamed:[data v:@"image-placeholder"]];
 				image_view = [[LYAsyncImageView alloc] initWithFrame:cell_image_rect];
 				image_view.contentMode = cell_image_mode;
 				//[image_view autoresizing_add_width:YES height:YES];
@@ -526,11 +528,11 @@
 			{
 				if ([accessory is:@"default"] == NO)
 				{
-					CGFloat accessory_size = [[data v:@"accessory-size"] floatValue];
+					CGSize accessory_size = CGSizeFromString([data v:@"accessory-size"]);
 					//UIButton* button = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size)] autorelease];
 					UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
 					//button.frame = CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size);
-					button.frame = CGRectMake(0, 0, accessory_size, accessory_size);
+					button.frame = CGRectMake(0, 0, accessory_size.width, accessory_size.height);
 					[button setImage:[UIImage imageNamed:accessory] forState:UIControlStateNormal];
 					[button addTarget:self action:@selector(action_accessory:event:) forControlEvents:UIControlEventTouchUpInside];
 					cell.accessoryView = button;
@@ -576,7 +578,7 @@
 			cell.detailTextLabel.backgroundColor = [UIColor clearColor];
 #endif
 
-		//cell.showsReorderControl = YES;
+		cell.showsReorderControl = [[data v:@"move-enabled"] boolValue];	
 		if ([delegate respondsToSelector:@selector(table_provider:append_cell:at_path:)])
 			objc_msgSend(delegate, @selector(table_provider:append_cell:at_path:), self, cell, indexPath);
 		//[delegate perform_string:@"provider:cell:" with:self with:indexPath];
@@ -783,13 +785,17 @@
 		if (array != nil)
 			[array removeObjectAtIndex:indexPath.row];
 
+		array = [image_urls object_at_index:indexPath.section];
+		if (array != nil)
+			[array removeObjectAtIndex:indexPath.row];
+
 		array = [accessories object_at_index:indexPath.section];
 		if (array != nil)
 			[array removeObjectAtIndex:indexPath.row];
 
 		[view delete_path:indexPath animation:animation_delete];
 
-		//	XXX
+		//	modify source - TODO: support section
 		if ([data v:@"source-data"] != nil)
 		{
 			[data setObject:[[data v:@"source-data"] i:indexPath.row] forKey:@"source-deleted-object"];
@@ -806,17 +812,38 @@
 
 #pragma mark move
 
-#if 0
 - (BOOL)tableView:(UITableView *)tableview canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return YES;	
+	return [[data v:@"move-enabled"] boolValue];	
 }
 
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)path_old toIndexPath:(NSIndexPath *)path_new
 {
-	NSLog(@"TABLE move");
-}
+	if (texts != nil)
+		[texts exchange_path:path_old with:path_new];
+	if (details != nil)
+		[details exchange_path:path_old with:path_new];
+	if (images != nil)
+		[images exchange_path:path_old with:path_new];
+	if (image_urls != nil)
+		[image_urls exchange_path:path_old with:path_new];
+	if (accessories != nil)
+		[accessories exchange_path:path_old with:path_new];
+
+	//	[self refresh_animated];
+
+#if 1
+	//	modify source
+	if ([data v:@"source-data"] != nil)
+	{
+		[[data v:@"source-data"] exchangeObjectAtIndex:path_old.row withObjectAtIndex:path_new.row];
+		if ([data v:@"source-filename"] != nil)
+			[[data v:@"source-data"] writeToFile:[data v:@"source-filename"] atomically:YES];
+		else if ([delegate respondsToSelector:@selector(tableView:moveRowAtIndexPath:toIndexPath:)])
+			objc_msgSend(delegate, @selector(tableView:moveRowAtIndexPath:toIndexPath:), view, path_old, path_new);
+	}
 #endif
+}
 
 #pragma mark dealloc
 
