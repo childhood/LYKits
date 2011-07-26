@@ -64,7 +64,7 @@
 	//[request setPostValue:@"application/json" forKey:@"Content-Type"];
 	//[request setPostValue:[data v:@"username"] forKey:@"username"];
 	//[request setPostValue:[data v:@"password"] forKey:@"password"];
-	[request appendPostData:[[CJSONDataSerializer serializer] serializeDictionary:dict]];
+	[request appendPostData:[[CJSONSerializer serializer] serializeDictionary:dict error:nil]];
 	[request setRequestMethod:@"POST"];
 #if 0
 	NSLog(@"request: %@", request);

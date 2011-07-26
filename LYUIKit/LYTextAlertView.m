@@ -4,6 +4,7 @@
 
 @synthesize delegate;
 @synthesize action_done;
+@synthesize text_fields;
 
 - (id)initWithTitle:(NSString*)title message:(NSString*)message count:(NSInteger)count
 {

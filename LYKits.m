@@ -36,6 +36,8 @@ static LYKits*	ly_shared_manager = nil;
 		version = @"LYKits v0.1";
 		data = [[NSMutableDictionary alloc] init];
 		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-delete-fix-x"];
+		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-edit-fix-x"];
+		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-move-fix-x"];
 	}
 	return self;
 }
