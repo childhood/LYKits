@@ -123,6 +123,7 @@
 			@"friends",
 			nil],
 		nil] block:nil];
+	[db db30:@"user" select:@"" block:nil];
 #endif
 }
 
