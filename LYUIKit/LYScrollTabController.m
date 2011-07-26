@@ -172,6 +172,7 @@
 	//	scroll_tab.view.hidden = NO;
 #if 1
 	[scroll_tab.view set_y:[ly screen_height] - height - k_ly_scroll_height_fix - 20 animation:duration];
+	//[self show_end];
 	[self performSelector:@selector(show_end) withObject:nil afterDelay:duration];
 #else
 	UIViewController* controller = [[data i:index] v:@"controller"];
@@ -185,9 +186,7 @@
 - (void)show_end
 {
 	UIViewController* controller = [[data i:index] v:@"controller"];
-	NSLog(@"xxx1 %@", controller.view);
 	[controller.view set_h:screen_height() - height - 20];
-	NSLog(@"xxx2 %@", controller.view);
 }
 
 - (void)hide:(CGFloat)duration
@@ -208,9 +207,7 @@
 - (void)hide_end
 {
 	UIViewController* controller = [[data i:index] v:@"controller"];
-	NSLog(@"xxx3 %@", controller.view);
 	[controller.view set_h:screen_height() - 20];
-	NSLog(@"xxx4 %@", controller.view);
 }
 
 #pragma mark data source

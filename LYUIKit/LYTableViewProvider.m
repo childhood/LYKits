@@ -576,6 +576,7 @@
 			cell.detailTextLabel.backgroundColor = [UIColor clearColor];
 #endif
 
+		//cell.showsReorderControl = YES;
 		if ([delegate respondsToSelector:@selector(table_provider:append_cell:at_path:)])
 			objc_msgSend(delegate, @selector(table_provider:append_cell:at_path:), self, cell, indexPath);
 		//[delegate perform_string:@"provider:cell:" with:self with:indexPath];
@@ -802,6 +803,20 @@
 		}
 	}
 }
+
+#pragma mark move
+
+#if 0
+- (BOOL)tableView:(UITableView *)tableview canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return YES;	
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+	NSLog(@"TABLE move");
+}
+#endif
 
 #pragma mark dealloc
 
@@ -1069,10 +1084,15 @@
 			}
 		}
 	}
-	[self filter_apply];
+	[self filter_apply_animated:NO];
 }
 
 - (void)filter_apply
+{
+	[self filter_apply_animated:YES];
+}
+
+- (void)filter_apply_animated:(BOOL)animated
 {
 	int section, row;
 	int backup_section	= 0;
@@ -1143,7 +1163,10 @@
 		backup_section++;
 	}
 	view.contentOffset = CGPointMake(0, 0);
-	[view reloadData];
+	if (animated)
+		[self refresh_animated];
+	else
+		[view reloadData];
 	//	NSLog(@"mapping: %@", backup_dict);
 }
 
@@ -1166,7 +1189,8 @@
 	[backup_headers release_nil];
 	[backup_footers release_nil];
 #endif
-	[view reloadData];
+	//[view reloadData];
+	[self refresh_animated];
 }
 
 #pragma mark search
@@ -1237,7 +1261,8 @@
 	view.tableFooterView = nil;
 	view.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 	[data setValue:@"refresh" forKey:@"state"];
-	[view reloadData];
+	//[view reloadData];
+	[self refresh_animated];
 }
 
 - (void)refresh_end
@@ -1248,7 +1273,16 @@
 	view.contentInset = UIEdgeInsetsMake(search_bar.frame.size.height, 0, 0, 0);
 	view.contentOffset = CGPointMake(0, 0);
 	[data setValue:@"" forKey:@"state"];
-	[view reloadData];
+	//[view reloadData];
+	[self refresh_animated];
+}
+
+- (void)refresh_animated
+{
+	[view beginUpdates];
+	[view deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+	[view insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+	[view endUpdates];
 }
 
 @end
