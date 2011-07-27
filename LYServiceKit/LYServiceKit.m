@@ -26,15 +26,17 @@
 - (void)name:(NSString*)name select:(NSString*)query block:(void (^)(NSArray* array, NSError* error))callback
 {
 	NSString* url;
-	url = [NSString stringWithFormat:@"%@/%@?%@username=%@&password=%@",
+	url = [NSString stringWithFormat:@"%@/%@%@username=%@&password=%@",
 							 [data v:@"host"], name, query,
 							 [data v:@"username"],
 							 [data v:@"password"]];
-	//	NSLog(@"url: %@", url);
+		NSLog(@"url: %@", url);
 	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
 	[request addRequestHeader:@"Accept" value:@"application/json"];
+	//[request setRequestMethod:@"GET"];
 	[request setCompletionBlock:^{
 		NSArray* contents = [[[request.responseString dictionary_json] v:@"list"] v:name];
+		NSLog(@"headers: %@", request.responseString);
 		//	NSLog(@"contents: %@", contents);
 		callback(contents, nil);
 	}];
@@ -91,9 +93,9 @@
 
 - (void)test
 {
-#if 0
+#if 1
 	LYDatabase* db = [[LYDatabase alloc] init];
-	[db test];
+	//[db test];
 #endif
 
 #if 0
@@ -102,10 +104,22 @@
 	{
 		NSLog(@"result: %@ - %@", error, array);
 	}];
+#endif
+#if 1
+	//	select
+	[db name:@"database_model" select:@"/agpzfnN1cGVyLWRichULEg5kYXRhYmFzZV9tb2RlbBjrBww?" block:^(NSArray* array, NSError* error)
+	//[db name:@"database_model" select:@"/?" block:^(NSArray* array, NSError* error)
+	{
+		NSLog(@"result: %@ - %@", error, array);
+	}];
+#endif
+#if 0
 	//	insert
 	[db name:@"database_model" insert:[NSArray arrayWithObjects:
 		[NSDictionary dictionaryWithObjectsAndKeys:@"id-005", @"id", @"desc-004", @"desc", @"data-004", @"data", nil],
 		nil] block:nil];
+#endif
+#if 0
 	//	set scheme - should be hard coded in application abstract layer, dbxxx does not care about all these
 	[[db.data v:@"scheme"] key:@"user" v:[NSArray arrayWithObjects:
 		@"email",
@@ -123,6 +137,8 @@
 			@"friends",
 			nil],
 		nil] block:nil];
+#endif
+#if 0
 	[db db30:@"user" select:@"" block:nil];
 #endif
 }
