@@ -18,6 +18,7 @@
 		self.view.frame = frame;
 
 		scroll_view = [[UIScrollView alloc] initWithFrame:frame];
+		scroll_view.scrollsToTop = NO;
 		scroll_view.contentSize = [delegate scroll_tab_size:self];
 		//	scroll_view.autoresizingMask = 0;
 		//	NSLog(@"DEBUG content size: %@", NSStringFromCGSize(scroll_view.contentSize));
