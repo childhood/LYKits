@@ -134,6 +134,7 @@
 
 		[data setValue:NSStringFromCGSize(CGSizeMake(k_ly_table_accessory_size, k_ly_table_accessory_size)) forKey:@"accessory-size"];
 		[data setValue:[NSNumber numberWithBool:NO] forKey:@"move-enabled"];
+		[data setValue:[NSMutableArray array] forKey:@"edit-exclude"];
 		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
 		[data setValue:[NSMutableArray array] forKey:@"filter-array"];
 		[data setValue:@"Loading..." forKey:@"refresh-text"];
@@ -587,6 +588,13 @@
 	return cell;
 }
 
+#if 1
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return UITableViewCellEditingStyleDelete;
+}
+#endif
+
 - (void)action_accessory:(UIButton*)button event:(UIEvent*)event
 {
 	NSIndexPath* indexPath = [self.view indexPathForRowAtPoint:[[[event touchesForView:button] anyObject] locationInView:self.view]];
@@ -763,6 +771,9 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	for (NSIndexPath* path in [data v:@"edit-exclude"])
+		if ((indexPath.section == path.section) && (indexPath.row == path.row))
+			return NO;
 	return can_edit;
 }
 
@@ -814,6 +825,9 @@
 
 - (BOOL)tableView:(UITableView *)tableview canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	for (NSIndexPath* path in [data v:@"edit-exclude"])
+		if ((indexPath.section == path.section) && (indexPath.row == path.row))
+			return NO;
 	return [[data v:@"move-enabled"] boolValue];	
 }
 
@@ -830,8 +844,6 @@
 	if (accessories != nil)
 		[accessories exchange_path:path_old with:path_new];
 
-	//	[self refresh_animated];
-
 #if 1
 	//	modify source
 	if ([data v:@"source-data"] != nil)
@@ -843,6 +855,7 @@
 			objc_msgSend(delegate, @selector(tableView:moveRowAtIndexPath:toIndexPath:), view, path_old, path_new);
 	}
 #endif
+	//	[self refresh_animated];
 }
 
 #pragma mark dealloc

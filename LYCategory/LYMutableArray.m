@@ -72,7 +72,7 @@
 	if ((obj1 == nil) || (obj2 == nil))
 		return NO;
 
-	NSLog(@"exchange: %@\n%@", obj1, obj2);
+	//	NSLog(@"exchange: %@\n%@", obj1, obj2);
 	if (path1.section == path2.section)
 	{
 		[[self objectAtIndex:path1.section] exchangeObjectAtIndex:path1.row withObjectAtIndex:path2.row];
