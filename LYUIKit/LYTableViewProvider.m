@@ -1240,6 +1240,7 @@
 	search_bar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, -44, view.frame.size.width, 44)];
 	search_bar.delegate = self;
 	search_bar.placeholder = @"Keywords here...";
+	search_bar.tintColor = [UIColor blackColor];
 	search_bar.barStyle = UIBarStyleBlack;
 	search_bar.showsCancelButton = YES;
 	[view addSubview:search_bar];
