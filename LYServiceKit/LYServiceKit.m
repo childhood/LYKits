@@ -26,17 +26,41 @@
 - (void)name:(NSString*)name select:(NSString*)query block:(void (^)(NSArray* array, NSError* error))callback
 {
 	NSString* url;
-	url = [NSString stringWithFormat:@"%@/%@%@username=%@&password=%@",
+	url = [NSString stringWithFormat:@"%@/%@?%@username=%@&password=%@",
 							 [data v:@"host"], name, query,
 							 [data v:@"username"],
 							 [data v:@"password"]];
-		NSLog(@"url: %@", url);
+	//	NSLog(@"url: %@", url);
 	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
 	[request addRequestHeader:@"Accept" value:@"application/json"];
 	//[request setRequestMethod:@"GET"];
 	[request setCompletionBlock:^{
 		NSArray* contents = [[[request.responseString dictionary_json] v:@"list"] v:name];
-		NSLog(@"headers: %@", request.responseString);
+		//	NSLog(@"response: %@", request.responseString);
+		//	NSLog(@"contents: %@", contents);
+		callback(contents, nil);
+	}];
+	[request setFailedBlock:^{
+		//	NSLog(@"error: %@", request.error);
+		callback(nil, request.error);
+	}];
+	[request startAsynchronous];
+}
+
+- (void)name:(NSString*)name key:(NSString*)query block:(void (^)(NSArray* array, NSError* error))callback
+{
+	NSString* url;
+	url = [NSString stringWithFormat:@"%@/%@/%@?username=%@&password=%@",
+							 [data v:@"host"], name, query,
+							 [data v:@"username"],
+							 [data v:@"password"]];
+	//	NSLog(@"url: %@", url);
+	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+	[request addRequestHeader:@"Accept" value:@"application/json"];
+	//[request setRequestMethod:@"GET"];
+	[request setCompletionBlock:^{
+		NSArray* contents = [[request.responseString dictionary_json] v:name];
+		//	NSLog(@"response: %@", request.responseString);
 		//	NSLog(@"contents: %@", contents);
 		callback(contents, nil);
 	}];
@@ -81,12 +105,12 @@
 		//	NSLog(@"headers: %@", request.responseHeaders);
 		//	NSLog(@"response: %@", request.responseString);
 		NSArray* contents = [request.responseString componentsSeparatedByString:@","];
-		NSLog(@"contents: %@", contents);
-		//	callback(contents, nil);
+		//	NSLog(@"contents: %@", contents);
+		callback(contents, nil);
 	}];
 	[request setFailedBlock:^{
-		NSLog(@"error: %@", request.error);
-		//	callback(nil, request.error);
+		//	NSLog(@"error: %@", request.error);
+		callback(nil, request.error);
 	}];
 	[request startAsynchronous];
 }
@@ -100,15 +124,9 @@
 
 #if 0
 	//	select
-	[db name:@"database_model" select:@"" block:^(NSArray* array, NSError* error)
-	{
-		NSLog(@"result: %@ - %@", error, array);
-	}];
-#endif
-#if 1
-	//	select
-	[db name:@"database_model" select:@"/agpzfnN1cGVyLWRichULEg5kYXRhYmFzZV9tb2RlbBjrBww?" block:^(NSArray* array, NSError* error)
-	//[db name:@"database_model" select:@"/?" block:^(NSArray* array, NSError* error)
+	//[db name:@"database_model" select:@"" block:^(NSArray* array, NSError* error)
+	//[db name:@"database_model" select:@"feq_desc=desc-002&" block:^(NSArray* array, NSError* error)
+	[db name:@"database_model" key:@"agpzfnN1cGVyLWRichULEg5kYXRhYmFzZV9tb2RlbBjrBww" block:^(NSArray* array, NSError* error)
 	{
 		NSLog(@"result: %@ - %@", error, array);
 	}];
@@ -116,10 +134,13 @@
 #if 0
 	//	insert
 	[db name:@"database_model" insert:[NSArray arrayWithObjects:
-		[NSDictionary dictionaryWithObjectsAndKeys:@"id-005", @"id", @"desc-004", @"desc", @"data-004", @"data", nil],
-		nil] block:nil];
+		[NSDictionary dictionaryWithObjectsAndKeys:@"id-006", @"id", @"desc-006", @"desc", @"data-006", @"data", nil],
+		nil] block:^(NSArray* array, NSError* error)
+	{
+		NSLog(@"result: %@ - %@", error, array);
+	}];
 #endif
-#if 0
+#if 1
 	//	set scheme - should be hard coded in application abstract layer, dbxxx does not care about all these
 	[[db.data v:@"scheme"] key:@"user" v:[NSArray arrayWithObjects:
 		@"email",
