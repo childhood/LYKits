@@ -117,11 +117,7 @@
 
 - (void)test
 {
-#if 1
 	LYDatabase* db = [[LYDatabase alloc] init];
-	//[db test];
-#endif
-
 #if 0
 	//	select
 	//[db name:@"database_model" select:@"" block:^(NSArray* array, NSError* error)
@@ -140,7 +136,7 @@
 		NSLog(@"result: %@ - %@", error, array);
 	}];
 #endif
-#if 1
+#if 0
 	//	set scheme - should be hard coded in application abstract layer, dbxxx does not care about all these
 	[[db.data v:@"scheme"] key:@"user" v:[NSArray arrayWithObjects:
 		@"email",
@@ -162,6 +158,7 @@
 #if 0
 	[db db30:@"user" select:@"" block:nil];
 #endif
+	[db release];
 }
 
 @end

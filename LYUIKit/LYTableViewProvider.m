@@ -527,7 +527,13 @@
 
 			if (accessory != nil)
 			{
-				if ([accessory is:@"default"] == NO)
+				if ([accessory is:@"default"])
+					cell.accessoryType = accessory_type;
+				if ([accessory is:@"checkmark"])
+					cell.accessoryType = UITableViewCellAccessoryCheckmark;
+				else if ([accessory is:@"none"])
+					cell.accessoryType = UITableViewCellAccessoryNone;
+				else
 				{
 					CGSize accessory_size = CGSizeFromString([data v:@"accessory-size"]);
 					//UIButton* button = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size)] autorelease];
@@ -538,8 +544,6 @@
 					[button addTarget:self action:@selector(action_accessory:event:) forControlEvents:UIControlEventTouchUpInside];
 					cell.accessoryView = button;
 				}
-				else
-					cell.accessoryType = accessory_type;
 			}
 			else
 			{
@@ -809,10 +813,12 @@
 		//	modify source - TODO: support section
 		if ([data v:@"source-data"] != nil)
 		{
+			NSLog(@"xxx %@", [data v:@"source-data"]);
 			[data setObject:[[data v:@"source-data"] i:indexPath.row] forKey:@"source-deleted-object"];
 			//	[data setObject:[NSNumber numberWithInt:indexPath.row] forKey:@"source-deleted-row"];
 			//	NSLog(@"removing %i from %@", indexPath.row, [data v:@"source-data"]);
 			[[data v:@"source-data"] removeObjectAtIndex:indexPath.row];
+			NSLog(@"xxx %@", [data v:@"source-data"]);
 			if ([data v:@"source-filename"] != nil)
 				[[data v:@"source-data"] writeToFile:[data v:@"source-filename"] atomically:YES];
 			else if ([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)])

@@ -1,5 +1,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "LYMusicJukeboxController.h"
+#import "LYKits.h"
 
 /*
  * Usage of Music Jukebox
@@ -21,6 +22,33 @@
  */
 
 //	TODO: move tested codes elsewhere
+
+@interface LYMusicPlayer: NSObject <MPMediaPickerControllerDelegate>
+{
+	MPMediaPickerController*	controller_player_picker;
+	MPMusicPlayerController*	player;
+	NSMutableDictionary*		data;
+}
+@property (nonatomic, retain) NSMutableDictionary*	data;
+
+- (void)set_playlist_table:(UITableView*)table;
+- (void)set_artwork:(UIImageView*)image;
+- (void)set_buttons_play:(UIButton*)play prev:(UIButton*)prev next:(UIButton*)next shuffle:(UIButton*)shuffle repeat:(UIButton*)repeat;
+- (void)set_sliders_progress:(UISlider*)progress volume:(UISlider*)volume;
+- (void)playlist_add;
+- (void)player_play;
+- (void)player_prev;
+- (void)player_next;
+- (void)player_shuffle;
+- (void)player_repeat;
+- (void)reload;
+- (void)player_progress_timer;
+- (void)player_progress_change;
+- (void)player_item_changed:(NSNotification*)notification;
+- (void)player_volume_changed:(NSNotification*)notification;
+- (void)player_volume_change;
+
+@end
 
 #if 0
 @interface MPMediaQuery (LYMediaQuery)
