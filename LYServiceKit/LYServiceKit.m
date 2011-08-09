@@ -103,7 +103,7 @@
 #endif
 	//[request appendPostData:[@"This is my data" dataUsingEncoding:NSUTF8StringEncoding]];
 	[request setCompletionBlock:^{
-			NSLog(@"headers: %@", request.responseHeaders);
+		//	NSLog(@"headers: %@", request.responseHeaders);
 		//	NSLog(@"response: %@", request.responseString);
 		NSArray* contents = [request.responseString componentsSeparatedByString:@","];
 		//	NSLog(@"contents: %@", contents);
@@ -142,7 +142,7 @@
 
 	[dest key:@"name" v:dbname];
 	[dest key:@"username" v:[data v:@"username"]];
-	[dest key:@"password" v:[data v:@"password"]];
+	[dest key:@"password" v:@"********"];
 #if 0
 	int i, count;
 	if ([[dict v:@"database"] is:@"db30_model"])
@@ -153,7 +153,7 @@
 		[dest key:[NSString stringWithFormat:@"t%i", i] v:@""];
 	}
 #endif
-	NSLog(@"scheme: %@", dict);
+	//	NSLog(@"scheme: %@", dict);
 	for (NSDictionary* dict_item in source)
 	{
 		for (NSString* key in dict_item)
@@ -167,17 +167,18 @@
 				type = @"t";
 			}
 			index = [[dict v:type] indexOfObject:key];
-			NSLog(@"%i: %@", index, key);
+			//	NSLog(@"%i: %@", index, key);
 			[dest key:[NSString stringWithFormat:@"%@%i", type, index] v:obj];
 		}
 	}
-	NSLog(@"dest: %@", dest);
+	//	NSLog(@"dest: %@", dest);
 #if 1
 	[self name:[dict v:@"database"] insert:[NSArray arrayWithObjects:dest,
 		//[NSDictionary dictionaryWithObjectsAndKeys:@"id-006", @"id", @"desc-006", @"desc", @"data-006", @"data", nil],
 		nil] block:^(NSArray* array, NSError* error)
 	{
-		NSLog(@"add user result: %@ - %@", error, array);
+		callback(array, error);
+		//	NSLog(@"add user result: %@ - %@", error, array);
 	}];
 #endif
 }
@@ -210,7 +211,7 @@
 		[NSDictionary dictionaryWithObjectsAndKeys:
 			@"no@name.com",
 			@"email",
-			@"Leo.002",
+			@"Leo.003",
 			@"name",
 			[NSMutableArray arrayWithObjects:
 				@"noa@name.com",
@@ -218,7 +219,10 @@
 				nil],
 			@"friends",
 			nil],
-		nil] block:nil];
+		nil] block:^(NSArray* array, NSError* error)
+	{
+		NSLog(@"result sdb insert: %@ - %@", error, array);
+	}];
 #endif
 #if 0
 	[db db30_model:@"user" select:@"" block:nil];
