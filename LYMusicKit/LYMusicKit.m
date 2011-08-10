@@ -38,6 +38,7 @@
 		[data key:@"controller-navigation" v:nil];
 		[data key:@"controller-playlist" v:nil];
 		[data key:@"controller-picker" v:nil];
+		[data key:@"media-music" v:nil];
 		//	buttons
 		[data key:@"player-play" v:nil];
 		[data key:@"player-prev" v:nil];
@@ -73,6 +74,7 @@
 																 selector:@selector(player_progress_timer) 
 																 userInfo:nil repeats:YES];
 		[timer_progress fire];
+		[self sync];
 	}
 	return self;
 }
@@ -81,6 +83,21 @@
 {
 	[data release];
 	[super dealloc];
+}
+
+- (void)sync
+{
+	NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+	for (MPMediaItem* item in [MPMediaQuery songsQuery].items)
+	{
+		NSString* s = [NSString stringWithFormat:@"%@\n%@",
+						  [item valueForProperty:MPMediaItemPropertyTitle],
+						  [item valueForProperty:MPMediaItemPropertyArtist]];
+		[dict setObject:item forKey:s];
+	}
+	[data key:@"media-music" v:dict];
+	//	[data key:@"media-music" v:[MPMediaQuery songsQuery].items];
+	//	NSLog(@"music: %@", [data v:@"media-music"]);
 }
 
 - (void)set_artwork:(UIImageView*)image
@@ -150,8 +167,12 @@
 	BOOL duplicate;
 	NSMutableArray* array = [NSMutableArray array];
 	//for (MPMediaItem* item_old in [data v:@"playlist-items"])
+	NSLog(@"PLAYER reload begin");
 	for (NSDictionary* item_old in [data v:@"playlist-items"])
 	{
+#if 1
+		duplicate = [array containsObject:item_old];
+#else
 		duplicate = NO;
 		//for (MPMediaItem* item_new in array)
 		for (NSDictionary* item_new in array)
@@ -165,11 +186,13 @@
 				break;
 			}
 		}
+#endif
 		if (duplicate == NO)
 		{
 			[array addObject:item_old];
 		}
 	}
+	NSLog(@"PLAYER reload end");
 	[[data v:@"playlist-items"] removeAllObjects];
 	[[data v:@"playlist-items"] addObjectsFromArray:array];
 	
@@ -227,8 +250,8 @@
 		controller_player_picker.allowsPickingMultipleItems = YES;
 		controller_player_picker.delegate = self;
 		//controller_player_picker.prompt = @"Music Picker";
-		//[[data v:@"controller-navigation"] presentModalViewController:controller_player_picker animated:YES];
-		[[data v:@"controller-navigation"] pushViewController:controller_player_picker animated:YES];
+		[[data v:@"controller-navigation"] presentModalViewController:controller_player_picker animated:YES];
+		//[[data v:@"controller-navigation"] pushViewController:controller_player_picker animated:YES];
 	}
 	else
 		[@"Media Not Available" show_alert_message:@"Sorry, Media Picker is not supported on this device."];
@@ -281,16 +304,35 @@
 - (void)player_refresh:(NSArray*)source
 {
 	NSMutableArray* array = [NSMutableArray array];
+	//	NSLog(@"PLAYER refresh begin");
 	for (NSDictionary* dict in source)
 	{
+#if 1
+		NSString* s = [NSString stringWithFormat:@"%@\n%@", [dict v:@"title"], [dict v:@"artist"]];
+		[array addObject:[[data v:@"media-music"] v:s]];
+		/*
+		for (MPMediaItem* item in [data v:@"media-music"])
+		{
+			if (([[dict v:@"title"] is:[item valueForProperty:MPMediaItemPropertyTitle]]) &&
+				([[dict v:@"artist"] is:[item valueForProperty:MPMediaItemPropertyArtist]]))
+			{
+				[array addObject:item];
+				break;
+			}
+		}
+		*/
+#else
 		id obj = [ly alloc_media_item_artist:[dict v:@"artist"] album:nil title:[dict v:@"title"]];
 		if (obj != nil)
 			[array addObject:obj];
+#endif
 		//	TODO: remove invalid songs from current playlist
 	}
+	//	NSLog(@"PLAYER ended");
 	MPMediaItemCollection* collection = [MPMediaItemCollection collectionWithItems:array];
 	[player setQueueWithItemCollection:collection];
 	[player play];
+	//	NSLog(@"PLAYER play started: %i", player.playbackState);
 }
 
 - (void)player_play
@@ -326,13 +368,13 @@
 
 - (void)player_prev
 {
-	NSLog(@"PLAYER previous");
+	//	NSLog(@"PLAYER previous");
 	[player skipToPreviousItem];
 }
 
 - (void)player_next
 {
-	NSLog(@"PLAYER next");
+	//	NSLog(@"PLAYER next");
 	[player skipToNextItem];
 }
 
@@ -404,15 +446,20 @@
 
 - (void)tableView:(UITableView*)table didSelectRowAtIndexPath:(NSIndexPath*)path
 {
+	int i;
 	MPMusicShuffleMode shuffle = player.shuffleMode;
 	player.shuffleMode = MPMusicShuffleModeOff;
 	NSMutableArray* array = [NSMutableArray arrayWithArray:[data v:@"playlist-items"]];
+	NSMutableArray* dest = [NSMutableArray array];
 	//[data key:@"playlist-changed" v:[NSNumber numberWithBool:YES]];
 	[player stop];
 	//	NSLog(@"play %i", path.row);
 	//	[self debug_playlist_items];
-	[array exchangeObjectAtIndex:0 withObjectAtIndex:path.row];
-	[self player_refresh:array];
+	for (i = path.row; i < array.count; i++)
+		[dest addObject:[array objectAtIndex:i]];
+	for (i = 0; i < path.row; i++)
+		[dest addObject:[array objectAtIndex:i]];
+	[self player_refresh:dest];
 	player.shuffleMode = shuffle;
 }
 
@@ -421,8 +468,8 @@
 	BOOL was_playing = (player.playbackState == MPMusicPlaybackStatePlaying);
 	[self reload];
 	if (was_playing)
-		[self player_play];
-	[controller_player_picker release];
+		[self performSelector:@selector(player_play) withObject:nil afterDelay:0.3];
+	NSLog(@"was playing: %i", was_playing);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath :(NSIndexPath *)indexPath
@@ -448,21 +495,23 @@
 			nil]];
 	}
 	//	[[data v:@"playlist-items"] addObjectsFromArray:collection.items];
-	//[[data v:@"controller-navigation"] dismissModalViewControllerAnimated:YES];
-	[[data v:@"controller-navigation"] popViewControllerAnimated:YES];
+	[[data v:@"controller-navigation"] dismissModalViewControllerAnimated:YES];
+	//[[data v:@"controller-navigation"] popViewControllerAnimated:YES];
 	[self reload_play];
+	[controller_player_picker release];
 }
 
 - (void)mediaPickerDidCancel:(MPMediaPickerController*)picker
 {
 	NSLog(@"PICKER cancelled");
-	//[[data v:@"controller-navigation"] dismissModalViewControllerAnimated:YES];
-	[[data v:@"controller-navigation"] popViewControllerAnimated:YES];
+	[[data v:@"controller-navigation"] dismissModalViewControllerAnimated:YES];
+	//[[data v:@"controller-navigation"] popViewControllerAnimated:YES];
 	[controller_player_picker release];
 }
 
 - (void)player_item_changed:(NSNotification*)notification
 {
+#if 1
 	UILabel* label_title	= [data v:@"player-title"];
 	UILabel* label_artist	= [data v:@"player-artist"];
 	UILabel* label_album	= [data v:@"player-album"];
@@ -476,32 +525,44 @@
 	if (artwork != nil)
 		artwork.image = [[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:artwork.frame.size];
 	//	NSLog(@"PLAYER item changed: %@", player.nowPlayingItem);
-	int index = -1;
-	if (player.playbackState == MPMusicPlaybackStatePlaying)
+	//	0.2 works for 3gs as well, but leave 0.3 for safety
+	[ly perform_after:0.3 block:^(void)
 	{
-		//for (MPMediaItem* item in [data v:@"playlist-items"])
-		for (NSDictionary* item in [data v:@"playlist-items"])
+		int index = -1;
+		//	NSLog(@"playlist: %@, %i", [data v:@"playlist-items"], player.playbackState);
+		if (player.playbackState == MPMusicPlaybackStatePlaying)
 		{
-			index++;
-			//	if ([[item valueForProperty:MPMediaItemPropertyPersistentID] longValue] ==
-			//		[[player.nowPlayingItem valueForProperty:MPMediaItemPropertyPersistentID] longValue])
-			if ([[item v:@"title"] is:[player.nowPlayingItem valueForProperty:MPMediaItemPropertyTitle]] &&
-				[[item v:@"artist"] is:[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtist]])
-				break;
+			//for (MPMediaItem* item in [data v:@"playlist-items"])
+			for (NSDictionary* item in [data v:@"playlist-items"])
+			{
+				index++;
+#if 0
+				NSLog(@"%@/%@\n%@", [player.nowPlayingItem valueForProperty:MPMediaItemPropertyTitle],
+									[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtist], item);
+#endif
+				//	if ([[item valueForProperty:MPMediaItemPropertyPersistentID] longValue] ==
+				//		[[player.nowPlayingItem valueForProperty:MPMediaItemPropertyPersistentID] longValue])
+				if ([[item v:@"title"] is:[player.nowPlayingItem valueForProperty:MPMediaItemPropertyTitle]] &&
+					[[item v:@"artist"] is:[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtist]])
+					break;
+			}
 		}
-	}
-	if (index >= 0)
-	{
-		LYTableViewProvider* provider = [data v:@"playlist-provider"];
-		[[provider.accessories objectAtIndex:0] removeAllObjects];
-		for (int i = 0; i < [[data v:@"playlist-items"] count]; i++)
-			if (index == i)
-				[[provider.accessories objectAtIndex:0] addObject:@"checkmark"];
-			else
-				[[provider.accessories objectAtIndex:0] addObject:@"none"];
-		[provider.view reloadData];
-	}
-	NSLog(@"PLAYER now playing index: %i", index);
+		else
+			NSLog(@"player is not playing");
+		if (index >= 0)
+		{
+			LYTableViewProvider* provider = [data v:@"playlist-provider"];
+			[[provider.accessories objectAtIndex:0] removeAllObjects];
+			for (int i = 0; i < [[data v:@"playlist-items"] count]; i++)
+				if (index == i)
+					[[provider.accessories objectAtIndex:0] addObject:@"checkmark"];
+				else
+					[[provider.accessories objectAtIndex:0] addObject:@"none"];
+			[provider.view reloadData];
+		}
+		NSLog(@"PLAYER now playing index: %i", index);
+	}];
+#endif
 }
 
 - (void)player_state_changed:(NSNotification*)notification

@@ -169,6 +169,11 @@ static LYKits*	ly_shared_manager = nil;
 	}
 }
 
++ (void)perform_after:(NSTimeInterval)delay block:(void(^)(void))block
+{
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*delay), dispatch_get_current_queue(), block);
+}
+
 #ifdef LY_ENABLE_MUSICKIT
 + (NSInteger)media_count_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title
 {
