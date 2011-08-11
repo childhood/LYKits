@@ -1,6 +1,8 @@
 typedef void(^LYBlockVoidVoid)(void);
 typedef void(^LYBlockVoidBool)(BOOL b);
 typedef void(^LYBlockVoidInt)(int i);
+typedef void(^LYBlockVoidArrayError)(NSArray* array, NSError* error);
+typedef BOOL(^LYBlockBoolArrayError)(NSArray* array, NSError* error);
 
 #import "LYCategory.h"
 #import "LYFoundation.h"
