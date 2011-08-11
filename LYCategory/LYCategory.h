@@ -12,6 +12,7 @@
 #import "LYWebView.h"
 #import "LYButton.h"
 #import "LYImage.h"
+#import "LYAlertView.h"
 #import "LYDevice.h"
 #import "LYControl.h"
 #import "LYImagePickerController.h"

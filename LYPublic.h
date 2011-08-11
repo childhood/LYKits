@@ -1,3 +1,7 @@
+typedef void(^LYBlockVoidVoid)(void);
+typedef void(^LYBlockVoidBool)(BOOL b);
+typedef void(^LYBlockVoidInt)(int i);
+
 #import "LYCategory.h"
 #import "LYFoundation.h"
 #import "LYUIKit.h"

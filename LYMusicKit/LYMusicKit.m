@@ -75,6 +75,7 @@
 																 userInfo:nil repeats:YES];
 		[timer_progress fire];
 		[self sync];
+		[self load_backup];
 	}
 	return self;
 }
@@ -166,12 +167,14 @@
 	//	remove duplicate
 	BOOL duplicate;
 	NSMutableArray* array = [NSMutableArray array];
+	NSMutableDictionary* dict = [NSMutableDictionary dictionary];
 	//for (MPMediaItem* item_old in [data v:@"playlist-items"])
 	NSLog(@"PLAYER reload begin");
 	for (NSDictionary* item_old in [data v:@"playlist-items"])
 	{
 #if 1
-		duplicate = [array containsObject:item_old];
+		//duplicate = [array containsObject:item_old];
+		duplicate = ([dict v:[NSString stringWithFormat:@"%@\n%@", [item_old v:@"title"], [item_old v:@"artist"]]] == [NSNull null]);
 #else
 		duplicate = NO;
 		//for (MPMediaItem* item_new in array)
@@ -189,6 +192,7 @@
 #endif
 		if (duplicate == NO)
 		{
+			[dict key:[NSString stringWithFormat:@"%@\n%@", [item_old v:@"title"], [item_old v:@"artist"]] v:[NSNull null]];
 			[array addObject:item_old];
 		}
 	}
@@ -202,6 +206,7 @@
 	[[provider.texts objectAtIndex:0] removeAllObjects];
 	[[provider.details objectAtIndex:0] removeAllObjects];
 	//for (MPMediaItem* item in [data v:@"playlist-items"])
+	int index = 1;
 	for (NSDictionary* item in [data v:@"playlist-items"])
 	{
 #if 0
@@ -211,15 +216,32 @@
 #endif
 		//[[provider.texts objectAtIndex:0] addObject:[item valueForProperty:MPMediaItemPropertyTitle]];
 		//[[provider.details objectAtIndex:0] addObject:[item valueForProperty:MPMediaItemPropertyArtist]];
-		[[provider.texts objectAtIndex:0] addObject:[item v:@"title"]];
+		[[provider.texts objectAtIndex:0] addObject:[NSString stringWithFormat:@"%i. %@", index, [item v:@"title"]]];
 		[[provider.details objectAtIndex:0] addObject:[item v:@"artist"]];
 		changed = YES;
+		index++;
 	}
 	[[data v:@"playlist-table"] reloadData];
 	if (changed == YES)
 	{
 		[data key:@"playlist-changed" v:[NSNumber numberWithBool:YES]];
 		[player stop];
+	}
+	[self save_backup];
+}
+
+- (void)save_backup
+{
+	[[data v:@"playlist-items"] writeToFile:[@"ly-musicplayer-playlist-autosave.xml" filename_private] atomically:YES];
+}
+
+- (void)load_backup
+{
+	if ([@"ly-musicplayer-playlist-autosave.xml" file_exists])
+	{
+		[[data v:@"playlist-items"] setArray:[NSMutableArray arrayWithContentsOfFile:
+			[@"ly-musicplayer-playlist-autosave.xml" filename_private]]];
+		[self reload];
 	}
 }
 

@@ -48,6 +48,8 @@
 - (void)player_item_changed:(NSNotification*)notification;
 - (void)player_volume_changed:(NSNotification*)notification;
 - (void)player_volume_change;
+- (void)save_backup;
+- (void)load_backup;
 
 @end
 
