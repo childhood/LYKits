@@ -130,6 +130,7 @@
 			[NSArray arrayWithObjects:
 				@"email",
 				@"name",
+				@"pin",
 				nil],
 			@"s",
 			[NSArray arrayWithObjects:
@@ -280,6 +281,7 @@
 		NSLog(@"result sdb insert: %@ - %@", error, array);
 	}];
 #endif
+#if 0
 	[db insert_user:[NSDictionary dictionaryWithObjectsAndKeys:
 		@"no5@name.com",
 		@"email",
@@ -294,6 +296,7 @@
 	{
 		NSLog(@"result user insert: %@ - %@", error, array);
 	}];
+#endif
 
 #if 0
 	[db db30_model:@"user" select:@"" block:nil];
