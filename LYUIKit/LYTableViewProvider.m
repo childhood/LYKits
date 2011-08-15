@@ -813,12 +813,10 @@
 		//	modify source - TODO: support section
 		if ([data v:@"source-data"] != nil)
 		{
-			NSLog(@"xxx %@", [data v:@"source-data"]);
 			[data setObject:[[data v:@"source-data"] i:indexPath.row] forKey:@"source-deleted-object"];
 			//	[data setObject:[NSNumber numberWithInt:indexPath.row] forKey:@"source-deleted-row"];
 			//	NSLog(@"removing %i from %@", indexPath.row, [data v:@"source-data"]);
 			[[data v:@"source-data"] removeObjectAtIndex:indexPath.row];
-			NSLog(@"xxx %@", [data v:@"source-data"]);
 			if ([data v:@"source-filename"] != nil)
 				[[data v:@"source-data"] writeToFile:[data v:@"source-filename"] atomically:YES];
 			else if ([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)])

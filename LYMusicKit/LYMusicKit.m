@@ -218,6 +218,7 @@
 		//[[provider.details objectAtIndex:0] addObject:[item valueForProperty:MPMediaItemPropertyArtist]];
 		[[provider.texts objectAtIndex:0] addObject:[NSString stringWithFormat:@"%i. %@", index, [item v:@"title"]]];
 		[[provider.details objectAtIndex:0] addObject:[item v:@"artist"]];
+		[[provider.accessories objectAtIndex:0] addObject:@"none"];
 		changed = YES;
 		index++;
 	}
