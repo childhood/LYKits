@@ -10,6 +10,9 @@
 	if (self != nil)
 	{
 		//	init player
+#if TARGET_IPHONE_SIMULATOR
+		player = nil;
+#else
 		player = [MPMusicPlayerController iPodMusicPlayer];
 		//player = [MPMusicPlayerController applicationMusicPlayer];
 		player.shuffleMode = MPMusicShuffleModeOff;
@@ -29,6 +32,7 @@
 								 object:player];
 		[player beginGeneratingPlaybackNotifications];
 		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+#endif
 
 		//	init data
 		data = [[NSMutableDictionary alloc] init];
@@ -107,6 +111,8 @@
 		UITapGestureRecognizer* gesture;
 
 		gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(player_play)];
+		gesture.numberOfTapsRequired = 1;
+		gesture.numberOfTouchesRequired = 2;
 		[image addGestureRecognizer:gesture];
 		[gesture release];
 	}
@@ -539,6 +545,7 @@
 	UILabel* label_artist	= [data v:@"player-artist"];
 	UILabel* label_album	= [data v:@"player-album"];
 	UIImageView* artwork	= [data v:@"player-artwork"];
+	UIImageView* reflection	= [data v:@"player-reflection"];
 	if (label_title != nil)
 		label_title.text = [player.nowPlayingItem valueForProperty:MPMediaItemPropertyTitle];
 	if (label_artist != nil)
@@ -547,6 +554,8 @@
 		label_album.text = [player.nowPlayingItem valueForProperty:MPMediaItemPropertyAlbumTitle];
 	if (artwork != nil)
 		artwork.image = [[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:artwork.frame.size];
+	if (reflection != nil)
+		reflection.image = [UIImage image_flip_vertically:artwork.image];
 	//	NSLog(@"PLAYER item changed: %@", player.nowPlayingItem);
 	//	0.2 works for 3gs as well, but leave 0.3 for safety
 	[ly perform_after:0.3 block:^(void)

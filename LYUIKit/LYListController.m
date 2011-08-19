@@ -7,6 +7,7 @@
 @synthesize table;
 @synthesize delegate;
 @synthesize name;
+@synthesize data;
 
 - (id)initWithController:(UIViewController*)controller
 {
@@ -16,6 +17,8 @@
 		controller_parent = controller;
 		dict = nil;
 		provider_table = nil;
+		data = [[NSMutableDictionary alloc] init];
+		[data key:@"edit-enabled" v:[NSNumber numberWithBool:NO]];
 	}
 	return self;
 }
@@ -79,6 +82,7 @@
 
 - (void)dealloc
 {
+	[data release];
 	[provider_picker release];
 	[provider_table release];
 	[super dealloc];
@@ -111,7 +115,7 @@
 	dict = [a_dict retain];
 
 	[provider_table.texts removeAllObjects];
-	[provider_table.texts addObject:[NSArray arrayWithArray:[[a_dict allKeys] sortedArrayUsingSelector:@selector(compare:)]]];
+	[provider_table.texts addObject:[NSMutableArray arrayWithArray:[[a_dict allKeys] sortedArrayUsingSelector:@selector(compare:)]]];
 	[table reloadData];
 
 	//	picker

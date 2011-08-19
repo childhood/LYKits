@@ -12,6 +12,8 @@
 		self.textAlignment	= target.textAlignment;
 		self.lineBreakMode	= target.lineBreakMode;
 		self.numberOfLines	= target.numberOfLines;
+		self.shadowColor	= target.shadowColor;
+		self.shadowOffset	= target.shadowOffset;
 	}
 }
 

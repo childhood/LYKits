@@ -4,38 +4,44 @@
 
 + (UIImage *)image_flip_vertically:(UIImage *)originalImage
 {
-	UIImageView *tempImageView = [[UIImageView alloc] initWithImage:originalImage];
+	@synchronized(self)
+	{
+		UIImageView *tempImageView = [[UIImageView alloc] initWithImage:originalImage];
 
-	UIGraphicsBeginImageContext(tempImageView.frame.size);
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, tempImageView.frame.size.height);
-	CGContextConcatCTM(context, flipVertical);  
+		UIGraphicsBeginImageContext(tempImageView.frame.size);
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, tempImageView.frame.size.height);
+		CGContextConcatCTM(context, flipVertical);  
 
-	[tempImageView.layer renderInContext:context];
+		[tempImageView.layer renderInContext:context];
 
-	UIImage *flipedImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	[tempImageView release];
+		UIImage *flipedImage = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		[tempImageView release];
 
-	return flipedImage;
+		return flipedImage;
+	}
 }
 
 + (UIImage *)image_flip_horizontally:(UIImage *)originalImage
 {
-	UIImageView *tempImageView = [[UIImageView alloc] initWithImage:originalImage];
+	@synchronized(self)
+	{
+		UIImageView *tempImageView = [[UIImageView alloc] initWithImage:originalImage];
 
-	UIGraphicsBeginImageContext(tempImageView.frame.size);
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGAffineTransform flipVertical = CGAffineTransformMake(-1, 0, 0, 1, tempImageView.frame.size.width, 0);
-	CGContextConcatCTM(context, flipVertical);  
+		UIGraphicsBeginImageContext(tempImageView.frame.size);
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		CGAffineTransform flipVertical = CGAffineTransformMake(-1, 0, 0, 1, tempImageView.frame.size.width, 0);
+		CGContextConcatCTM(context, flipVertical);  
 
-	[tempImageView.layer renderInContext:context];
+		[tempImageView.layer renderInContext:context];
 
-	UIImage *flipedImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	[tempImageView release];
+		UIImage *flipedImage = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		[tempImageView release];
 
-	return flipedImage;
+		return flipedImage;
+	}
 }
 
 - (UIImage*)image_with_size_aspect:(CGSize)newSize

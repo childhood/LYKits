@@ -38,12 +38,14 @@
 	NSString*				name;
 	NSString*				mode;
 	NSString*				current_picker_title;
+	NSMutableDictionary*	data;
 }
 @property (nonatomic, retain) LYTableViewProvider*	provider_table;
 @property (nonatomic, retain) NSDictionary*			dict;
 @property (nonatomic, retain) UITableView*			table;
 @property (nonatomic, retain) NSObject*				delegate;
 @property (nonatomic, retain) NSString*				name;
+@property (nonatomic, retain) NSMutableDictionary*	data;
 
 - (id)initWithController:(UIViewController*)controller;
 - (id)initWithNav:(UINavigationController*)a_nav;
