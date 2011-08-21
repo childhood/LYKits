@@ -14,6 +14,8 @@
 		[data key:@"username"	v:@"test"];
 		[data key:@"password"	v:@"passwordtest"];
 		[data key:@"scheme"		v:[NSMutableDictionary dictionary]];
+
+		[self set_scheme_user];
 	}
 	return self;
 }
@@ -123,17 +125,20 @@
 		[[data v:@"scheme"] key:@"user" v:[NSDictionary dictionaryWithObjectsAndKeys:
 			@"db30_model",
 			@"database",
+			[NSNumber numberWithInt:30],
+			@"count",
 			[NSArray arrayWithObjects:
 				@"email",
 				nil],
 			@"unique",
 			[NSArray arrayWithObjects:
 				@"email",
-				@"name",
+				@"name-display",
 				@"pin",
 				nil],
 			@"s",
 			[NSArray arrayWithObjects:
+				@"apps",
 				@"friends",
 				nil],
 			@"t",
@@ -198,10 +203,45 @@
 #endif
 }
 
+- (void)sdb:(NSString*)dbname verify:(NSDictionary*)dict block:(LYBlockVoidDictError)callback
+{
+	NSString* query = @"";
+	NSDictionary* scheme = [[data v:@"scheme"] v:dbname];
+
+	for (NSString* key in dict)
+	{
+		//	NSLog(@"k/v: %@, %@ - %@", key, [dict v:key], [scheme v:@"s"]);
+		NSString* s = [NSString stringWithFormat:@"s%i", [[scheme v:@"s"] indexOfObject:key]];
+		query = [query stringByAppendingFormat:@"feq_%@=%@&", s, [dict v:key]];
+	}
+	//	NSLog(@"verify: %@, scheme: %@", query, scheme);
+	[self name:[scheme v:@"database"] select:query block:^(NSArray* array, NSError* error)
+	{
+		NSDictionary* dict = (NSDictionary*)array;
+		NSMutableDictionary* ret = [NSMutableDictionary dictionary];
+		NSString* s;
+		//	NSLog(@"%@ - %@", error, dict);
+		for (int i = 0; i < [[scheme v:@"count"] intValue]; i++)
+		{
+			s = [NSString stringWithFormat:@"s%i", i];
+			if ([dict v:s] != nil)
+				[ret key:[[scheme v:@"s"] i:i] v:[dict v:s]];
+			s = [NSString stringWithFormat:@"t%i", i];
+			if ([dict v:s] != nil)
+				[ret key:[[scheme v:@"t"] i:i] v:[[dict v:s] array_json]];
+		}
+		[ret key:@"create" v:[dict v:@"create"]];
+		[ret key:@"update" v:[dict v:@"update"]];
+		[ret key:@"name" v:[dict v:@"name"]];
+		[ret key:@"key" v:[dict v:@"key"]];
+		//	NSLog(@"result: %@", ret);
+		callback(ret, error);
+	}];
+}
+
 - (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback
 {
 	NSDictionary* source = dict;
-	[self set_scheme_user];
 
 	NSString* query_unique = @"";
 	for (NSString* item in [[[data v:@"scheme"] v:@"user"] v:@"unique"])
@@ -258,7 +298,7 @@
 			@"no1@name.com",
 			@"email",
 			@"Leo.004",
-			@"name",
+			@"name-display",
 			[NSMutableArray arrayWithObjects:
 				@"noa@name.com",
 				@"nob@name.com",
@@ -269,7 +309,7 @@
 			@"no2@name.com",
 			@"email",
 			@"Leo.005",
-			@"name",
+			@"name-display",
 			[NSMutableArray arrayWithObjects:
 				@"noa@name.com",
 				@"nob@name.com",
@@ -278,7 +318,7 @@
 			nil],
 		nil] block:^(NSArray* array, NSError* error)
 	{
-		NSLog(@"result sdb insert: %@ - %@", error, array);
+		//	NSLog(@"result sdb insert: %@ - %@", error, array);
 	}];
 #endif
 #if 0
@@ -286,7 +326,7 @@
 		@"no5@name.com",
 		@"email",
 		@"Leo.004",
-		@"name",
+		@"name-display",
 		[NSMutableArray arrayWithObjects:
 			@"noa@name.com",
 		@"nob@name.com",
