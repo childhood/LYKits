@@ -108,6 +108,7 @@ BOOL supersound_inited;
 #ifdef LY_ENABLE_SDK_TOUCHJSON
 - (NSDictionary*)dictionary_json;
 - (NSArray*)array_json;
+- (id)obj_json;
 #endif
 
 @end

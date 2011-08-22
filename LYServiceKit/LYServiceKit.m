@@ -146,6 +146,32 @@
 	}
 }
 
+- (void)set_scheme_post
+{
+	if ([[data v:@"scheme"] v:@"post"] == nil)
+	{
+		[[data v:@"scheme"] key:@"post" v:[NSDictionary dictionaryWithObjectsAndKeys:
+			@"db30_model",
+			@"database",
+			[NSNumber numberWithInt:30],
+			@"count",
+			[NSArray arrayWithObjects:
+				@"parent",
+				nil],
+			@"unique",
+			[NSArray arrayWithObjects:
+				@"title",
+				@"blob",
+				nil],
+			@"s",
+			[NSArray arrayWithObjects:
+				@"content",
+				nil],
+			@"t",
+			nil]];
+	}
+}
+
 - (void)sdb:(NSString*)dbname insert:(NSArray*)source block:(LYBlockVoidArrayError)callback
 {
 	NSDictionary* dict			= [[data v:@"scheme"] v:dbname];
@@ -220,6 +246,7 @@
 		NSDictionary* dict = (NSDictionary*)array;
 		NSMutableDictionary* ret = [NSMutableDictionary dictionary];
 		NSString* s;
+		id obj;
 		//	NSLog(@"%@ - %@", error, dict);
 		for (int i = 0; i < [[scheme v:@"count"] intValue]; i++)
 		{
@@ -228,7 +255,13 @@
 				[ret key:[[scheme v:@"s"] i:i] v:[dict v:s]];
 			s = [NSString stringWithFormat:@"t%i", i];
 			if ([dict v:s] != nil)
-				[ret key:[[scheme v:@"t"] i:i] v:[[dict v:s] array_json]];
+			{
+				obj = [[dict v:s] obj_json];
+				if (obj != nil)
+					[ret key:[[scheme v:@"t"] i:i] v:[[dict v:s] obj_json]];
+				else
+					[ret key:[[scheme v:@"t"] i:i] v:[dict v:s]];
+			}
 		}
 		[ret key:@"create" v:[dict v:@"create"]];
 		[ret key:@"update" v:[dict v:@"update"]];

@@ -695,6 +695,12 @@
 	data = [self dataUsingEncoding:NSUTF32BigEndianStringEncoding];
 	return [[CJSONDeserializer deserializer] deserializeAsArray:data error:nil];
 }
+- (id)obj_json
+{
+	NSData*		data;
+	data = [self dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	return [[CJSONDeserializer deserializer] deserialize:data error:nil];
+}
 #endif
 
 @end
