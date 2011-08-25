@@ -24,3 +24,15 @@
 - (void)set_scheme_post;
 
 @end
+
+
+@interface LYFaceDotCom: NSObject
+{
+	NSMutableDictionary* data;
+}
+@property (nonatomic, retain) NSMutableDictionary*	data;
+
+- (void)limits:(LYBlockVoidDictError)callback;
+- (void)detect:(NSString*)filename block:(LYBlockVoidArrayError)callback;
+
+@end

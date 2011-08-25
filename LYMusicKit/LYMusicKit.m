@@ -36,6 +36,7 @@
 
 		//	init data
 		data = [[NSMutableDictionary alloc] init];
+		[data key:@"delegate" v:nil];
 		[data key:@"player" v:player];
 		[data key:@"playlist-items" v:[NSMutableArray array]];
 		[data key:@"playlist-changed" v:[NSNumber numberWithBool:NO]];
@@ -139,11 +140,13 @@
 		[image addGestureRecognizer:gesture];
 		[gesture release];
 
+#if 0
 		gesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(push_playlist)];
 		gesture.direction = UISwipeGestureRecognizerDirectionLeft;
 		gesture.numberOfTouchesRequired = 2;
 		[image addGestureRecognizer:gesture];
 		[gesture release];
+#endif
 
 #if 0
 		gesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(playlist_add)];
@@ -211,6 +214,7 @@
 	LYTableViewProvider* provider = [data v:@"playlist-provider"];
 	[[provider.texts objectAtIndex:0] removeAllObjects];
 	[[provider.details objectAtIndex:0] removeAllObjects];
+	[provider.data key:@"source-data" v:[data v:@"playlist-items"]];
 	//for (MPMediaItem* item in [data v:@"playlist-items"])
 	int index = 1;
 	for (NSDictionary* item in [data v:@"playlist-items"])
@@ -490,6 +494,8 @@
 		[dest addObject:[array objectAtIndex:i]];
 	[self player_refresh:dest];
 	player.shuffleMode = shuffle;
+	if ([data v:@"delegate"] != nil)
+	   [[data v:@"delegate"] perform_string:@"tableView:didSelectRowAtIndexPath:" with:table with:path];
 }
 
 - (void)reload_play
@@ -505,9 +511,12 @@
 {
 	if ((tableView == [data v:@"playlist-table"]) && (editingStyle == UITableViewCellEditingStyleDelete))
 	{
-		NSLog(@"deleted: %i, %@", indexPath.row, [data v:@"playlist-items"]);
+		//	NSLog(@"deleted: %i, %@", indexPath.row, [data v:@"playlist-items"]);
 		[self reload_play];
 		[tableView reloadData];
+		if ([data v:@"delegate"] != nil)
+			if ([[data v:@"delegate"] respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)])
+			   objc_msgSend([data v:@"delegate"], @selector(tableView:commitEditingStyle:forRowAtIndexPath:), tableView, editingStyle, indexPath);
 	}
 }
 
@@ -528,6 +537,8 @@
 	//[[data v:@"controller-navigation"] popViewControllerAnimated:YES];
 	[self reload_play];
 	[controller_player_picker release];
+	if ([data v:@"delegate"] != nil)
+	   [[data v:@"delegate"] perform_string:@"mediaPicker:didPickMediaItems:" with:picker with:collection];
 }
 
 - (void)mediaPickerDidCancel:(MPMediaPickerController*)picker
@@ -536,6 +547,8 @@
 	[[data v:@"controller-navigation"] dismissModalViewControllerAnimated:YES];
 	//[[data v:@"controller-navigation"] popViewControllerAnimated:YES];
 	[controller_player_picker release];
+	if ([data v:@"delegate"] != nil)
+	   [[data v:@"delegate"] perform_string:@"mediaPickerDidCancel:" with:picker];
 }
 
 - (void)player_item_changed:(NSNotification*)notification

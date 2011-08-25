@@ -204,7 +204,7 @@
 
 #define _rad_to_deg(__ANGLE)		((__ANGLE) * 180.0 / M_PI)
 
-void Enable2D()
+static void Enable2D()
 {
     int width = SCREEN_WIDTH;
     int height = SCREEN_HEIGHT;
@@ -224,7 +224,7 @@ void Enable2D()
     glDisable                (GL_LIGHTING);
     //glDisableClientState    (GL_NORMAL_ARRAY);
 }
-void Enable3D()
+static void Enable3D()
 {    
     int width = SCREEN_WIDTH;
     int height = SCREEN_HEIGHT;
