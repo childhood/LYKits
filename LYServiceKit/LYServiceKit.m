@@ -429,7 +429,7 @@
 
 - (void)detect:(NSString*)filename block:(LYBlockVoidArrayError)callback
 {
-	NSString* url = [NSString stringWithFormat:@"%@/faces/detect?api_key=%@&api_secret=%@",
+	NSString* url = [NSString stringWithFormat:@"%@/faces/detect?api_key=%@&api_secret=%@&detector=Aggressive&attributes=all",
 									   [data v:@"host"],
 									   [data v:@"key"],
 									   [data v:@"secret"]];
