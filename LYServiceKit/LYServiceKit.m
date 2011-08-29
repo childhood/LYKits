@@ -17,6 +17,7 @@
 		[data key:@"scheme"		v:[NSMutableDictionary dictionary]];
 
 		[self set_scheme_user];
+		[self set_scheme_post];
 	}
 	return self;
 }
@@ -119,14 +120,16 @@
 	[request startAsynchronous];
 }
 
+#pragma mark scheme
+
 - (void)set_scheme_user
 {
 	if ([[data v:@"scheme"] v:@"user"] == nil)
 	{
 		[[data v:@"scheme"] key:@"user" v:[NSDictionary dictionaryWithObjectsAndKeys:
-			@"db30_model",
+			@"db100_model",
 			@"database",
-			[NSNumber numberWithInt:30],
+			[NSNumber numberWithInt:100],
 			@"count",
 			[NSArray arrayWithObjects:
 				@"email",
@@ -152,17 +155,23 @@
 	if ([[data v:@"scheme"] v:@"post"] == nil)
 	{
 		[[data v:@"scheme"] key:@"post" v:[NSDictionary dictionaryWithObjectsAndKeys:
-			@"db30_model",
+			@"db100_model",
 			@"database",
-			[NSNumber numberWithInt:30],
+			[NSNumber numberWithInt:100],
 			@"count",
 			[NSArray arrayWithObjects:
-				@"parent",
+				@"post-id",
 				nil],
 			@"unique",
 			[NSArray arrayWithObjects:
+				@"post-id",
+				@"parent-id",
+				@"author-name",
+				@"author-email",
 				@"title",
-				@"blob",
+				@"parent-url",
+				@"category",
+				@"app",
 				nil],
 			@"s",
 			[NSArray arrayWithObjects:
@@ -172,6 +181,8 @@
 			nil]];
 	}
 }
+
+#pragma mark sdb dbxxx
 
 - (void)sdb:(NSString*)dbname insert:(NSArray*)source block:(LYBlockVoidArrayError)callback
 {
@@ -192,6 +203,8 @@
 		int i, count;
 		if ([[dict v:@"database"] is:@"db30_model"])
 			count = 30;
+		if ([[dict v:@"database"] is:@"db100_model"])
+			count = 100;
 		for (i = 0; i < count; i++)
 		{
 			[dest key:[NSString stringWithFormat:@"s%i", i] v:@""];
@@ -207,13 +220,16 @@
 		for (NSString* key in dict_item)
 		{
 			id obj = [dict_item v:key];
-			if ([obj isKindOfClass:[NSString class]])
-				type = @"s";
-			else if ([obj isKindOfClass:[NSArray class]])
-			{
+
+			if ([obj isKindOfClass:[NSArray class]])
 				obj = [NSString stringWithUTF8String:[[[CJSONSerializer serializer] serializeArray:obj error:nil] bytes]];
+			//	else if ([obj isKindOfClass:[NSString class]])
+			
+			if ([[dict v:@"s"] indexOfObject:key] != NSNotFound)
+				type = @"s";
+			else if ([[dict v:@"t"] indexOfObject:key] != NSNotFound)
 				type = @"t";
-			}
+
 			index = [[dict v:type] indexOfObject:key];
 			//	NSLog(@"%i: %@", index, key);
 			[dest key:[NSString stringWithFormat:@"%@%i", type, index] v:obj];
@@ -230,6 +246,58 @@
 #endif
 }
 
+- (NSDictionary*)dictionary_with_scheme:(NSDictionary*)scheme dict:(NSDictionary*)dict
+{
+	NSMutableDictionary* ret = [NSMutableDictionary dictionary];
+	NSString* s;
+	id obj;
+	for (int i = 0; i < [[scheme v:@"count"] intValue]; i++)
+	{
+		s = [NSString stringWithFormat:@"s%i", i];
+		if ([dict v:s] != nil)
+			[ret key:[[scheme v:@"s"] i:i] v:[dict v:s]];
+		s = [NSString stringWithFormat:@"t%i", i];
+		if ([dict v:s] != nil)
+		{
+			obj = [[dict v:s] obj_json];
+			if (obj != nil)
+				[ret key:[[scheme v:@"t"] i:i] v:[[dict v:s] obj_json]];
+			else
+				[ret key:[[scheme v:@"t"] i:i] v:[dict v:s]];
+		}
+	}
+	[ret key:@"create" v:[dict v:@"create"]];
+	[ret key:@"update" v:[dict v:@"update"]];
+	[ret key:@"name" v:[dict v:@"name"]];
+	[ret key:@"key" v:[dict v:@"key"]];
+	return ret;
+}
+
+- (void)sdb:(NSString*)dbname select:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback
+{
+	NSString* query = @"";
+	NSDictionary* scheme = [[data v:@"scheme"] v:dbname];
+
+	for (NSString* key in dict)
+	{
+		//	NSLog(@"k/v: %@, %@ - %@", key, [dict v:key], [scheme v:@"s"]);
+		NSString* s = [NSString stringWithFormat:@"s%i", [[scheme v:@"s"] indexOfObject:key]];
+		query = [query stringByAppendingFormat:@"feq_%@=%@&", s, [dict v:key]];
+	}
+	[self name:[scheme v:@"database"] select:query block:^(NSArray* array, NSError* error)
+	{
+		NSArray* source;
+		NSMutableArray* dest = [NSMutableArray array];
+		if ([array isKindOfClass:[NSDictionary class]])
+			source = [NSArray arrayWithObjects:array, nil];
+		else
+			source = array;
+		for (NSDictionary* dict in source)
+			[dest addObject:[self dictionary_with_scheme:scheme dict:dict]];
+		callback(dest, error);
+	}];
+}
+
 - (void)sdb:(NSString*)dbname verify:(NSDictionary*)dict block:(LYBlockVoidDictError)callback
 {
 	NSString* query = @"";
@@ -244,6 +312,7 @@
 	//	NSLog(@"verify: %@, scheme: %@", query, scheme);
 	[self name:[scheme v:@"database"] select:query block:^(NSArray* array, NSError* error)
 	{
+#if 0
 		NSDictionary* dict = (NSDictionary*)array;
 		NSMutableDictionary* ret = [NSMutableDictionary dictionary];
 		NSString* s;
@@ -270,8 +339,44 @@
 		[ret key:@"key" v:[dict v:@"key"]];
 		//	NSLog(@"result: %@", ret);
 		callback(ret, error);
+#endif
+		callback([self dictionary_with_scheme:scheme dict:(NSDictionary*)array], error);
 	}];
 }
+
+- (void)sdb:(NSString*)dbname insert_unique:(NSDictionary*)dict block:(LYBlockVoidStringError)callback
+{
+	NSDictionary* source = dict;
+	NSString* error_id = @"ID ";
+
+	NSString* query_unique = @"";
+	for (NSString* item in [[[data v:@"scheme"] v:dbname] v:@"unique"])
+	{
+		NSString* s = [NSString stringWithFormat:@"s%i", [[[[data v:@"scheme"] v:dbname] v:@"s"] indexOfObject:item]];
+		query_unique = [query_unique stringByAppendingFormat:@"feq_%@=%@&", s, [dict v:item]];
+		error_id = [error_id stringByAppendingFormat:@"%@ ", item];
+	}
+	error_id = [error_id stringByAppendingFormat:@"Must Be Unique"];
+	//	NSLog(@"query unique: %@", query_unique);
+
+	[self name:[[[data v:@"scheme"] v:dbname] v:@"database"] select:query_unique block:^(NSArray* array, NSError* error)
+	{
+		//	NSLog(@"result: %@ - %@, %i", error, array, array.count);
+		if (array.count > 0)
+		{
+			callback(nil, [NSError errorWithDomain:error_id code:1 userInfo:nil]);
+		}
+		else
+		{
+			[self sdb:dbname insert:[NSArray arrayWithObjects:source, nil] block:^(NSArray* array, NSError* error)
+			{
+				callback([array i:0], error);
+			}];
+		}
+	}];
+}
+
+#pragma mark user extension
 
 - (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback
 {
@@ -290,7 +395,7 @@
 		if ([array count] > 0)
 		{
 			//	NSLog(@"user already exists");
-			callback(nil, [NSError errorWithDomain:@"SDB User Already Exists" code:1 userInfo:nil]);
+			callback(nil, [NSError errorWithDomain:@"E-mail Already Exists" code:1 userInfo:nil]);
 		}
 		else
 		{
@@ -303,20 +408,25 @@
 	}];
 }
 
+#pragma mark test
+
 - (void)test
 {
 	LYDatabase* db = [[LYDatabase alloc] init];
-#if 0
+
 	//	select
+#if 0
 	//[db name:@"database_model" select:@"" block:^(NSArray* array, NSError* error)
 	//[db name:@"database_model" select:@"feq_desc=desc-002&" block:^(NSArray* array, NSError* error)
 	[db name:@"database_model" key:@"agpzfnN1cGVyLWRichULEg5kYXRhYmFzZV9tb2RlbBjrBww" block:^(NSArray* array, NSError* error)
 	{
 		NSLog(@"result: %@ - %@", error, array);
 	}];
+	//	[db db100_model:@"user" select:@"" block:nil];
 #endif
-#if 0
+
 	//	insert
+#if 0
 	[db name:@"database_model" insert:[NSArray arrayWithObjects:
 		[NSDictionary dictionaryWithObjectsAndKeys:@"id-006", @"id", @"desc-006", @"desc", @"data-006", @"data", nil],
 		nil] block:^(NSArray* array, NSError* error)
@@ -324,6 +434,8 @@
 		NSLog(@"result: %@ - %@", error, array);
 	}];
 #endif
+
+	//	insert array
 #if 0
 	//	insert into dbxxx (with scheme already given)
 	[db set_scheme_user];
@@ -355,6 +467,8 @@
 		//	NSLog(@"result sdb insert: %@ - %@", error, array);
 	}];
 #endif
+
+	//	insert user
 #if 0
 	[db insert_user:[NSDictionary dictionaryWithObjectsAndKeys:
 		@"no5@name.com",
@@ -372,8 +486,22 @@
 	}];
 #endif
 
+	//	insert dictionary
 #if 0
-	[db db30_model:@"user" select:@"" block:nil];
+	[db sdb:@"user" insert_unique:[NSDictionary dictionaryWithObjectsAndKeys:
+		@"no5@name.com",
+		@"email",
+		@"Leo.004",
+		@"name-display",
+		[NSMutableArray arrayWithObjects:
+			@"noa@name.com",
+		@"nob@name.com",
+		nil],
+		@"friends",
+		nil] block:^(NSString* str, NSError* error)
+	{
+		NSLog(@"result user insert: %@ - %@", error, str);
+	}];
 #endif
 	[db release];
 }
