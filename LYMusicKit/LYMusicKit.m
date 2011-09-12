@@ -342,7 +342,8 @@
 	{
 #if 1
 		NSString* s = [NSString stringWithFormat:@"%@\n%@", [dict v:@"title"], [dict v:@"artist"]];
-		[array addObject:[[data v:@"media-music"] v:s]];
+		if ([[data v:@"media-music"] v:s] != nil)
+			[array addObject:[[data v:@"media-music"] v:s]];
 		/*
 		for (MPMediaItem* item in [data v:@"media-music"])
 		{
@@ -362,9 +363,12 @@
 		//	TODO: remove invalid songs from current playlist
 	}
 	//	NSLog(@"PLAYER ended");
-	MPMediaItemCollection* collection = [MPMediaItemCollection collectionWithItems:array];
-	[player setQueueWithItemCollection:collection];
-	[player play];
+	if (array.count > 0)
+	{
+		MPMediaItemCollection* collection = [MPMediaItemCollection collectionWithItems:array];
+		[player setQueueWithItemCollection:collection];
+		[player play];
+	}
 	//	NSLog(@"PLAYER play started: %i", player.playbackState);
 }
 

@@ -79,7 +79,8 @@
 
 - (void)switch_state
 {
-	[self switch_state:UIControlStateNormal state:UIControlStateHighlighted];
+	self.selected = !self.selected;
+	//[self switch_state:UIControlStateNormal state:UIControlStateHighlighted];
 }
 
 #pragma mark generic setters

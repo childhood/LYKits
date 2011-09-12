@@ -57,6 +57,7 @@
 @synthesize cell_bg_color_interlace;
 
 @synthesize search_bar;
+@synthesize additional_views;
 
 - (id)initWithStyle:(UITableViewStyle)table_style
 {
@@ -137,6 +138,7 @@
 		[data setValue:[NSMutableArray array] forKey:@"edit-exclude"];
 		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
 		[data setValue:[NSMutableArray array] forKey:@"filter-array"];
+		[data setValue:[NSMutableDictionary dictionary] forKey:@"cell-subviews"];
 		[data setValue:@"Loading..." forKey:@"refresh-text"];
 		[data setValue:@"ly_transparent_64x64.png" forKey:@"image-placeholder"];
 		[data setValue:nil forKey:@"source-deleted-object"];
@@ -167,6 +169,7 @@
 		backup_images = nil;
 		backup_image_urls = nil;
 		backup_accessories = nil;
+		backup_subviews = nil;
 		backup_headers = nil;
 		backup_footers = nil;
 		search_bar = nil;
@@ -420,6 +423,7 @@
 	UIImage*	the_image;
 	LYAsyncImageView*	image_view;
 	UIView*				additional_view;
+	NSArray*			subviews;
 
 	additional_view = [self get_additional_view:indexPath];
 	if (additional_view != nil)
@@ -447,6 +451,7 @@
 		image		= [images object_at_path:indexPath];
 		image_url	= [image_urls object_at_path:indexPath];
 		accessory	= [accessories object_at_path:indexPath];
+		subviews	= [[data v:@"cell-subviews"] objectForKey:indexPath];
 
 		the_image = [UIImage imageNamed:image];
 		if (the_image == nil)
@@ -553,6 +558,10 @@
 					cell.accessoryType = accessory_type;
 			}
 			cell.selectionStyle = cell_selection;
+
+			if (subviews != nil)
+				for (UIView* subview in subviews)
+					[cell addSubview:subview];
 		}
 
 		if ((indexPath.row == 0) && (cell_bg_top != nil))
@@ -1160,6 +1169,9 @@
 	if (backup_accessories == nil)
 		backup_accessories = [[NSMutableArray alloc] initWithArray:accessories];
 	[accessories removeAllObjects];
+	if (backup_subviews == nil)
+		backup_subviews = [[NSMutableDictionary alloc] initWithDictionary:[data v:@"cell-subviews"]];
+	[[data v:@"cell-subviews"] removeAllObjects];
 	//	TODO: hide sections with no items in
 	
 	if (backup_dict == nil)
@@ -1200,6 +1212,11 @@
 					[[image_urls objectAtIndex:backup_section] addObject:[backup_image_urls object_at_path:path]];
 				if ([backup_accessories object_at_path:path] != nil)
 					[[accessories objectAtIndex:backup_section] addObject:[backup_accessories object_at_path:path]];
+				if ([backup_subviews objectForKey:path] != nil)
+				{
+					[[data v:@"cell-subviews"] setObject:[backup_subviews objectForKey:path] 
+					  forKey:[NSIndexPath indexPathForRow:backup_row inSection:backup_section]];
+				}
 
 				backup_row++;
 			}
@@ -1211,6 +1228,7 @@
 		[self refresh_animated];
 	else
 		[view reloadData];
+	//	NSLog(@"subviews: %@", [data v:@"cell-subviews"]);
 	//	NSLog(@"mapping: %@", backup_dict);
 }
 
@@ -1221,12 +1239,14 @@
 	[images setArray:backup_images];
 	[image_urls setArray:backup_image_urls];
 	[accessories setArray:backup_accessories];
+	[[data v:@"cell-subviews"] setDictionary:backup_subviews];
 
 	backup_texts = [backup_texts release_nil];
 	backup_details = [backup_details release_nil];
 	backup_images = [backup_images release_nil];
 	backup_image_urls = [backup_image_urls release_nil];
 	backup_accessories = [backup_accessories release_nil];
+	backup_subviews = [backup_subviews release_nil];
 
 	backup_dict = [backup_dict release_nil];
 #if 0

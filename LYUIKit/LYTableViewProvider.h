@@ -77,6 +77,7 @@
 	NSMutableArray*			backup_images;
 	NSMutableArray*			backup_image_urls;
 	NSMutableArray*			backup_accessories;
+	NSMutableDictionary*	backup_subviews;
 	NSMutableArray*			backup_headers;
 	NSMutableArray*			backup_footers;
 	NSMutableDictionary*	backup_dict;
@@ -129,6 +130,7 @@
 @property (nonatomic, retain) IBOutlet NSString*			accessory_name;
 
 @property (nonatomic, retain) IBOutlet UISearchBar*			search_bar;
+@property (nonatomic, retain) IBOutlet NSMutableArray*		additional_views;
 
 - (id)initWithStyle:(UITableViewStyle)table_style;
 - (id)initWithTableView:(UITableView*)table_view;
