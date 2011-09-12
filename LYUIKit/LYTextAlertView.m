@@ -8,6 +8,11 @@
 
 - (id)initWithTitle:(NSString*)title message:(NSString*)message count:(NSInteger)count
 {
+	return [self initWithTitle:title message:message confirm:@"OK" cancel:@"Cancel" count:count];
+}
+
+- (id)initWithTitle:(NSString*)title message:(NSString*)message confirm:(NSString*)confirm cancel:(NSString*)cancel count:(NSInteger)count
+{
 	int				i;
 	UITextField*	field;
 	NSString*		spaces;
@@ -15,12 +20,13 @@
 	self = [super init];
 	if (self != nil)
 	{
+		action_done = nil;
 		spaces = @"\n";
 		for (i = 0; i < count; i++)
 			spaces = [spaces stringByAppendingString:@"\n\n"];
 
 		alert = [[UIAlertView alloc] initWithTitle:title message:[message stringByAppendingString:spaces]
-										  delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+										  delegate:self cancelButtonTitle:cancel otherButtonTitles:confirm, nil];
 
 		alert.delegate = self;
 		text_fields = [[NSMutableArray alloc] init];
@@ -95,9 +101,9 @@
 - (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	//	NSLog(@"got index: %i", buttonIndex);
-	if (buttonIndex == 1)
+	//	if (buttonIndex == 1)
 	{
-		if (action_done != nil)
+		if ((action_done != nil) && (buttonIndex == 1))
 			[delegate perform_string:action_done];
 		else
 			[delegate alertView:alert clickedButtonAtIndex:buttonIndex];

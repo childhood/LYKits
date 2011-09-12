@@ -3,6 +3,7 @@
 @implementation LYButtonMatrixController: UIViewController
 
 @synthesize delegate;
+@synthesize data;
 @synthesize animation;
 @synthesize style;
 @synthesize sender_type;
@@ -58,6 +59,11 @@
 
 		original_width	= frame.size.width;
 		original_height	= frame.size.height;
+
+		data	= [[NSMutableDictionary alloc] init];
+		[data key:@"selected-button" v:nil];
+		[data key:@"selected-index" v:nil];
+		[data key:@"selected-title" v:nil];
 
 		count	= a_count;
 		column	= 1;
@@ -333,6 +339,10 @@
 		action = [actions object_at_index:new_index];
 		if (action == nil)
 			action = [actions object_at_index:0];
+
+		[data key:@"selected-button" v:button];
+		[data key:@"selected-index" v:[NSNumber numberWithInteger:new_index]];
+		[data key:@"selected-title" v:[button titleForState:UIControlStateNormal]];
 
 		if ([sender_type isEqualToString:@"title"])
 			[delegate perform_string:action with:[button titleForState:UIControlStateNormal]];

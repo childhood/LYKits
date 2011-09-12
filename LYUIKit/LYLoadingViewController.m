@@ -121,6 +121,16 @@ static LYLoadingViewController *ly_loading_view_controller_manager = nil;
 	}
 }
 
++ (void)show_label:(NSString*)s
+{
+	@synchronized (self)
+	{
+		[LYLoading enable_label:s];
+		[[LYLoading shared] setNav:nil];
+		[LYLoading show];
+	}
+}
+
 @end
 
 @implementation LYLoading
