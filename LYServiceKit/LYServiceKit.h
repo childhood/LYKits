@@ -2,6 +2,9 @@
 #import "LYCategory.h"
 #import "ASIHTTPRequest.h"
 #import "CJSONSerializer.h"
+#import "LYServiceUI.h"
+
+@class LYTextAlertView;
 
 @interface LYDatabase: NSObject
 {
@@ -17,6 +20,7 @@
 - (void)sdb:(NSString*)dbname insert:(NSArray*)source block:(LYBlockVoidArrayError)callback;
 - (void)sdb:(NSString*)dbname select:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
 - (void)sdb:(NSString*)dbname verify:(NSDictionary*)dict block:(LYBlockVoidDictError)callback;
+- (void)sdb:(NSString*)dbname key:(NSString*)s block:(LYBlockVoidDictError)callback;
 - (void)sdb:(NSString*)dbname insert_unique:(NSDictionary*)dict block:(LYBlockVoidStringError)callback;
 
 - (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;

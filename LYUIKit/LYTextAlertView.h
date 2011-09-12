@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSMutableArray*	text_fields;
 
 - (id)initWithTitle:(NSString*)title message:(NSString*)message count:(NSInteger)count;
+- (id)initWithTitle:(NSString*)title message:(NSString*)message confirm:(NSString*)confirm cancel:(NSString*)cancel count:(NSInteger)count;
 - (void)set_placeholder:(NSInteger)index with:(NSString*)s;
 - (void)set_text:(NSInteger)index with:(NSString*)s;
 - (NSString*)get_text:(NSInteger)index;

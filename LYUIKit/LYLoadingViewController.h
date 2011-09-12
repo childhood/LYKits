@@ -30,6 +30,7 @@
 + (void)start_loading_animation;
 
 + (void)enable_label:(NSString*)s;
++ (void)show_label:(NSString*)s;
 //	+ (void)enable_national_motto;
 @end
 

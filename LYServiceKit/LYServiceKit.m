@@ -59,7 +59,7 @@
 							 [data v:@"host"], name, query,
 							 [data v:@"username"],
 							 [data v:@"password"]];
-	//	NSLog(@"url: %@", url);
+		NSLog(@"query key url: %@", url);
 	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
 	[request addRequestHeader:@"Accept" value:@"application/json"];
 	//[request setRequestMethod:@"GET"];
@@ -284,6 +284,14 @@
 		NSString* s = [NSString stringWithFormat:@"s%i", [[scheme v:@"s"] indexOfObject:key]];
 		query = [query stringByAppendingFormat:@"feq_%@=%@&", s, [dict v:key]];
 	}
+	if (query.length == 0)
+	{
+		//	NSLog(@"query is empty");
+		callback(nil, [NSError errorWithDomain:@"Query is Empty" code:2 userInfo:nil]);
+		return;
+	}
+	NSLog(@"sdb select query: %@", query);
+
 	[self name:[scheme v:@"database"] select:query block:^(NSArray* array, NSError* error)
 	{
 		NSArray* source;
@@ -309,6 +317,13 @@
 		NSString* s = [NSString stringWithFormat:@"s%i", [[scheme v:@"s"] indexOfObject:key]];
 		query = [query stringByAppendingFormat:@"feq_%@=%@&", s, [dict v:key]];
 	}
+	if (query.length == 0)
+	{
+		//	NSLog(@"query is empty");
+		callback(nil, [NSError errorWithDomain:@"Query is Empty" code:2 userInfo:nil]);
+		return;
+	}
+
 	//	NSLog(@"verify: %@, scheme: %@", query, scheme);
 	[self name:[scheme v:@"database"] select:query block:^(NSArray* array, NSError* error)
 	{
@@ -341,6 +356,14 @@
 		callback(ret, error);
 #endif
 		callback([self dictionary_with_scheme:scheme dict:(NSDictionary*)array], error);
+	}];
+}
+
+- (void)sdb:(NSString*)dbname key:(NSString*)s block:(LYBlockVoidDictError)callback
+{
+	[self name:[[[data v:@"scheme"] v:dbname] v:@"database"] key:s block:^(NSArray* array, NSError* error)
+	{
+		callback((NSDictionary*)array, error);
 	}];
 }
 

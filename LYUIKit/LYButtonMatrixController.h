@@ -33,7 +33,8 @@
 @interface LYButtonMatrixController: UIViewController
 {
 	//	button properties
-	id					delegate;
+	id						delegate;
+	NSMutableDictionary*	data;
 	NSUInteger			count;
 	NSUInteger			column;
 	CGFloat				top;
@@ -66,7 +67,8 @@
 
 	BOOL				style_random_color;
 }
-@property (nonatomic, retain) id				delegate; 
+@property (nonatomic, retain) id					delegate; 
+@property (nonatomic, retain) NSMutableDictionary*	data;
 @property (nonatomic, retain) NSString*			animation;
 @property (nonatomic, retain) NSString*			style;
 @property (nonatomic, retain) NSString*			sender_type;
