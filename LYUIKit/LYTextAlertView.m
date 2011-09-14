@@ -105,8 +105,11 @@
 	{
 		if ((action_done != nil) && (buttonIndex == 1))
 			[delegate perform_string:action_done];
-		else
-			[delegate alertView:alert clickedButtonAtIndex:buttonIndex];
+		else if (delegate != nil)
+		{
+			if ([delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)])
+				[delegate alertView:alert clickedButtonAtIndex:buttonIndex];
+		}
 	}
 }
 

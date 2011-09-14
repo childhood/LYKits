@@ -139,6 +139,7 @@
 		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
 		[data setValue:[NSMutableArray array] forKey:@"filter-array"];
 		[data setValue:[NSMutableDictionary dictionary] forKey:@"cell-subviews"];
+		[data setValue:[NSMutableDictionary dictionary] forKey:@"cell-gestures"];
 		[data setValue:@"Loading..." forKey:@"refresh-text"];
 		[data setValue:@"ly_transparent_64x64.png" forKey:@"image-placeholder"];
 		[data setValue:nil forKey:@"source-deleted-object"];
@@ -424,6 +425,7 @@
 	LYAsyncImageView*	image_view;
 	UIView*				additional_view;
 	NSArray*			subviews;
+	NSArray*			gestures;
 
 	additional_view = [self get_additional_view:indexPath];
 	if (additional_view != nil)
@@ -452,6 +454,7 @@
 		image_url	= [image_urls object_at_path:indexPath];
 		accessory	= [accessories object_at_path:indexPath];
 		subviews	= [[data v:@"cell-subviews"] objectForKey:indexPath];
+		gestures	= [[data v:@"cell-gestures"] objectForKey:indexPath];
 
 		the_image = [UIImage imageNamed:image];
 		if (the_image == nil)
@@ -562,6 +565,9 @@
 			if (subviews != nil)
 				for (UIView* subview in subviews)
 					[cell addSubview:subview];
+			if (gestures != nil)
+				for (UIGestureRecognizer* gesture in gestures)
+					[cell addGestureRecognizer:gesture];
 		}
 
 		if ((indexPath.row == 0) && (cell_bg_top != nil))

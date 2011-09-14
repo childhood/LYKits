@@ -208,6 +208,7 @@
 	NSLog(@"PLAYER reload end");
 	[[data v:@"playlist-items"] removeAllObjects];
 	[[data v:@"playlist-items"] addObjectsFromArray:array];
+	NSLog(@"xx1");
 	
 	//	add items
 	BOOL changed = NO;
@@ -226,8 +227,14 @@
 #endif
 		//[[provider.texts objectAtIndex:0] addObject:[item valueForProperty:MPMediaItemPropertyTitle]];
 		//[[provider.details objectAtIndex:0] addObject:[item valueForProperty:MPMediaItemPropertyArtist]];
-		[[provider.texts objectAtIndex:0] addObject:[NSString stringWithFormat:@"%i. %@", index, [item v:@"title"]]];
-		[[provider.details objectAtIndex:0] addObject:[item v:@"artist"]];
+		if ([item v:@"title"] != nil)
+			[[provider.texts objectAtIndex:0] addObject:[NSString stringWithFormat:@"%i. %@", index, [item v:@"title"]]];
+		else
+			[[provider.texts objectAtIndex:0] addObject:[NSString stringWithFormat:@"%i. %@", index, @"Unknown Title"]];
+		if ([item v:@"artist"] != nil)
+			[[provider.details objectAtIndex:0] addObject:[item v:@"artist"]];
+		else
+			[[provider.details objectAtIndex:0] addObject:@"Unknown Artist"];
 		[[provider.accessories objectAtIndex:0] addObject:@"none"];
 		changed = YES;
 		index++;
@@ -570,7 +577,19 @@
 	if (label_album != nil)
 		label_album.text = [player.nowPlayingItem valueForProperty:MPMediaItemPropertyAlbumTitle];
 	if (artwork != nil)
-		artwork.image = [[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:artwork.frame.size];
+	{
+		//NSLog(@"media artwork: %@", [[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:artwork.frame.size]);
+		NSLog(@"player status : %i", player.playbackState);
+		if ([[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:artwork.frame.size] != nil)
+			artwork.image = [[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:artwork.frame.size];
+		else if (([data v:@"default-artwork"] != nil) && (player.playbackState == MPMusicPlaybackStatePlaying))
+			artwork.image = [UIImage imageNamed:[data v:@"default-artwork"]];
+		else
+		{
+			artwork.image = nil;
+			[self performSelector:@selector(check_artwork:) withObject:artwork afterDelay:0.3];
+		}
+	}
 	if (reflection != nil)
 		reflection.image = [UIImage image_flip_vertically:artwork.image];
 	//	NSLog(@"PLAYER item changed: %@", player.nowPlayingItem);
@@ -612,6 +631,12 @@
 		NSLog(@"PLAYER now playing index: %i", index);
 	}];
 #endif
+}
+
+- (void)check_artwork:(UIImageView*)artwork
+{
+	if (([data v:@"default-artwork"] != nil) && (player.playbackState == MPMusicPlaybackStatePlaying))
+		artwork.image = [UIImage imageNamed:[data v:@"default-artwork"]];
 }
 
 - (void)player_state_changed:(NSNotification*)notification

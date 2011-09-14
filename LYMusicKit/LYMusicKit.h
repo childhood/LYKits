@@ -1,5 +1,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "LYMusicJukeboxController.h"
+#import "LYImage.h"
 #import "LYKits.h"
 
 /*
