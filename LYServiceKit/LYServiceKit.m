@@ -12,6 +12,7 @@
 		data = [[NSMutableDictionary alloc] init];
 		//[data key:@"host"		v:@"http://super-db.appspot.com/rest"];
 		[data key:@"host"		v:@"https://super-db.appspot.com/rest"];
+		[data key:@"blob"		v:@"https://super-db.appspot.com/blob/add"];
 		[data key:@"username"	v:@"test"];
 		[data key:@"password"	v:@"passwordtest"];
 		[data key:@"scheme"		v:[NSMutableDictionary dictionary]];
@@ -397,6 +398,31 @@
 			}];
 		}
 	}];
+}
+
+#pragma mark blob
+
+- (void)blob_upload:(NSData*)data type:(NSString*)type
+{
+	[[data v:@"blob"] blob_post_dictionary:[NSDictionary dictioanryWithObjectsAndKeys:
+		[data v:@"username"],
+		@"username",
+		[data v:@"password"],
+		@"password",
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			data,
+			@"data",
+			[NSString stringWithFormat:@"ly-service-blob-%@", [LYRandom unique_string]],
+			@"filename",
+			type,
+			@"type",
+			nil],
+		nil]];
+}
+
+- (void)blob_upload_jpeg:(UIImage*)image
+{
+	[blob_upload:UIImageJPEGRepresentation(image.data, 80) type:@"image/jpeg"];
 }
 
 #pragma mark user extension
