@@ -406,6 +406,7 @@
 
 - (NSString*)url_blob:(NSString*)function
 {
+<<<<<<< HEAD
 	return [NSString stringWithFormat:@"%@/%@", [data v:@"blob"], function];
 }
 
@@ -417,6 +418,9 @@
 - (NSString*)blob_upload:(NSData*)data_upload type:(NSString*)type
 {
 	return [[self url_blob:@"add"] blob_post_dictionary:[NSDictionary dictionaryWithObjectsAndKeys:
+=======
+	[[data v:@"blob"] blob_post_dictionary:[NSDictionary dictionaryWithObjectsAndKeys:
+>>>>>>> f8be91d899e6cf9a9a33c992a2b72237e13cdbd0
 		[data v:@"username"],
 		@"username",
 		[data v:@"password"],
@@ -435,7 +439,11 @@
 
 - (NSString*)blob_upload_jpeg:(UIImage*)image
 {
+<<<<<<< HEAD
 	return [self blob_upload:UIImageJPEGRepresentation(image, 80) type:@"image/jpeg"];
+=======
+	[self blob_upload:UIImageJPEGRepresentation(image, 80) type:@"image/jpeg"];
+>>>>>>> f8be91d899e6cf9a9a33c992a2b72237e13cdbd0
 }
 
 #pragma mark user extension
