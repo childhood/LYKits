@@ -24,8 +24,10 @@
 - (void)sdb:(NSString*)dbname insert_unique:(NSDictionary*)dict block:(LYBlockVoidStringError)callback;
 
 - (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
-- (void)blob_upload:(NSData*)data type:(NSString*)type;
-- (void)blob_upload_jpeg:(UIImage*)image;
+- (NSString*)blob_upload:(NSData*)data type:(NSString*)type;
+- (NSString*)blob_upload_jpeg:(UIImage*)image;
+- (NSString*)url_blob:(NSString*)function;
+- (NSString*)url_blob_serve:(NSString*)key;
 
 - (void)test;
 - (void)set_scheme_user;

@@ -25,10 +25,15 @@
 	if (is_downloading == YES)
 		return;
 
+#if 1
 	filename = [[NSString alloc] initWithFormat:@"%ix%i-%@",
 			 (int)self.frame.size.width, (int)self.frame.size.height, [s url_to_filename]];
+#else
+	filename = [[NSString alloc] initWithString:[s url_to_filename]];
+#endif
 	//	[self.image release], self.image = nil;
 
+	//	NSLog(@"checking filename: %@", [@"" filename_document]);
 	if ([filename file_exists] == YES)
 	{
 		//	NSLog(@"loading from cache: %@", [filename filename_document]);

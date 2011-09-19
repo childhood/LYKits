@@ -75,6 +75,11 @@ BOOL supersound_inited;
 - (NSString*)append_line:(NSString*)str divider:(NSString*)divider;
 
 //	date and time
+- (NSString*)local_medium_date_from:(NSString*)format_old;
+- (NSString*)local_long_date_from:(NSString*)format_old;
+- (NSString*)local_full_date_from:(NSString*)format_old;
+- (NSString*)local_date_from:(NSString*)format_old format_date:(NSDateFormatterStyle)date_format time:(NSDateFormatterStyle)time_format;
+- (NSString*)local_date_from:(NSString*)format_old timezone:(NSTimeZone*)timezone_source format_date:(NSDateFormatterStyle)date_format time:(NSDateFormatterStyle)time_format;
 - (NSString*)convert_date_from:(NSString*)format_old to:(NSString*)format_new;
 - (NSString*)convert_date_from:(NSString*)format_old to:(NSString*)format_new timezone:(NSTimeZone*)timezone_source;
 - (NSString*)format_date:(NSDate*)date;
