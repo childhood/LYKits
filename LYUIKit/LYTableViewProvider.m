@@ -134,6 +134,7 @@
 		additional_views	= [[NSMutableArray alloc] init];
 
 		[data setValue:NSStringFromCGSize(CGSizeMake(k_ly_table_accessory_size, k_ly_table_accessory_size)) forKey:@"accessory-size"];
+		[data setValue:[NSMutableArray array] forKey:@"accessory-highlighted"];
 		[data setValue:[NSNumber numberWithBool:NO] forKey:@"move-enabled"];
 		[data setValue:[NSMutableArray array] forKey:@"edit-exclude"];
 		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
@@ -549,6 +550,9 @@
 					//button.frame = CGRectMake(0, 0, k_ly_table_accessory_size, k_ly_table_accessory_size);
 					button.frame = CGRectMake(0, 0, accessory_size.width, accessory_size.height);
 					[button setImage:[UIImage imageNamed:accessory] forState:UIControlStateNormal];
+					NSString* accessory_highlighted = [[data v:@"accessory-highlighted"] object_at_path:indexPath];
+					if ([accessory_highlighted is:@""] == NO)
+						[button setImage:[UIImage imageNamed:accessory_highlighted] forState:UIControlStateHighlighted];
 					[button addTarget:self action:@selector(action_accessory:event:) forControlEvents:UIControlEventTouchUpInside];
 					cell.accessoryView = button;
 				}

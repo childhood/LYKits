@@ -404,7 +404,7 @@
 
 - (void)blob_upload:(NSData*)data type:(NSString*)type
 {
-	[[data v:@"blob"] blob_post_dictionary:[NSDictionary dictioanryWithObjectsAndKeys:
+	[[data v:@"blob"] blob_post_dictionary:[NSDictionary dictionaryWithObjectsAndKeys:
 		[data v:@"username"],
 		@"username",
 		[data v:@"password"],
@@ -422,7 +422,7 @@
 
 - (void)blob_upload_jpeg:(UIImage*)image
 {
-	[blob_upload:UIImageJPEGRepresentation(image.data, 80) type:@"image/jpeg"];
+	[self blob_upload:UIImageJPEGRepresentation(image, 80) type:@"image/jpeg"];
 }
 
 #pragma mark user extension
