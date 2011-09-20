@@ -38,6 +38,7 @@ static LYKits*	ly_shared_manager = nil;
 		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-delete-fix-x"];
 		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-edit-fix-x"];
 		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-move-fix-x"];
+		[data key:@"service-lyric" v:[[LYServiceLyricWiki alloc] init]];
 	}
 	return self;
 }

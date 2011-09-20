@@ -34,7 +34,7 @@
 @end
 
 
-@interface LYFaceDotCom: NSObject
+@interface LYServiceFaceDotCom: NSObject
 {
 	NSMutableDictionary* data;
 }
@@ -42,5 +42,16 @@
 
 - (void)limits:(LYBlockVoidDictError)callback;
 - (void)detect:(NSString*)filename block:(LYBlockVoidArrayError)callback;
+
+@end
+
+
+@interface LYServiceLyricWiki: NSObject
+{
+	NSMutableDictionary* data;
+}
+@property (nonatomic, retain) NSMutableDictionary*	data;
+
+- (void)lyric_by_artist:(NSString*)artist song:(NSString*)song block:(LYBlockVoidStringError)callback;
 
 @end

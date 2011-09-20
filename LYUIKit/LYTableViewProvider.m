@@ -772,12 +772,28 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
+	NSString* s = [footers object_at_index:section];
+	if (s == nil)
+		return 0;
+	if ([s isEqualToString:@""])
+		return 0;
+	if ([[texts objectAtIndex:section] count] == 0)
+		return 0;
+
 	return [footers object_at_index:section];
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
 	UILabel* label;
+
+	NSString* s = [footers object_at_index:section];
+	if (s == nil)
+		return 0;
+	if ([s isEqualToString:@""])
+		return 0;
+	if ([[texts objectAtIndex:section] count] == 0)
+		return 0;
 
 	if (footer_label.hidden == NO)
 	{
@@ -841,6 +857,8 @@
 			else if ([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)])
 				objc_msgSend(delegate, @selector(tableView:commitEditingStyle:forRowAtIndexPath:), view, editingStyle, indexPath);
 		}
+
+		[view reloadData];
 	}
 }
 
