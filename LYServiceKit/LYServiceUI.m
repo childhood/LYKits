@@ -2,6 +2,7 @@
 
 @implementation LYServiceUI
 
+@synthesize label_note;
 @synthesize data;
 
 - (id)init
@@ -22,6 +23,61 @@
 {
 	[data release];
 	[super dealloc];
+}
+
+#pragma mark service extension
+
+- (NSString*)insert_post_image:(NSString*)key
+{
+	return [self insert_post_title:key
+						   content:@""
+							   pid:[[[data v:@"db"] data] v:@"app"]
+							   url:[[data v:@"db"] url_blob_serve:key]];
+}
+
+- (NSString*)insert_post_title:(NSString*)title 
+					   content:(NSString*)content
+						   pid:(NSString*)pid
+						   url:(NSString*)parent_url
+					//	 block:(LYBlockVoidStringError)callback
+{
+	NSString* ret = [LYRandom unique_string];
+	NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+		ret,
+		@"post-id",
+		pid,
+		@"parent-id",
+		[@"ly-service-login-name" setting_string],
+		@"author-name",
+		[@"ly-service-login-mail" setting_string],
+		@"author-email",
+		title,
+		@"title",
+		parent_url,
+		@"parent-url",
+		[[[data v:@"db"] data] v:@"category"],
+		@"category",
+		[[[data v:@"db"] data] v:@"app"],
+		@"app",
+		content,
+		@"content",
+		nil];
+		NSLog(@"post data: %@", dict);
+	//	[nav dismissModalViewControllerAnimated:YES];
+	//	NSLog(@"current dict: %@", current_dict);
+	//	return;
+	[[data v:@"db"] sdb:@"post" insert_unique:dict block:^(NSString* str, NSError* error)
+	{
+		NSLog(@"SUI post insert: %@ - %@", error, str);
+#if 0
+		callback(str, error);
+		if ((error == nil) && (str != nil))
+			[@"Reply Successful" show_alert_message:@""];
+		else
+			[@"Reply Failed" show_alert_message:[NSString stringWithFormat:@"Error: %@", error.localizedDescription]];
+#endif
+	}];
+	return ret;
 }
 
 - (UIViewController*)controller_login
@@ -69,8 +125,8 @@
 				[@"ly-service-login-name" setting_string:[dict v:@"name-display"]];
 				[@"ly-service-login-mail" setting_string:field_login_mail.text];
 				[@"ly-service-login-pin" setting_string:field_login_pin1.text];
-				field_login_name.text = [@"account-name" setting_string];
-				field_login_pin2.text = [@"account-pin" setting_string];
+				field_login_name.text = [@"ly-service-login-name" setting_string];
+				field_login_pin2.text = [@"ly-service-login-pin" setting_string];
 				[[data v:@"nav"] dismissModalViewControllerAnimated:YES];
 				[data key:@"user" v:dict];
 				[@"ly-service-login-user" setting_object:dict];
@@ -129,9 +185,9 @@
 				NSLog(@"result user insert: %@ - %@", error, array);
 				if (error == nil)
 				{
-					[@"account-name" setting_string:field_login_name.text];
-					[@"account-mail" setting_string:field_login_mail.text];
-					[@"account-pin" setting_string:field_login_pin1.text];
+					[@"ly-service-login-name" setting_string:field_login_name.text];
+					[@"ly-service-login-mail" setting_string:field_login_mail.text];
+					[@"ly-service-login-pin" setting_string:field_login_pin1.text];
 					[[data v:@"nav"] dismissModalViewControllerAnimated:YES];
 
 					//[[data v:@"db"] name:@"db100_model" key:[array objectAtIndex:0] block:^(NSArray* array, NSError* error)

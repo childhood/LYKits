@@ -334,10 +334,35 @@ bGUgc28gcGxlYXNlIGRvIG5vdCBjaG9vc2UgYW55IG9mZmVuc2l2ZSB0ZXJtcy4KA</string>
                 <bytes key="NSRGB">MC4yOTgwMzkyMjc3IDAuMzM3MjU0OTExNyAwLjQyMzUyOTQ0NjEAA</bytes>
               </object>
               <reference key="IBUIHighlightedColor" ref="1018047039"/>
-              <object class="NSColor" key="IBUIShadowColor">
+              <object class="NSColor" key="IBUIShadowColor" id="232558109">
                 <int key="NSColorSpace">1</int>
                 <bytes key="NSRGB">MSAxIDEAA</bytes>
               </object>
+              <string key="IBUIShadowOffset">{0, 1}</string>
+              <int key="IBUIBaselineAdjustment">1</int>
+              <bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+              <float key="IBUIMinimumFontSize">10</float>
+              <int key="IBUINumberOfLines">0</int>
+              <int key="IBUILineBreakMode">0</int>
+            </object>
+            <object class="IBUILabel" id="502217985">
+              <reference key="NSNextResponder" ref="810527264"/>
+              <int key="NSvFlags">290</int>
+              <string key="NSFrame">{{20, 290}, {280, 117}}</string>
+              <reference key="NSSuperview" ref="810527264"/>
+              <bool key="IBUIOpaque">NO</bool>
+              <bool key="IBUIClipsSubviews">YES</bool>
+              <int key="IBUIContentMode">7</int>
+              <bool key="IBUIUserInteractionEnabled">NO</bool>
+              <string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+              <string key="IBUIText">Enjoy!</string>
+              <reference key="IBUIFont" ref="565108751"/>
+              <object class="NSColor" key="IBUITextColor">
+                <int key="NSColorSpace">2</int>
+                <bytes key="NSRGB">MC4yOTgwMzkyMjc3IDAuMzM3MjU0OTExNyAwLjQyMzUyOTQ0NjEAA</bytes>
+              </object>
+              <reference key="IBUIHighlightedColor" ref="1018047039"/>
+              <reference key="IBUIShadowColor" ref="232558109"/>
               <string key="IBUIShadowOffset">{0, 1}</string>
               <int key="IBUIBaselineAdjustment">1</int>
               <bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -511,6 +536,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
           </object>
           <int key="connectionID">47</int>
         </object>
+        <object class="IBConnectionRecord">
+          <object class="IBCocoaTouchOutletConnection" key="connection">
+            <string key="label">label_note</string>
+            <reference key="source" ref="841351856"/>
+            <reference key="destination" ref="502217985"/>
+          </object>
+          <int key="connectionID">49</int>
+        </object>
       </object>
       <object class="IBMutableOrderedSet" key="objectRecords">
         <object class="NSArray" key="orderedObjects">
@@ -560,6 +593,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <reference ref="500266724"/>
               <reference ref="264495056"/>
               <reference ref="764009275"/>
+              <reference ref="502217985"/>
             </object>
             <reference key="parent" ref="587855752"/>
           </object>
@@ -649,6 +683,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
             <reference key="object" ref="169250281"/>
             <reference key="parent" ref="0"/>
           </object>
+          <object class="IBObjectRecord">
+            <int key="objectID">48</int>
+            <reference key="object" ref="502217985"/>
+            <reference key="parent" ref="810527264"/>
+          </object>
         </object>
       </object>
       <object class="NSMutableDictionary" key="flattenedProperties">
@@ -682,6 +721,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
           <string>26.IBPluginDependency</string>
           <string>27.IBPluginDependency</string>
           <string>41.IBPluginDependency</string>
+          <string>48.IBPluginDependency</string>
+          <string>48.IBViewBoundsToFrameTransform</string>
           <string>9.IBEditorWindowLastContentRect</string>
           <string>9.IBPluginDependency</string>
         </object>
@@ -705,7 +746,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
           <object class="NSAffineTransform">
-            <bytes key="NSTransformStruct">P4AAAL+AAABBoAAAw5SAAA</bytes>
+            <bytes key="NSTransformStruct">AUGgAABDMAAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
           <object class="NSAffineTransform">
@@ -730,6 +771,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
           <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
           <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
           <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+          <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+          <object class="NSAffineTransform">
+            <bytes key="NSTransformStruct">P4AAAL+AAABBoAAAw8mAAA</bytes>
+          </object>
           <string>{{-1019, 167}, {320, 480}}</string>
           <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
         </object>
@@ -750,7 +795,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
         </object>
       </object>
       <nil key="sourceID"/>
-      <int key="maxID">47</int>
+      <int key="maxID">49</int>
     </object>
     <object class="IBClassDescriber" key="IBDocument.Classes">
       <object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -800,6 +845,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <string>field_login_name</string>
               <string>field_login_pin1</string>
               <string>field_login_pin2</string>
+              <string>label_note</string>
               <string>segment_login_type</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
@@ -810,6 +856,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <string>UITextField</string>
               <string>UITextField</string>
               <string>UITextField</string>
+              <string>UILabel</string>
               <string>UISegmentedControl</string>
             </object>
           </object>
@@ -823,6 +870,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <string>field_login_name</string>
               <string>field_login_pin1</string>
               <string>field_login_pin2</string>
+              <string>label_note</string>
               <string>segment_login_type</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
@@ -850,6 +898,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <object class="IBToOneOutletInfo">
                 <string key="name">field_login_pin2</string>
                 <string key="candidateClassName">UITextField</string>
+              </object>
+              <object class="IBToOneOutletInfo">
+                <string key="name">label_note</string>
+                <string key="candidateClassName">UILabel</string>
               </object>
               <object class="IBToOneOutletInfo">
                 <string key="name">segment_login_type</string>

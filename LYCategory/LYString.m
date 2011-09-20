@@ -473,6 +473,36 @@
 
 #pragma mark Time & Date
 
+- (NSString*)local_medium_date_from:(NSString*)format_old
+{
+	return [self local_date_from:format_old format_date:NSDateFormatterMediumStyle time:NSDateFormatterMediumStyle];
+}
+
+- (NSString*)local_long_date_from:(NSString*)format_old
+{
+	return [self local_date_from:format_old format_date:NSDateFormatterLongStyle time:NSDateFormatterLongStyle];
+}
+
+- (NSString*)local_full_date_from:(NSString*)format_old
+{
+	return [self local_date_from:format_old format_date:NSDateFormatterFullStyle time:NSDateFormatterFullStyle];
+}
+
+- (NSString*)local_date_from:(NSString*)format_old format_date:(NSDateFormatterStyle)date_format time:(NSDateFormatterStyle)time_format
+{
+	NSString* dateStr = self;
+
+	//	Convert string to date object
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setDateFormat:format_old];
+	NSDate *date = [dateFormat dateFromString:dateStr];  
+	
+	dateStr = [NSDateFormatter localizedStringFromDate:date dateStyle:date_format timeStyle:time_format];
+	[dateFormat release];
+
+	return dateStr;
+}
+
 - (NSString*)convert_date_from:(NSString*)format_old to:(NSString*)format_new
 {
 	NSString* dateStr = self;
@@ -485,6 +515,29 @@
 	//	Convert date object to desired output format
 	[dateFormat setDateFormat:format_new];
 	dateStr = [dateFormat stringFromDate:date];  
+	[dateFormat release];
+
+	return dateStr;
+}
+
+- (NSString*)local_date_from:(NSString*)format_old timezone:(NSTimeZone*)timezone_source format_date:(NSDateFormatterStyle)date_format time:(NSDateFormatterStyle)time_format
+{
+	NSString* dateStr = self;
+
+	//	Convert string to date object
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setDateFormat:format_old];
+	NSDate *date = [dateFormat dateFromString:dateStr];  
+
+	//NSTimeZone* timezone_source = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+	NSTimeZone* timezone_dest = [NSTimeZone systemTimeZone];
+	NSInteger sourceGMTOffset = [timezone_source secondsFromGMTForDate:date];
+	NSInteger destinationGMTOffset = [timezone_dest secondsFromGMTForDate:date];
+	NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset;
+	NSDate* date_dest = [[[NSDate alloc] initWithTimeInterval:interval sinceDate:date] autorelease];
+
+	//	Convert date object to desired output format
+	dateStr = [NSDateFormatter localizedStringFromDate:date_dest dateStyle:date_format timeStyle:time_format];
 	[dateFormat release];
 
 	return dateStr;
@@ -618,7 +671,7 @@
 #ifdef LY_ENABLE_SDK_ASIHTTP
 - (NSString*)blob_post_dictionary:(NSDictionary*)dict
 {
-	[LYLoading show];
+	[LYLoading show_label:@"Uploading..."];
 	NSString* s = [NSString stringWithContentsOfURL:[NSURL URLWithString:self] encoding:NSUTF8StringEncoding error:nil];
 	[LYLoading hide];
 	return [s http_post_dictionary:dict];
@@ -626,7 +679,7 @@
 
 - (NSString*)http_post_dictionary:(NSDictionary*)dict
 {
-	[LYLoading show];
+	[LYLoading show_label:@"Uploading..."];
 	NSURL *url = [NSURL URLWithString:self];
 	ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
 	for (NSString* key in dict)

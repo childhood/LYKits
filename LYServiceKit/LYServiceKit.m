@@ -12,9 +12,11 @@
 		data = [[NSMutableDictionary alloc] init];
 		//[data key:@"host"		v:@"http://super-db.appspot.com/rest"];
 		[data key:@"host"		v:@"https://super-db.appspot.com/rest"];
-		[data key:@"blob"		v:@"https://super-db.appspot.com/blob/add"];
+		[data key:@"blob"		v:@"https://super-db.appspot.com/blob"];
 		[data key:@"username"	v:@"test"];
 		[data key:@"password"	v:@"passwordtest"];
+		[data key:@"app"		v:@"org.superarts.i"];
+		[data key:@"category"	v:@"General"];
 		[data key:@"scheme"		v:[NSMutableDictionary dictionary]];
 
 		[self set_scheme_user];
@@ -402,27 +404,38 @@
 
 #pragma mark blob
 
-- (void)blob_upload:(NSData*)data type:(NSString*)type
+- (NSString*)url_blob:(NSString*)function
 {
-	[[data v:@"blob"] blob_post_dictionary:[NSDictionary dictionaryWithObjectsAndKeys:
+	return [NSString stringWithFormat:@"%@/%@", [data v:@"blob"], function];
+}
+
+- (NSString*)url_blob_serve:(NSString*)key
+{
+	return [NSString stringWithFormat:@"%@/%@", [self url_blob:@"serve"], key];
+}
+
+- (NSString*)blob_upload:(NSData*)data_upload type:(NSString*)type
+{
+	return [[self url_blob:@"add"] blob_post_dictionary:[NSDictionary dictionaryWithObjectsAndKeys:
 		[data v:@"username"],
 		@"username",
 		[data v:@"password"],
 		@"password",
 		[NSDictionary dictionaryWithObjectsAndKeys:
-			data,
+			data_upload,
 			@"data",
 			[NSString stringWithFormat:@"ly-service-blob-%@", [LYRandom unique_string]],
 			@"filename",
 			type,
 			@"type",
 			nil],
+		@"file",
 		nil]];
 }
 
-- (void)blob_upload_jpeg:(UIImage*)image
+- (NSString*)blob_upload_jpeg:(UIImage*)image
 {
-	[self blob_upload:UIImageJPEGRepresentation(image, 80) type:@"image/jpeg"];
+	return [self blob_upload:UIImageJPEGRepresentation(image, 80) type:@"image/jpeg"];
 }
 
 #pragma mark user extension
