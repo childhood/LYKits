@@ -50,6 +50,7 @@
 		controller_mobclix_pad4 = [[UIViewController alloc] initWithView:view_mobclix_pad4];
 	}
 
+	view_adwhirl.autoresizingMask = 0;
 #if 0
 	view_adwhirl.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;//0;	//UIViewAutoresizingFlexibleTopMargin;
 	view_mobclix_phone1.autoresizingMask = 0;	//UIViewAutoresizingFlexibleTopMargin;
@@ -232,6 +233,18 @@
 	// ... adjust surrounding views here ...
 	[UIView commitAnimations];
 #endif
+}
+
+- (void)adWhirlWillPresentFullScreenModal
+{
+	NSLog(@"SUPERADS adwhirl present: %@", view_adwhirl);
+	current_rect_adwhirl = view_adwhirl.frame;
+}
+
+- (void)adWhirlDidDismissFullScreenModal
+{
+	NSLog(@"SUPERADS adwhirl dismiss: %@", view_adwhirl);
+	view_adwhirl.frame = current_rect_adwhirl;
 }
 
 - (void)rollerDidFailToReceiveAd:(ARRollerView*)adWhirlView usingBackup:(BOOL)YesOrNo

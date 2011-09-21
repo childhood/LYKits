@@ -2,7 +2,8 @@
 
 @implementation LYServiceUI
 
-@synthesize label_note;
+@synthesize label_login_note;
+@synthesize item_login_cancel;
 @synthesize data;
 
 - (id)init
@@ -78,6 +79,13 @@
 #endif
 	}];
 	return ret;
+}
+
+- (void)login_disable_cancel
+{
+	NSMutableArray *array = [NSMutableArray arrayWithArray:toolbar_login_main.items];
+	[array removeObjectAtIndex:0];
+	[toolbar_login_main setItems:array animated:NO];
 }
 
 - (UIViewController*)controller_login
@@ -206,6 +214,11 @@
 				[LYLoading performSelector:@selector(hide) withObject:nil afterDelay:0.5];
 			}];
 	}
+}
+
+- (IBAction)action_login_cancel
+{
+	[[data v:@"nav"] dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark delegate

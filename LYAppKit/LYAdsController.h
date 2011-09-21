@@ -58,6 +58,7 @@
 	//UIViewController*	controller_mobclix;
 	//CGRect				rect_adwhirl;
 	CGRect				current_rect_mobclix;
+	CGRect				current_rect_adwhirl;
 	UIView*				superview_adwhirl;
 	UIView*				superview_mobclix_phone1;
 	UIView*				superview_mobclix_phone2;

@@ -12,7 +12,7 @@
     </object>
     <object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
       <bool key="EncodedWithXMLCoder">YES</bool>
-      <integer value="10"/>
+      <integer value="20"/>
     </object>
     <object class="NSArray" key="IBDocument.PluginDependencies">
       <bool key="EncodedWithXMLCoder">YES</bool>
@@ -244,7 +244,7 @@
                 <object class="IBUISegmentedControl" id="385857712">
                   <reference key="NSNextResponder" ref="264495056"/>
                   <int key="NSvFlags">292</int>
-                  <string key="NSFrame">{{57, 8}, {152, 30}}</string>
+                  <string key="NSFrame">{{89, 8}, {152, 30}}</string>
                   <reference key="NSSuperview" ref="264495056"/>
                   <string key="NSReuseIdentifierKey">_NS:124</string>
                   <bool key="IBUIOpaque">NO</bool>
@@ -291,6 +291,12 @@
               <int key="IBUIBarStyle">1</int>
               <object class="NSMutableArray" key="IBUIItems">
                 <bool key="EncodedWithXMLCoder">YES</bool>
+                <object class="IBUIBarButtonItem" id="790931295">
+                  <string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+                  <int key="IBUIStyle">1</int>
+                  <reference key="IBUIToolbar" ref="264495056"/>
+                  <int key="IBUISystemItemIdentifier">1</int>
+                </object>
                 <object class="IBUIBarButtonItem" id="443376894">
                   <string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
                   <reference key="IBUIToolbar" ref="264495056"/>
@@ -334,7 +340,7 @@ bGUgc28gcGxlYXNlIGRvIG5vdCBjaG9vc2UgYW55IG9mZmVuc2l2ZSB0ZXJtcy4KA</string>
                 <bytes key="NSRGB">MC4yOTgwMzkyMjc3IDAuMzM3MjU0OTExNyAwLjQyMzUyOTQ0NjEAA</bytes>
               </object>
               <reference key="IBUIHighlightedColor" ref="1018047039"/>
-              <object class="NSColor" key="IBUIShadowColor" id="232558109">
+              <object class="NSColor" key="IBUIShadowColor" id="169711856">
                 <int key="NSColorSpace">1</int>
                 <bytes key="NSRGB">MSAxIDEAA</bytes>
               </object>
@@ -345,10 +351,10 @@ bGUgc28gcGxlYXNlIGRvIG5vdCBjaG9vc2UgYW55IG9mZmVuc2l2ZSB0ZXJtcy4KA</string>
               <int key="IBUINumberOfLines">0</int>
               <int key="IBUILineBreakMode">0</int>
             </object>
-            <object class="IBUILabel" id="502217985">
+            <object class="IBUILabel" id="1037028368">
               <reference key="NSNextResponder" ref="810527264"/>
               <int key="NSvFlags">290</int>
-              <string key="NSFrame">{{20, 290}, {280, 117}}</string>
+              <string key="NSFrame">{{20, 312}, {280, 117}}</string>
               <reference key="NSSuperview" ref="810527264"/>
               <bool key="IBUIOpaque">NO</bool>
               <bool key="IBUIClipsSubviews">YES</bool>
@@ -362,7 +368,7 @@ bGUgc28gcGxlYXNlIGRvIG5vdCBjaG9vc2UgYW55IG9mZmVuc2l2ZSB0ZXJtcy4KA</string>
                 <bytes key="NSRGB">MC4yOTgwMzkyMjc3IDAuMzM3MjU0OTExNyAwLjQyMzUyOTQ0NjEAA</bytes>
               </object>
               <reference key="IBUIHighlightedColor" ref="1018047039"/>
-              <reference key="IBUIShadowColor" ref="232558109"/>
+              <reference key="IBUIShadowColor" ref="169711856"/>
               <string key="IBUIShadowOffset">{0, 1}</string>
               <int key="IBUIBaselineAdjustment">1</int>
               <bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -537,12 +543,36 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
           <int key="connectionID">47</int>
         </object>
         <object class="IBConnectionRecord">
-          <object class="IBCocoaTouchOutletConnection" key="connection">
-            <string key="label">label_note</string>
-            <reference key="source" ref="841351856"/>
-            <reference key="destination" ref="502217985"/>
+          <object class="IBCocoaTouchEventConnection" key="connection">
+            <string key="label">action_login_cancel</string>
+            <reference key="source" ref="790931295"/>
+            <reference key="destination" ref="841351856"/>
           </object>
-          <int key="connectionID">49</int>
+          <int key="connectionID">51</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBCocoaTouchOutletConnection" key="connection">
+            <string key="label">item_login_cancel</string>
+            <reference key="source" ref="841351856"/>
+            <reference key="destination" ref="790931295"/>
+          </object>
+          <int key="connectionID">52</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBCocoaTouchOutletConnection" key="connection">
+            <string key="label">label_login_note</string>
+            <reference key="source" ref="841351856"/>
+            <reference key="destination" ref="1037028368"/>
+          </object>
+          <int key="connectionID">53</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBCocoaTouchOutletConnection" key="connection">
+            <string key="label">toolbar_login_main</string>
+            <reference key="source" ref="841351856"/>
+            <reference key="destination" ref="264495056"/>
+          </object>
+          <int key="connectionID">54</int>
         </object>
       </object>
       <object class="IBMutableOrderedSet" key="objectRecords">
@@ -593,7 +623,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <reference ref="500266724"/>
               <reference ref="264495056"/>
               <reference ref="764009275"/>
-              <reference ref="502217985"/>
+              <reference ref="1037028368"/>
             </object>
             <reference key="parent" ref="587855752"/>
           </object>
@@ -646,6 +676,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <reference ref="831431918"/>
               <reference ref="41117143"/>
               <reference ref="443376894"/>
+              <reference ref="790931295"/>
             </object>
             <reference key="parent" ref="810527264"/>
           </object>
@@ -685,8 +716,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
           </object>
           <object class="IBObjectRecord">
             <int key="objectID">48</int>
-            <reference key="object" ref="502217985"/>
+            <reference key="object" ref="1037028368"/>
             <reference key="parent" ref="810527264"/>
+          </object>
+          <object class="IBObjectRecord">
+            <int key="objectID">50</int>
+            <reference key="object" ref="790931295"/>
+            <reference key="parent" ref="264495056"/>
           </object>
         </object>
       </object>
@@ -723,6 +759,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
           <string>41.IBPluginDependency</string>
           <string>48.IBPluginDependency</string>
           <string>48.IBViewBoundsToFrameTransform</string>
+          <string>50.IBPluginDependency</string>
           <string>9.IBEditorWindowLastContentRect</string>
           <string>9.IBPluginDependency</string>
         </object>
@@ -773,8 +810,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
           <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
           <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
           <object class="NSAffineTransform">
-            <bytes key="NSTransformStruct">P4AAAL+AAABBoAAAw8mAAA</bytes>
+            <bytes key="NSTransformStruct">P4AAAL+AAABBoAAAw8qAAA</bytes>
           </object>
+          <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
           <string>{{-1019, 167}, {320, 480}}</string>
           <string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
         </object>
@@ -795,7 +833,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
         </object>
       </object>
       <nil key="sourceID"/>
-      <int key="maxID">49</int>
+      <int key="maxID">54</int>
     </object>
     <object class="IBClassDescriber" key="IBDocument.Classes">
       <object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -807,11 +845,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
             <bool key="EncodedWithXMLCoder">YES</bool>
             <object class="NSArray" key="dict.sortedKeys">
               <bool key="EncodedWithXMLCoder">YES</bool>
+              <string>action_login_cancel</string>
               <string>action_login_done</string>
               <string>action_login_type</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
               <bool key="EncodedWithXMLCoder">YES</bool>
+              <string>id</string>
               <string>id</string>
               <string>id</string>
             </object>
@@ -820,11 +860,16 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
             <bool key="EncodedWithXMLCoder">YES</bool>
             <object class="NSArray" key="dict.sortedKeys">
               <bool key="EncodedWithXMLCoder">YES</bool>
+              <string>action_login_cancel</string>
               <string>action_login_done</string>
               <string>action_login_type</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
               <bool key="EncodedWithXMLCoder">YES</bool>
+              <object class="IBActionInfo">
+                <string key="name">action_login_cancel</string>
+                <string key="candidateClassName">id</string>
+              </object>
               <object class="IBActionInfo">
                 <string key="name">action_login_done</string>
                 <string key="candidateClassName">id</string>
@@ -845,8 +890,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <string>field_login_name</string>
               <string>field_login_pin1</string>
               <string>field_login_pin2</string>
-              <string>label_note</string>
+              <string>item_login_cancel</string>
+              <string>label_login_note</string>
               <string>segment_login_type</string>
+              <string>toolbar_login_main</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
               <bool key="EncodedWithXMLCoder">YES</bool>
@@ -856,8 +903,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <string>UITextField</string>
               <string>UITextField</string>
               <string>UITextField</string>
+              <string>UIBarButtonItem</string>
               <string>UILabel</string>
               <string>UISegmentedControl</string>
+              <string>UIToolbar</string>
             </object>
           </object>
           <object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -870,8 +919,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <string>field_login_name</string>
               <string>field_login_pin1</string>
               <string>field_login_pin2</string>
-              <string>label_note</string>
+              <string>item_login_cancel</string>
+              <string>label_login_note</string>
               <string>segment_login_type</string>
+              <string>toolbar_login_main</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
               <bool key="EncodedWithXMLCoder">YES</bool>
@@ -900,12 +951,20 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
                 <string key="candidateClassName">UITextField</string>
               </object>
               <object class="IBToOneOutletInfo">
-                <string key="name">label_note</string>
+                <string key="name">item_login_cancel</string>
+                <string key="candidateClassName">UIBarButtonItem</string>
+              </object>
+              <object class="IBToOneOutletInfo">
+                <string key="name">label_login_note</string>
                 <string key="candidateClassName">UILabel</string>
               </object>
               <object class="IBToOneOutletInfo">
                 <string key="name">segment_login_type</string>
                 <string key="candidateClassName">UISegmentedControl</string>
+              </object>
+              <object class="IBToOneOutletInfo">
+                <string key="name">toolbar_login_main</string>
+                <string key="candidateClassName">UIToolbar</string>
               </object>
             </object>
           </object>
