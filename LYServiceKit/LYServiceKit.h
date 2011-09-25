@@ -36,6 +36,17 @@
 @end
 
 
+@interface LYServiceAWS: NSObject
+{
+	NSMutableDictionary* data;
+}
+@property (nonatomic, retain) NSMutableDictionary*	data;
+
+- (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
+
+@end
+
+
 @interface LYServiceFaceDotCom: NSObject
 {
 	NSMutableDictionary* data;

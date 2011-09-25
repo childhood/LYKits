@@ -1,5 +1,72 @@
 #import "LYServiceKit.h"
 
+#import <AWSiOSSDK/AmazonLogger.h>
+#import <AWSiOSSDK/SimpleDB/AmazonSimpleDBClient.h>
+
+
+@implementation LYServiceAWS
+
+@synthesize data;
+
+/*
+ * 
+ * [sdb name:@"user" id:@"uuid001"];
+ * [sdb key:@"name" unique_value:@"Leo"];
+ * [sdb key:@"friends" value:@"tom"];
+ * [sdb key:@"friends" value:@"jerry"];
+ * [sdb put];
+ *
+ * [sdb select:@"* from user where `name` = 'Leo'"];
+ *
+ */
+- (id)init
+{
+	self = [super init];
+	if (self != nil)
+	{
+		data = [[NSMutableDictionary alloc] init];
+		[data key:@"aws-key" v:@"AKIAIG737NOEC2VVPXQQ"];
+		[data key:@"aws-secreet" v:@"V+PxxcUpKNOCu+7ZPbTj1Y9gkNNA4Y9IBFmxj3Dy"];
+	}
+	return self;
+}
+
+- (void)dealloc
+{
+	[data release];
+	[super dealloc];
+}
+
+- (void)test
+{
+	[AmazonLogger verboseLogging];
+	NSLog(@"AWS testing started...");
+	AmazonSimpleDBClient* sdb = [[AmazonSimpleDBClient alloc] initWithAccessKey:@"AKIAIG737NOEC2VVPXQQ" withSecretKey:@"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"];
+#if 0
+	SimpleDBSelectRequest  *request_select  = [[[SimpleDBSelectRequest alloc] initWithSelectExpression:@"select * from `user` where `name` = 'Leo1, Leo2'"] autorelease];
+	SimpleDBSelectResponse *response_select = [sdb select:request_select];
+	NSLog(@"select: %@", response_select.items);
+#endif
+#if 1
+	SimpleDBPutAttributesRequest* request_put;
+	request_put = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:@"user"
+															   andItemName:@"item-001"
+															 andAttributes:[NSMutableArray arrayWithObjects:
+					   [[[SimpleDBReplaceableAttribute alloc] initWithName:@"name" andValue:@"Leo2" andReplace:NO] autorelease], 
+					   [[[SimpleDBReplaceableAttribute alloc] initWithName:@"name" andValue:@"Leo3" andReplace:NO] autorelease], 
+					   [[[SimpleDBReplaceableAttribute alloc] initWithName:@"name" andValue:@"Leo4" andReplace:NO] autorelease], 
+					   [[[SimpleDBReplaceableAttribute alloc] initWithName:@"mail" andValue:@"no2@name.com" andReplace:YES] autorelease], 
+					   nil]];
+	[sdb putAttributes:request_put];
+	[request_put release];
+#endif
+	[sdb release];
+	NSLog(@"AWS testing done");
+}
+
+@end
+
+
 @implementation LYDatabase
 
 @synthesize data;
