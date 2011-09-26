@@ -44,6 +44,17 @@
 
 #pragma mark OTHERS
 
+#if 0
+@interface NSData (LYData)
+- (void)v:(NSString*)s;
+@end
+
+@implementation NSData (LYData)
+- (void)v:(NSString*)s
+{
+}
+@end
+#endif
 
 #if 0
 @interface UITabBarController (LYTabBarController)

@@ -162,6 +162,7 @@
 - (void)refresh_begin;
 - (void)refresh_end;
 - (void)refresh_animated;
+- (void)action_search_resign;
 
 @end
 

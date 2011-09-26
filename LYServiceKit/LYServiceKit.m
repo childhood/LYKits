@@ -1,5 +1,6 @@
 #import "LYServiceKit.h"
 
+#if 0
 #import <AWSiOSSDK/AmazonLogger.h>
 #import <AWSiOSSDK/SimpleDB/AmazonSimpleDBClient.h>
 
@@ -65,7 +66,7 @@
 }
 
 @end
-
+#endif
 
 @implementation LYDatabase
 
