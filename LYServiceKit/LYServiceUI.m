@@ -32,7 +32,7 @@
 {
 	return [self insert_post_title:key
 						   content:@""
-							   pid:[[[data v:@"db"] data] v:@"app"]
+							   pid:[(NSMutableDictionary*)[[data v:@"db"] data] v:@"app"]
 							   url:[[data v:@"db"] url_blob_serve:key]];
 }
 
@@ -56,9 +56,9 @@
 		@"title",
 		parent_url,
 		@"parent-url",
-		[[[data v:@"db"] data] v:@"category"],
+		[(NSMutableDictionary*)[[data v:@"db"] data] v:@"category"],
 		@"category",
-		[[[data v:@"db"] data] v:@"app"],
+		[(NSMutableDictionary*)[[data v:@"db"] data] v:@"app"],
 		@"app",
 		content,
 		@"content",

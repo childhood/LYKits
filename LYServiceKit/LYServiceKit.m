@@ -7,13 +7,19 @@
 
 /*
  * 
- * [sdb put:@"user"];	//	name=uid
- * [sdb key:@"name" unique:@"Leo"];
- * [sdb key:@"friends" value:@"tom"];
- * [sdb key:@"friends" value:@"jerry"];
- * [sdb put_block:callback];
- *
- * [sdb select:@"* from user where `name` = 'Leo'"];
+	LYServiceAWSSimpleDB* sdb = [[LYServiceAWSSimpleDB alloc] init];
+	//	[sdb test];
+	
+	//	[sdb select:@"select * from `user` where `name` = 'Leo1'" block:nil];
+
+#if 1
+	[sdb put:@"user"];
+	[sdb key:@"name" unique:@"Leo"];
+	[sdb key:@"friends" value:@"tom"];
+	[sdb key:@"friends" value:@"jerry"];
+	[sdb put_block:nil];
+#endif
+	NSLog(@"done.");
  *
  */
 - (id)init
@@ -32,15 +38,67 @@
 
 - (void)dealloc
 {
+	[sdb release];
 	[data release];
 	[super dealloc];
 }
 
-- (void)put:(NSString*)name
+- (void)put:(NSString*)domain
 {
-	request_put = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:@"user"
+	request_put = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:domain
 															   andItemName:[LYRandom unique_string]
-															 andAttributes:[NSMutableArray array]];
+															 andAttributes:nil];
+														//	 andAttributes:[NSMutableArray array]];
+}
+
+- (void)key:(NSString*)key unique:(NSString*)value
+{
+	//	SimpleDBAttribute* attr = [[SimpleDBReplaceableAttribute alloc] initWithName:key andValue:value];
+	SimpleDBReplaceableAttribute* attr = [[SimpleDBReplaceableAttribute alloc] initWithName:key andValue:value andReplace:NO];
+	[request_put addAttribute:attr];
+	[attr release];
+}
+
+- (void)key:(NSString*)key value:(NSString*)value
+{
+	SimpleDBReplaceableAttribute* attr = [[SimpleDBReplaceableAttribute alloc] initWithName:key andValue:value andReplace:YES];
+	[request_put addAttribute:attr];
+	[attr release];
+}
+
+- (void)put_block:(LYBlockVoidArrayError)callback
+{
+	request_put.delegate = self;
+	[sdb putAttributes:request_put];
+	[request_put release];
+}
+
+- (void)select:(NSString*)query block:(LYBlockVoidArrayError)callback
+{
+	SimpleDBSelectRequest  *request_select = [[SimpleDBSelectRequest alloc] initWithSelectExpression:query];
+	request_select.delegate = self;
+	[sdb select:request_select];
+	[request_select release];
+}
+
+- (void)request:(AmazonServiceRequest*)request didCompleteWithResponse:(AmazonServiceResponse*)response
+{
+	if ([response class] == [SimpleDBPutAttributesResponse class])
+	{
+		NSLog(@"put successfully");
+	}
+	else if ([response class] == [SimpleDBSelectResponse class])
+	{
+		SimpleDBSelectResponse* response_select = (SimpleDBSelectResponse*)response;
+		NSLog(@"select: %@", response_select.items);
+	}
+	else
+		NSLog(@"AWS response: %@\nclass: '%@'", response, NSStringFromClass([response class]));
+}
+
+- (void)request:(AmazonServiceRequest*)request didFailWithError:(NSError*)error
+{
+	NSLog(@"AWS failed: %@", error);
 }
 
 - (void)test
@@ -70,16 +128,6 @@
 #endif
 	[sdb release];
 	NSLog(@"AWS testing done");
-}
-
-- (void)request:(AmazonServiceRequest*)request didCompleteWithResponse:(AmazonServiceResponse*)response
-{
-	NSLog(@"AWS response: %@", response);
-}
-
-- (void)request:(AmazonServiceRequest*)request didFailWithError:(NSError*)error
-{
-	NSLog(@"AWS failed: %@", error);
 }
 
 @end
