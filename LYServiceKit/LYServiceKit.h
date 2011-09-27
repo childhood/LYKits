@@ -4,11 +4,31 @@
 #import "CJSONSerializer.h"
 #import "LYServiceUI.h"
 
+#ifdef LY_ENABLE_SDK_AWS
+#import <AWSiOSSDK/AmazonLogger.h>
+#import <AWSiOSSDK/SimpleDB/AmazonSimpleDBClient.h>
+#endif
+
 @class LYTextAlertView;
+
+
+@interface LYServiceAWSSimpleDB: NSObject
+{
+	NSMutableDictionary*			data;
+	AmazonSimpleDBClient*			sdb;
+	SimpleDBPutAttributesRequest*	request_put;
+}
+@property (nonatomic, retain) NSMutableDictionary*	data;
+
+//- (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
+- (void)test;
+
+@end
+
 
 @interface LYDatabase: NSObject
 {
-	NSMutableDictionary* data;
+	NSMutableDictionary*	data;
 }
 @property (nonatomic, retain) NSMutableDictionary*	data;
 
@@ -32,17 +52,6 @@
 - (void)test;
 - (void)set_scheme_user;
 - (void)set_scheme_post;
-
-@end
-
-
-@interface LYServiceAWS: NSObject
-{
-	NSMutableDictionary* data;
-}
-@property (nonatomic, retain) NSMutableDictionary*	data;
-
-- (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
 
 @end
 

@@ -30,6 +30,7 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 //	#define LY_ENABLE_SERVICEKIT
 //	#define LY_ENABLE_SDK_ASIHTTP
 //	#define LY_ENABLE_SDK_TOUCHJSON
+//	#define LY_ENABLE_SDK_AWS
 //
 //	#define LY_ENABLE_OPENAL
 

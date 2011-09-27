@@ -1,21 +1,17 @@
 #import "LYServiceKit.h"
 
-#if 0
-#import <AWSiOSSDK/AmazonLogger.h>
-#import <AWSiOSSDK/SimpleDB/AmazonSimpleDBClient.h>
-
-
-@implementation LYServiceAWS
+#ifdef LY_ENABLE_SDK_AWS
+@implementation LYServiceAWSSimpleDB
 
 @synthesize data;
 
 /*
  * 
- * [sdb name:@"user" id:@"uuid001"];
- * [sdb key:@"name" unique_value:@"Leo"];
+ * [sdb put:@"user"];	//	name=uid
+ * [sdb key:@"name" unique:@"Leo"];
  * [sdb key:@"friends" value:@"tom"];
  * [sdb key:@"friends" value:@"jerry"];
- * [sdb put];
+ * [sdb put_block:callback];
  *
  * [sdb select:@"* from user where `name` = 'Leo'"];
  *
@@ -27,7 +23,9 @@
 	{
 		data = [[NSMutableDictionary alloc] init];
 		[data key:@"aws-key" v:@"AKIAIG737NOEC2VVPXQQ"];
-		[data key:@"aws-secreet" v:@"V+PxxcUpKNOCu+7ZPbTj1Y9gkNNA4Y9IBFmxj3Dy"];
+		[data key:@"aws-secret" v:@"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"];
+
+		sdb = [[AmazonSimpleDBClient alloc] initWithAccessKey:[data v:@"aws-key"] withSecretKey:[data v:@"aws-secret"]];
 	}
 	return self;
 }
@@ -38,17 +36,25 @@
 	[super dealloc];
 }
 
+- (void)put:(NSString*)name
+{
+	request_put = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:@"user"
+															   andItemName:[LYRandom unique_string]
+															 andAttributes:[NSMutableArray array]];
+}
+
 - (void)test
 {
-	[AmazonLogger verboseLogging];
+	//	[AmazonLogger verboseLogging];
 	NSLog(@"AWS testing started...");
-	AmazonSimpleDBClient* sdb = [[AmazonSimpleDBClient alloc] initWithAccessKey:@"AKIAIG737NOEC2VVPXQQ" withSecretKey:@"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"];
-#if 0
-	SimpleDBSelectRequest  *request_select  = [[[SimpleDBSelectRequest alloc] initWithSelectExpression:@"select * from `user` where `name` = 'Leo1, Leo2'"] autorelease];
-	SimpleDBSelectResponse *response_select = [sdb select:request_select];
-	NSLog(@"select: %@", response_select.items);
-#endif
+	sdb = [[AmazonSimpleDBClient alloc] initWithAccessKey:[data v:@"aws-key"] withSecretKey:[data v:@"aws-secret"]];
 #if 1
+	SimpleDBSelectRequest  *request_select  = [[[SimpleDBSelectRequest alloc] initWithSelectExpression:@"select * from `user` where `name` = 'Leo1'"] autorelease];
+	request_select.delegate = self;
+	SimpleDBSelectResponse *response_select = [sdb select:request_select];
+	//	NSLog(@"select: %@", response_select.items);
+#endif
+#if 0
 	SimpleDBPutAttributesRequest* request_put;
 	request_put = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:@"user"
 															   andItemName:@"item-001"
@@ -58,6 +64,7 @@
 					   [[[SimpleDBReplaceableAttribute alloc] initWithName:@"name" andValue:@"Leo4" andReplace:NO] autorelease], 
 					   [[[SimpleDBReplaceableAttribute alloc] initWithName:@"mail" andValue:@"no2@name.com" andReplace:YES] autorelease], 
 					   nil]];
+	request_put.delegate = self;
 	[sdb putAttributes:request_put];
 	[request_put release];
 #endif
@@ -65,8 +72,19 @@
 	NSLog(@"AWS testing done");
 }
 
+- (void)request:(AmazonServiceRequest*)request didCompleteWithResponse:(AmazonServiceResponse*)response
+{
+	NSLog(@"AWS response: %@", response);
+}
+
+- (void)request:(AmazonServiceRequest*)request didFailWithError:(NSError*)error
+{
+	NSLog(@"AWS failed: %@", error);
+}
+
 @end
-#endif
+#endif	//	AWS
+
 
 @implementation LYDatabase
 
