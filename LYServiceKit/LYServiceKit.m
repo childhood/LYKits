@@ -9,17 +9,26 @@
  * 
 	LYServiceAWSSimpleDB* sdb = [[LYServiceAWSSimpleDB alloc] init];
 	//	[sdb test];
-	
-	//	[sdb select:@"select * from `user` where `name` = 'Leo1'" block:nil];
-
+#if 0	
+	[sdb select:@"select * from `user` where `name` = 'Leo'" block:^(id obj, NSError* error)
+	{
+		NSArray* array = (NSArray*)obj;
+		NSLog(@"select result: %@", error);
+		NSLog(@"select data: %@", array);
+	}];
+#endif
 #if 1
-	[sdb put:@"user"];
-	[sdb key:@"name" unique:@"Leo"];
+	[sdb put:@"users" name:@"leo@superarts.org"];
+	[sdb key:@"name" unique:@"Leo3"];
 	[sdb key:@"friends" value:@"tom"];
 	[sdb key:@"friends" value:@"jerry"];
-	[sdb put_block:nil];
+	[sdb key:@"friends" value:@"kenny"];
+	[sdb key:@"gender" value:@"male"];
+	[sdb put_block:^(id obj, NSError* error)
+	{
+		NSLog(@"put result: %@", error);
+	}];
 #endif
-	NSLog(@"done.");
  *
  */
 - (id)init
