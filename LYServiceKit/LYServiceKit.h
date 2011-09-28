@@ -12,6 +12,7 @@
 @class LYTextAlertView;
 
 
+#ifdef LY_ENABLE_SDK_AWS
 @interface LYServiceAWSSimpleDB: NSObject <AmazonServiceRequestDelegate>
 {
 	NSMutableDictionary*			data;
@@ -31,6 +32,7 @@
 - (void)test;
 
 @end
+#endif	//	AWS
 
 
 @interface LYDatabase: NSObject
