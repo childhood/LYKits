@@ -45,52 +45,61 @@
 
 - (void)put:(NSString*)domain
 {
+	[self put:domain name:[LYRandom unique_string]];
+}
+
+- (void)put:(NSString*)domain name:(NSString*)name
+{
 	request_put = [[SimpleDBPutAttributesRequest alloc] initWithDomainName:domain
-															   andItemName:[LYRandom unique_string]
+															   andItemName:name
 															 andAttributes:nil];
 														//	 andAttributes:[NSMutableArray array]];
 }
 
 - (void)key:(NSString*)key unique:(NSString*)value
 {
-	//	SimpleDBAttribute* attr = [[SimpleDBReplaceableAttribute alloc] initWithName:key andValue:value];
-	SimpleDBReplaceableAttribute* attr = [[SimpleDBReplaceableAttribute alloc] initWithName:key andValue:value andReplace:NO];
+	//SimpleDBAttribute* attr = [[SimpleDBAttribute alloc] initWithName:key andValue:value];
+	SimpleDBReplaceableAttribute* attr = [[SimpleDBReplaceableAttribute alloc] initWithName:key andValue:value andReplace:YES];
 	[request_put addAttribute:attr];
 	[attr release];
 }
 
 - (void)key:(NSString*)key value:(NSString*)value
 {
-	SimpleDBReplaceableAttribute* attr = [[SimpleDBReplaceableAttribute alloc] initWithName:key andValue:value andReplace:YES];
+	SimpleDBReplaceableAttribute* attr = [[SimpleDBReplaceableAttribute alloc] initWithName:key andValue:value andReplace:NO];
 	[request_put addAttribute:attr];
 	[attr release];
 }
 
-- (void)put_block:(LYBlockVoidArrayError)callback
+- (void)put_block:(LYBlockVoidObjError)callback
 {
 	request_put.delegate = self;
 	[sdb putAttributes:request_put];
 	[request_put release];
+	callback_obj_error = callback;
 }
 
-- (void)select:(NSString*)query block:(LYBlockVoidArrayError)callback
+- (void)select:(NSString*)query block:(LYBlockVoidObjError)callback
 {
 	SimpleDBSelectRequest  *request_select = [[SimpleDBSelectRequest alloc] initWithSelectExpression:query];
 	request_select.delegate = self;
 	[sdb select:request_select];
 	[request_select release];
+	callback_obj_error = callback;
 }
 
 - (void)request:(AmazonServiceRequest*)request didCompleteWithResponse:(AmazonServiceResponse*)response
 {
 	if ([response class] == [SimpleDBPutAttributesResponse class])
 	{
-		NSLog(@"put successfully");
+		//	NSLog(@"put successfully: %@", response);
+		callback_obj_error(nil, nil);
 	}
 	else if ([response class] == [SimpleDBSelectResponse class])
 	{
 		SimpleDBSelectResponse* response_select = (SimpleDBSelectResponse*)response;
-		NSLog(@"select: %@", response_select.items);
+		callback_obj_error(response_select.items, nil);
+		//	NSLog(@"select: %@", response_select.items);
 	}
 	else
 		NSLog(@"AWS response: %@\nclass: '%@'", response, NSStringFromClass([response class]));
@@ -98,7 +107,7 @@
 
 - (void)request:(AmazonServiceRequest*)request didFailWithError:(NSError*)error
 {
-	NSLog(@"AWS failed: %@", error);
+	callback_obj_error(nil, error);
 }
 
 - (void)test
@@ -110,7 +119,7 @@
 	SimpleDBSelectRequest  *request_select  = [[[SimpleDBSelectRequest alloc] initWithSelectExpression:@"select * from `user` where `name` = 'Leo1'"] autorelease];
 	request_select.delegate = self;
 	SimpleDBSelectResponse *response_select = [sdb select:request_select];
-	//	NSLog(@"select: %@", response_select.items);
+	NSLog(@"select: %@", response_select.items);
 #endif
 #if 0
 	SimpleDBPutAttributesRequest* request_put;

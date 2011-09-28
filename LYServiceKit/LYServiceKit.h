@@ -18,15 +18,18 @@
 	NSMutableDictionary*			data;
 	AmazonSimpleDBClient*			sdb;
 	SimpleDBPutAttributesRequest*	request_put;
+
+	LYBlockVoidObjError		callback_obj_error;
 }
 @property (nonatomic, retain) NSMutableDictionary*	data;
 
 - (void)put:(NSString*)domain;
+- (void)put:(NSString*)domain name:(NSString*)name;
 - (void)key:(NSString*)key unique:(NSString*)value;
 - (void)key:(NSString*)key value:(NSString*)value;
-- (void)put_block:(LYBlockVoidArrayError)callback;
+- (void)put_block:(LYBlockVoidObjError)callback;
 
-- (void)select:(NSString*)query block:(LYBlockVoidArrayError)callback;
+- (void)select:(NSString*)query block:(LYBlockVoidObjError)callback;
 
 //- (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
 - (void)test;
