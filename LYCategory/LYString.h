@@ -116,4 +116,8 @@ BOOL supersound_inited;
 - (id)obj_json;
 #endif
 
+//	easy encryption
+- (NSString*)switch:(NSString*)s1 with:(NSString*)s2;
+- (NSString*)_ly_k1;
+
 @end

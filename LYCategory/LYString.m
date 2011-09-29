@@ -756,4 +756,31 @@
 }
 #endif
 
+- (NSString*)switch:(NSString*)s1 with:(NSString*)s2
+{
+	NSString* s = self;
+	if ([s has_substring:s1] && [s has_substring:s2])
+	{
+		s = [s stringByReplacingOccurrencesOfString:s1 withString:@"ly-separator-string-switch-001"];
+		s = [s stringByReplacingOccurrencesOfString:s2 withString:@"ly-separator-string-switch-002"];
+		s = [s stringByReplacingOccurrencesOfString:@"ly-separator-string-switch-001" withString:s2];
+		s = [s stringByReplacingOccurrencesOfString:@"ly-separator-string-switch-002" withString:s1];
+	}
+	return s;
+}
+
+- (NSString*)_ly_k1
+{
+	NSString* s = self;
+	s = [s switch:@"+" with:@"-"];
+	s = [s switch:@"1" with:@"l"];
+	s = [s switch:@"O" with:@"0"];
+	s = [s switch:@"z" with:@"2"];
+	s = [s switch:@"s" with:@"5"];
+	s = [s switch:@"a" with:@"b"];
+	s = [s switch:@"x" with:@"X"];
+	s = [s switch:@"9" with:@"6"];
+	return s;
+}
+
 @end
