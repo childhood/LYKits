@@ -97,6 +97,17 @@
 	callback_obj_error = callback;
 }
 
+- (void)count:(NSString*)query block:(LYBlockVoidObjError)callback
+{
+	NSString* s = [NSString stringWithFormat:@"SELECT count(*) FROM %@", query];
+	//	NSLog(@"count:\n%@", s);
+	SimpleDBSelectRequest  *request_select = [[SimpleDBSelectRequest alloc] initWithSelectExpression:s];
+	request_select.delegate = self;
+	[sdb select:request_select];
+	[request_select release];
+	callback_obj_error = callback;
+}
+
 - (void)request:(AmazonServiceRequest*)request didCompleteWithResponse:(AmazonServiceResponse*)response
 {
 	if ([response class] == [SimpleDBPutAttributesResponse class])
