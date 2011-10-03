@@ -97,7 +97,7 @@
 	callback_obj_error = callback;
 }
 
-- (void)count:(NSString*)query block:(LYBlockVoidObjError)callback
+- (void)count:(NSString*)query block:(LYBlockVoidIntError)callback
 {
 	NSString* s = [NSString stringWithFormat:@"SELECT count(*) FROM %@", query];
 	//	NSLog(@"count:\n%@", s);
@@ -105,7 +105,7 @@
 	request_select.delegate = self;
 	[sdb select:request_select];
 	[request_select release];
-	callback_obj_error = callback;
+	callback_int_error = callback;
 }
 
 - (void)request:(AmazonServiceRequest*)request didCompleteWithResponse:(AmazonServiceResponse*)response
@@ -118,7 +118,11 @@
 	else if ([response class] == [SimpleDBSelectResponse class])
 	{
 		SimpleDBSelectResponse* response_select = (SimpleDBSelectResponse*)response;
-		callback_obj_error(response_select.items, nil);
+		SimpleDBAttribute* attr = [[[response_select.items i:0] attributes] i:0];
+		if ([[attr name] is:@"Count"])
+			callback_int_error([[attr value] intValue], nil);
+		else
+			callback_obj_error(response_select.items, nil);
 		//	NSLog(@"select: %@", response_select.items);
 	}
 	else

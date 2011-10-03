@@ -19,6 +19,7 @@
 	AmazonSimpleDBClient*			sdb;
 	SimpleDBPutAttributesRequest*	request_put;
 
+	LYBlockVoidIntError		callback_int_error;
 	LYBlockVoidObjError		callback_obj_error;
 }
 @property (nonatomic, retain) NSMutableDictionary*	data;
@@ -30,7 +31,7 @@
 - (void)put_block:(LYBlockVoidObjError)callback;
 
 - (void)select:(NSString*)query block:(LYBlockVoidObjError)callback;
-- (void)count:(NSString*)query block:(LYBlockVoidObjError)callback;
+- (void)count:(NSString*)query block:(LYBlockVoidIntError)callback;
 
 //- (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
 - (void)test;

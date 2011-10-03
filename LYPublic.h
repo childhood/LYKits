@@ -2,6 +2,7 @@ typedef void(^LYBlockVoidVoid)(void);
 typedef void(^LYBlockVoidBool)(BOOL b);
 typedef void(^LYBlockVoidInt)(int i);
 typedef void(^LYBlockVoidError)(NSError* error);
+typedef void(^LYBlockVoidIntError)(int i, NSError* error);
 typedef void(^LYBlockVoidArrayError)(NSArray* array, NSError* error);
 typedef void(^LYBlockVoidDictError)(NSDictionary* dict, NSError* error);
 typedef void(^LYBlockVoidStringError)(NSString* str, NSError* error);
