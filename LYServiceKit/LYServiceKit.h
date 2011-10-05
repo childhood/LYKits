@@ -33,6 +33,10 @@
 - (void)select:(NSString*)query block:(LYBlockVoidObjError)callback;
 - (void)count:(NSString*)query block:(LYBlockVoidIntError)callback;
 
+- (NSException*)put_sync;
+- (NSArray*)select_sync:(NSString*)query;
+- (int)count_sync:(NSString*)query;
+
 //- (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
 - (void)test;
 

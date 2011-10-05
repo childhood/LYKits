@@ -88,13 +88,31 @@
 	callback_obj_error = callback;
 }
 
+- (NSException*)put_sync
+{
+	[LYLoading show];
+	SimpleDBPutAttributesResponse* response = [sdb putAttributes:request_put];
+	[request_put release];
+	return response.exception;
+}
+
 - (void)select:(NSString*)query block:(LYBlockVoidObjError)callback
 {
-	SimpleDBSelectRequest  *request_select = [[SimpleDBSelectRequest alloc] initWithSelectExpression:query];
+	SimpleDBSelectRequest* request_select = [[SimpleDBSelectRequest alloc] initWithSelectExpression:query];
 	request_select.delegate = self;
 	[sdb select:request_select];
 	[request_select release];
 	callback_obj_error = callback;
+}
+
+- (NSArray*)select_sync:(NSString*)query
+{
+	[LYLoading show];
+	SimpleDBSelectRequest* request_select = [[SimpleDBSelectRequest alloc] initWithSelectExpression:query];
+	SimpleDBSelectResponse* response_select = [sdb select:request_select];
+	[request_select release];
+	[LYLoading hide];
+	return response_select.items;
 }
 
 - (void)count:(NSString*)query block:(LYBlockVoidIntError)callback
@@ -106,6 +124,18 @@
 	[sdb select:request_select];
 	[request_select release];
 	callback_int_error = callback;
+}
+
+- (int)count_sync:(NSString*)query
+{
+	[LYLoading show];
+	NSString* s = [NSString stringWithFormat:@"SELECT count(*) FROM %@", query];
+	SimpleDBSelectRequest  *request_count = [[SimpleDBSelectRequest alloc] initWithSelectExpression:s];
+	SimpleDBSelectResponse* response_count = [sdb select:request_count];
+	SimpleDBAttribute* attr = [[[response_count.items i:0] attributes] i:0];
+	[request_count release];
+	[LYLoading hide];
+	return [[attr value] intValue];
 }
 
 - (void)request:(AmazonServiceRequest*)request didCompleteWithResponse:(AmazonServiceResponse*)response
