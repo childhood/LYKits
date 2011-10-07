@@ -2,10 +2,12 @@
 #import "LYUIKit.h"
 
 @interface UIImagePickerController (LYImagePickerController)
+/*
 UINavigationController*		ly_nav;
 UIImageView*				ly_image;
 id							ly_pop;
 id							ly_delegate;
+*/
 
 - (void)set_ly_image:(UIImageView*)an_image;
 - (void)set_ly_delegate:(id)a_delegate;

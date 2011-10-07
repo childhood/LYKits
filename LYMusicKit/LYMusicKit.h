@@ -33,6 +33,7 @@
 @property (nonatomic, retain) NSMutableDictionary*	data;
 
 - (void)sync;
+- (void)play_all;
 - (void)set_playlist_table:(UITableView*)table;
 - (void)set_artwork:(UIImageView*)image;
 - (void)set_buttons_play:(UIButton*)play prev:(UIButton*)prev next:(UIButton*)next shuffle:(UIButton*)shuffle repeat:(UIButton*)repeat;

@@ -391,7 +391,7 @@
 		the_button = [buttons objectAtIndex:i];
 		CABasicAnimation *wiggle = [CABasicAnimation animationWithKeyPath:@"transform"];
 		wiggle.duration = 0.1;
-		wiggle.repeatCount = 1e100f;
+		wiggle.repeatCount = 100;//1e100f;
 		wiggle.autoreverses = YES;
 		wiggle.toValue = [NSValue valueWithCATransform3D:CATransform3DRotate(the_button.layer.transform, 0.1, 0.0 ,1.0 ,2.0)];
 

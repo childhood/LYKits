@@ -91,7 +91,7 @@ static NSString *kCellIdentifier = @"Cell";
 	
 	if (cell == nil) {
 	
-		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero 
+		cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault 
 									   reuseIdentifier: kCellIdentifier] autorelease];
 	}
 	

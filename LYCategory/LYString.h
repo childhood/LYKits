@@ -14,7 +14,7 @@
 #endif
 
 @interface NSString (LYString)
-BOOL supersound_inited;
+//	BOOL supersound_inited;
 
 //	ui
 - (void)show_alert_title:(NSString*)title message:(NSString*)msg;

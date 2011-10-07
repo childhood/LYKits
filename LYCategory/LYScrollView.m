@@ -2,11 +2,13 @@
 
 @implementation UIScrollView (LYScrollView)
 
+/*
 - (id)init
 {
-	flag_keep_width = NO;
+	[self associate:@"flag_keep_width" with:[NSNumber numberWithBool:NO]];
 	return [super init];
 }
+*/
 
 - (void)copy_style:(UIScrollView*)target
 {
@@ -114,8 +116,8 @@
 	size = CGSizeMake(label.frame.size.width, 9999);
 	size_width = size.width;
 	size = [label.text sizeWithFont:label.font constrainedToSize:size lineBreakMode:label.lineBreakMode];
-	if (flag_keep_width == YES)
-		size = CGSizeMake(size_width, size.height);
+	//	if (flag_keep_width == YES)
+	//	size = CGSizeMake(size_width, size.height);
 
 	//	resize label
 	rect = label.frame;
@@ -131,7 +133,7 @@
 
 - (void)set_keep_width:(BOOL)b
 {
-	flag_keep_width = b;
+	//	flag_keep_width = b;
 }
 
 @end

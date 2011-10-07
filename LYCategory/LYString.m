@@ -6,6 +6,7 @@
 
 - (id)init
 {
+#if 0
 	//	NSLog(@"supersound inited: %i", supersound_inited);
 	if (supersound_inited == NO)
 	{
@@ -14,6 +15,7 @@
 		se_init();
 #endif
 	}
+#endif
 	return [super init];
 }
 

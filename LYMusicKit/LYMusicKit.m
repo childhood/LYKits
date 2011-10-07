@@ -106,6 +106,14 @@
 	//	NSLog(@"music: %@", [data v:@"media-music"]);
 }
 
+- (void)play_all
+{
+	player.shuffleMode = MPMusicShuffleModeSongs;
+	player.repeatMode = MPMusicRepeatModeAll;
+	[self mediaPicker:nil didPickMediaItems:[MPMediaItemCollection collectionWithItems:[MPMediaQuery songsQuery].items]];
+	[self player_play];
+}
+
 - (void)set_artwork:(UIImageView*)image
 {
 	{

@@ -11,10 +11,12 @@
 	{
 		[self addObject: firstObject];
 		va_start(argumentList, firstObject);
-		while (eachObject = va_arg(argumentList, id))
+		eachObject = va_arg(argumentList, id);
+		while (eachObject)
 		{
 			//	NSLog(@"adding: %@", eachObject);
 			[self addObject:eachObject];
+			eachObject = va_arg(argumentList, id);
 		}
 		va_end(argumentList);
 	}
@@ -30,8 +32,12 @@
 	{
 		[self addObject:[NSMutableArray arrayWithObjects:firstObject, nil]];
 		va_start(argumentList, firstObject);
-		while (eachObject = va_arg(argumentList, id))
+		eachObject = va_arg(argumentList, id);
+		while (eachObject)
+		{
 			[[self objectAtIndex:self.count - 1] addObject:eachObject];
+			eachObject = va_arg(argumentList, id);
+		}
 		va_end(argumentList);
 	}
 	else

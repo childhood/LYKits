@@ -88,10 +88,10 @@
 
 		matrix_left.texts = [[NSMutableArray alloc] init];
 
-		matrix_left.images = [[NSArray alloc] initWithObjects:
+		matrix_left.images = [[NSMutableArray alloc] initWithObjects:
 			@"ly_bg_keyboard_matrix_pad.png",
 			nil];
-		matrix_left.actions = [[NSArray alloc] initWithObjects:
+		matrix_left.actions = [[NSMutableArray alloc] initWithObjects:
 									   @"action_key_press:",
 			nil];
 
@@ -106,10 +106,10 @@
 
 		matrix_right.texts = [[NSMutableArray alloc] init];
 
-		matrix_right.images = [[NSArray alloc] initWithObjects:
+		matrix_right.images = [[NSMutableArray alloc] initWithObjects:
 			@"ly_bg_keyboard_matrix_pad.png",
 			nil];
-		matrix_right.actions = [[NSArray alloc] initWithObjects:
+		matrix_right.actions = [[NSMutableArray alloc] initWithObjects:
 									   @"action_key_press:",
 			nil];
 

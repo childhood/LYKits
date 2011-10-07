@@ -2,7 +2,7 @@
 #import "LYView.h"
 
 @interface UIScrollView (LYScrollView)
-BOOL	flag_keep_width;
+//	BOOL	flag_keep_width;
 - (void)set_keep_width:(BOOL)b;
 
 - (void)copy_style:(UIScrollView*)target;

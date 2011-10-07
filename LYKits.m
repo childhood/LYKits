@@ -57,7 +57,7 @@ static LYKits*	ly_shared_manager = nil;
 {
 	@synchronized(self)
 	{
-		return (NSString*)[[LYKits shared] version];		//	XXX why warning here?
+		return [(LYKits*)[LYKits shared] version];		//	XXX why warning here?
 	}
 }
 
