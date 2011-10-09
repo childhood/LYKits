@@ -261,10 +261,12 @@
 
 - (void)get:(NSString*)key block:(LYBlockVoidError*)callback
 {
-	S3GetObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:key inBucket:@"us-general"];
+	S3GetObjectRequest* request = [[S3GetObjectRequest alloc] initWithKey:key withBucket:@"us-general"];
 	S3GetObjectResponse* response = [s3 getObject:request];
 	[request release];
 	NSLog(@"got: %@", response);
+	NSLog(@"body: %@", response.body);
+	NSLog(@"length: %i", response.contentLength);
 }
 
 @end
