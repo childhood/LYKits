@@ -7,22 +7,30 @@
 #ifdef LY_ENABLE_SDK_AWS
 #import <AWSiOSSDK/AmazonLogger.h>
 #import <AWSiOSSDK/SimpleDB/AmazonSimpleDBClient.h>
+#import <AWSiOSSDK/S3/AmazonS3Client.h>
 #endif
 
 @class LYTextAlertView;
 
 
 #ifdef LY_ENABLE_SDK_AWS
-@interface LYServiceAWSSimpleDB: NSObject <AmazonServiceRequestDelegate>
+@interface LYServiceAWS: NSObject
 {
-	NSMutableDictionary*			data;
-	AmazonSimpleDBClient*			sdb;
+	NSMutableDictionary*	data;
+	AmazonSimpleDBClient*	sdb;
+	AmazonS3Client*			s3;
+}
+@property (nonatomic, retain) NSMutableDictionary*	data;
+@end
+
+
+@interface LYServiceAWSSimpleDB: LYServiceAWS <AmazonServiceRequestDelegate>
+{
 	SimpleDBPutAttributesRequest*	request_put;
 
 	LYBlockVoidIntError		callback_int_error;
 	LYBlockVoidObjError		callback_obj_error;
 }
-@property (nonatomic, retain) NSMutableDictionary*	data;
 
 - (void)put:(NSString*)domain;
 - (void)put:(NSString*)domain name:(NSString*)name;
@@ -36,10 +44,20 @@
 - (NSException*)put_sync;
 - (NSArray*)select_sync:(NSString*)query;
 - (int)count_sync:(NSString*)query;
+- (NSMutableArray*)array_from_select:(SimpleDBSelectResponse*)response;
 
 //- (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
 - (void)test;
 
+@end
+
+
+@interface LYServiceAWSS3: LYServiceAWS
+{
+	LYBlockVoidError		callback_error;
+}
+- (void)put_file:(NSString*)filename block:(LYBlockVoidError*)callback;
+- (void)get:(NSString*)key block:(LYBlockVoidError*)callback;
 @end
 #endif	//	AWS
 

@@ -32,7 +32,8 @@ static LYLoadingViewController *ly_loading_view_controller_manager = nil;
 - (id)init
 {
 	//if (self = [super init])
-	if (self = [super initWithNibName:@"LYLoadingViewController" bundle:nil])
+	self = [super initWithNibName:@"LYLoadingViewController" bundle:nil];
+	if (self)
 	{
 		self.view.frame = CGRectMake(0, 0, screen_width(), screen_height());
 		//self.view.frame = UIScreen.mainScreen.bounds;
@@ -42,6 +43,12 @@ static LYLoadingViewController *ly_loading_view_controller_manager = nil;
 	}
 	return self;
 }
+/*
+- (void)viewDidLoad
+{
+	self.view.frame = CGRectMake(0, 0, screen_width(), screen_height());
+}
+*/
 + (UIView*)view
 {
 	return [[LYLoadingViewController shared] view];

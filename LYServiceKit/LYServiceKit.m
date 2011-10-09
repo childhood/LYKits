@@ -1,9 +1,31 @@
 #import "LYServiceKit.h"
 
 #ifdef LY_ENABLE_SDK_AWS
-@implementation LYServiceAWSSimpleDB
-
+@implementation LYServiceAWS
 @synthesize data;
+- (id)init
+{
+	self = [super init];
+	if (self != nil)
+	{
+		data = [[NSMutableDictionary alloc] init];
+		[data key:@"aws-key" v:@"AKIAIG737NOEC2VVPXQQ"];
+		[data key:@"aws-secret" v:@"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"];
+		sdb	= [[AmazonSimpleDBClient alloc] initWithAccessKey:[data v:@"aws-key"] withSecretKey:[data v:@"aws-secret"]];
+		s3	= [[AmazonS3Client alloc] initWithAccessKey:[data v:@"aws-key"] withSecretKey:[data v:@"aws-secret"]];
+	}
+	return self;
+}
+- (void)dealloc
+{
+	[sdb release];
+	[data release];
+	[super dealloc];
+}
+@end
+
+
+@implementation LYServiceAWSSimpleDB
 
 /*
  * 
@@ -31,26 +53,28 @@
 #endif
  *
  */
+#if 0
 - (id)init
 {
 	self = [super init];
 	if (self != nil)
 	{
+#if 0
 		data = [[NSMutableDictionary alloc] init];
 		[data key:@"aws-key" v:@"AKIAIG737NOEC2VVPXQQ"];
 		[data key:@"aws-secret" v:@"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"];
-
-		sdb = [[AmazonSimpleDBClient alloc] initWithAccessKey:[data v:@"aws-key"] withSecretKey:[data v:@"aws-secret"]];
+#endif
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-	[sdb release];
-	[data release];
+	//[sdb release];
+	//[data release];
 	[super dealloc];
 }
+#endif
 
 - (void)put:(NSString*)domain
 {
@@ -112,7 +136,8 @@
 	SimpleDBSelectResponse* response_select = [sdb select:request_select];
 	[request_select release];
 	[LYLoading hide];
-	return response_select.items;
+	return [self array_from_select:response_select];
+	//return response_select.items;
 }
 
 - (void)count:(NSString*)query block:(LYBlockVoidIntError)callback
@@ -152,11 +177,38 @@
 		if ([[attr name] is:@"Count"])
 			callback_int_error([[attr value] intValue], nil);
 		else
-			callback_obj_error(response_select.items, nil);
+			callback_obj_error([self array_from_select:response_select], nil);
 		//	NSLog(@"select: %@", response_select.items);
 	}
 	else
 		NSLog(@"AWS response: %@\nclass: '%@'", response, NSStringFromClass([response class]));
+}
+
+- (NSMutableArray*)array_from_select:(SimpleDBSelectResponse*)response
+{
+	NSMutableArray* array = [NSMutableArray array];
+	for (SimpleDBItem* item in response.items)
+	{
+		NSMutableArray* attributes = [NSMutableArray array];
+		NSMutableDictionary* attr_unique = [NSMutableDictionary dictionary];
+		for (SimpleDBAttribute* attr in item.attributes)
+		{
+			[attributes addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+				attr.value,
+				attr.name,
+				nil]];
+			[attr_unique key:attr.name v:attr.value];
+		}
+		[array addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+			attributes,
+			@"attributes",
+			attr_unique,
+			@"attr-dict",
+			item.name,
+			@"name",
+			nil]];
+	}
+	return array;
 }
 
 - (void)request:(AmazonServiceRequest*)request didFailWithError:(NSError*)error
@@ -191,6 +243,28 @@
 #endif
 	[sdb release];
 	NSLog(@"AWS testing done");
+}
+
+@end
+
+
+@implementation LYServiceAWSS3
+
+- (void)put_file:(NSString*)filename block:(LYBlockVoidError*)callback
+{
+	S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:@"key-test" inBucket:@"us-general"];
+	request.filename = filename;
+	//request.data = data;
+	[s3 putObject:request];
+	[request release];
+}
+
+- (void)get:(NSString*)key block:(LYBlockVoidError*)callback
+{
+	S3GetObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:key inBucket:@"us-general"];
+	S3GetObjectResponse* response = [s3 getObject:request];
+	[request release];
+	NSLog(@"got: %@", response);
 }
 
 @end
