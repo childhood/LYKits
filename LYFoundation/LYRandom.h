@@ -35,6 +35,7 @@
 //	file
 + (NSString*)contents_of_file:(NSString*)filename separator:(NSString*)separator;
 + (NSString*)national_motto;
++ (NSString*)impossible_24;
 
 @end
 

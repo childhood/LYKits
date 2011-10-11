@@ -189,4 +189,9 @@ static LYRandom *ly_shared_manager = nil;
 	return [LYRandom contents_of_file:[@"ly_database_national_motto.txt" filename_bundle] separator:@"\n"];
 }
 
++ (NSString*)impossible_24
+{
+	return [LYRandom contents_of_file:[@"ly_database_impossible_24.txt" filename_bundle] separator:@"\n"];
+}
+
 @end
