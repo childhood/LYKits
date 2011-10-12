@@ -26,7 +26,7 @@
 	self = [super init];
 	return self;
 }
-- (void)dealloc {
+- (oneway void)dealloc {
 	// Should never be called, but just here for clarity really.
 	[super dealloc];
 }
@@ -58,7 +58,7 @@
 	self = [super init];
 	return self;
 }
-- (void)dealloc {
+- (oneway void)dealloc {
 	// Should never be called, but just here for clarity really.
 	[super dealloc];
 }

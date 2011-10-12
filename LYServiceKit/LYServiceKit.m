@@ -250,23 +250,44 @@
 
 @implementation LYServiceAWSS3
 
-- (void)put_file:(NSString*)filename block:(LYBlockVoidError*)callback
+- (NSString*)put_file_sync:(NSString*)filename
 {
-	S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:@"key-test" inBucket:@"us-general"];
+	[LYLoading show];
+	NSString* uid = [LYRandom unique_string];
+	S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:uid inBucket:@"us-general"];
 	request.filename = filename;
-	//request.data = data;
 	[s3 putObject:request];
 	[request release];
+	[LYLoading hide];
+	return uid;
 }
 
-- (void)get:(NSString*)key block:(LYBlockVoidError*)callback
+- (NSString*)put_data_sync:(NSData*)a_data
 {
+	[LYLoading show];
+	NSString* uid = [LYRandom unique_string];
+	S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:uid inBucket:@"us-general"];
+	request.cannedACL = [S3CannedACL publicRead];
+	request.data = a_data;
+	[s3 putObject:request];
+	[request release];
+	[LYLoading hide];
+	return uid;
+}
+
+- (NSData*)get:(NSString*)key
+{
+	[LYLoading show];
 	S3GetObjectRequest* request = [[S3GetObjectRequest alloc] initWithKey:key withBucket:@"us-general"];
 	S3GetObjectResponse* response = [s3 getObject:request];
 	[request release];
+#if 0
 	NSLog(@"got: %@", response);
 	NSLog(@"body: %@", response.body);
 	NSLog(@"length: %i", response.contentLength);
+#endif
+	[LYLoading hide];
+	return response.body;
 }
 
 @end

@@ -56,8 +56,11 @@
 {
 	LYBlockVoidError		callback_error;
 }
-- (void)put_file:(NSString*)filename block:(LYBlockVoidError*)callback;
-- (void)get:(NSString*)key block:(LYBlockVoidError*)callback;
+
+- (NSString*)put_file_sync:(NSString*)filename;
+- (NSString*)put_data_sync:(NSData*)data;
+- (NSData*)get:(NSString*)key;
+
 @end
 #endif	//	AWS
 
