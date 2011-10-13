@@ -13,7 +13,7 @@
 {
 	return UINT_MAX; //denotes an object that cannot be released
 }
-- (void)release
+- (oneway void)release
 {
 	// never release
 }
@@ -26,7 +26,7 @@
 	self = [super init];
 	return self;
 }
-- (oneway void)dealloc {
+- (void)dealloc {
 	// Should never be called, but just here for clarity really.
 	[super dealloc];
 }
@@ -45,7 +45,7 @@
 {
 	return UINT_MAX; //denotes an object that cannot be released
 }
-- (void)release
+- (oneway void)release
 {
 	// never release
 }
@@ -58,7 +58,7 @@
 	self = [super init];
 	return self;
 }
-- (oneway void)dealloc {
+- (void)dealloc {
 	// Should never be called, but just here for clarity really.
 	[super dealloc];
 }

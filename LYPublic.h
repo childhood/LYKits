@@ -27,6 +27,7 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 //	#define LY_ENABLE_APP_STORE
 //	#define LY_ENABLE_APP_ADS
 //	#define LY_ENABLE_APP_ZIP
+//	#define LY_ENABLE_LIB_AIML
 //	#define LY_ENABLE_MUSICKIT
 //	#define LY_ENABLE_MAPKIT
 //	#define LY_ENABLE_SERVICEKIT
@@ -47,6 +48,11 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 #endif
 #ifdef LY_ENABLE_SERVICEKIT
 	#import "LYServiceKit.h"
+#endif
+#ifdef LY_ENABLE_LIB_AIML
+	@interface LYAiml: NSObject
+	- (NSString*)respond:(NSString*)s;
+	@end
 #endif
 
 #ifndef _g

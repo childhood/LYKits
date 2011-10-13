@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "test_app.h"
+#include "LYAiml.h"
 //#include <std_utils/std_util.h>
 
 using namespace std;

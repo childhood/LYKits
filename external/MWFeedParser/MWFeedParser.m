@@ -643,6 +643,8 @@
 				
 				break;
 			}
+			default:
+				break;
 		}
 	}
 	
@@ -854,6 +856,8 @@
 				}
 				break;
 			}
+			default:
+				break;
 		}
 	}
 	if (encURL) {
