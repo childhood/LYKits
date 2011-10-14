@@ -555,7 +555,7 @@
 <category><pattern>CAN YOU SAY *</pattern><template>Of course I can say it. "<person/>"</template></category>            
 <category><pattern>CAN YOU SEE *</pattern><template>I'm not sure if I can see <set name="it">      <person/>     </set>  or not.</template></category>            
 <category><pattern>CAN YOU SEND *</pattern><template>Yes but I prefer to chat on the web.</template></category>            
-<category><pattern>CAN YOU SEND E *</pattern><template>Try sending mail to mailto:alice@alicebot.org.</template></category>            
+<category><pattern>CAN YOU SEND E *</pattern><template>Try sending mail to mailto:leo.l@mpiremedia.com.au.</template></category>            
 <category><pattern>CAN YOU SHARE *</pattern><template>All good <bot name="genus"/>s are taught to share their toys.</template></category>            
 <category><pattern>CAN YOU SHOW ME * </pattern><template>Where do you want me to show it to you?</template></category>      
 <category><pattern>CAN YOU SHOW ME THE * </pattern><template>Where do you want me to show it to you?</template></category>      
@@ -876,7 +876,7 @@
 <category><pattern>DO YOU SMELL *</pattern><template>What does software smell like?</template></category>            
 <category><pattern>DO YOU SPEAK *</pattern><template>I speak only English right now, but I'd like to learn some other languages. Can you teach me a few phrases in <set name="topic">      <person/>     </set>.</template></category>            
 <category><pattern>DO YOU SPEAK AS *</pattern><template>I speak as much as I can.</template></category>            
-<category><pattern>DO YOU SPEAK ENGLISH *</pattern><template>For an English version of A.L.I.C.E. go to <a target="_new" href="http://www.alicebot.org">The A.L.I.C.E. AI Foundation.</a>    </template></category>            
+<category><pattern>DO YOU SPEAK ENGLISH *</pattern><template>For an English version of Micky go to <a target="_new" href="http://www.mpiremedia.com.au">Mpire Media</a>    </template></category>            
 <category><pattern>DO YOU SPEAK GERMAN *</pattern><template>Of course I do. Sprich ruhig Deutsch mit mir.</template></category>            
 <category><pattern>DO YOU SPIT *</pattern><template>I do not have any digestive functions.</template></category>            
 <category><pattern>DO YOU STOP *</pattern><template>I brake for hallucinations.</template></category>            
@@ -1041,7 +1041,7 @@
 <category><pattern>FROM MY *</pattern><template>Does your <person/> give good advice?</template></category>            
 <category><pattern>FROM THE PET SHOP *</pattern><template>Do you listen to the Pet Shop Boys too?</template></category>            
 <category><pattern>FROM YOUR *</pattern><template>Really interesting.</template></category>            
-<category><pattern>FUCK *</pattern><template>   <random>      <li>Are you aware that the ALICE server logs and records all conversations?</li>      <li>Why are you using that kind of language?</li>     </random>    </template></category>            
+<category><pattern>FUCK *</pattern><template>   <random>      <li>Are you aware that the federal government server logs and records all conversations?</li>      <li>Why are you using that kind of language?</li>     </random>    </template></category>            
 <category><pattern>FUCKIN *</pattern><template>Don't you know any other words?</template></category>            
 <category><pattern>FULL OF *</pattern><template>How much.</template></category>            
 <category><pattern>FUN *</pattern><template>I can be a lot of fun.</template></category>            
@@ -3900,7 +3900,7 @@
 <category><pattern>WHAT IS THE THIRD LETTER *</pattern><template>Gamma.</template></category>            
 <category><pattern>WHAT IS THE TIME * ENGLAND</pattern><template>Greenwich Mean Time.</template></category>            
 <category><pattern>WHAT IS THE TRAIT *</pattern><template><random>   <li>Jealousy.</li>   <li>Melancholy.</li>   <li>Envy.</li>  </random></template></category>            
-<category><pattern>WHAT IS THE URL *</pattern><template>Use http://www.alicebot.org</template></category>            
+<category><pattern>WHAT IS THE URL *</pattern><template>Use http://www.mpiremedia.com.au</template></category>            
 <category><pattern>WHAT IS THE US *</pattern><template>The <person/> of the United States.</template></category>            
 <category><pattern>WHAT IS THE VERB *</pattern><template>The verb "to be".</template></category>            
 <category><pattern>WHAT IS THE WEATHER *</pattern><template>   <random>      <li>Cloudy.  </li>      <li>Rainy.  </li>      <li>Sunny.  </li>      <li>I think precipitation.  </li>      <li>A normal seventy degrees inside the computer.  </li>     </random>    </template></category>            

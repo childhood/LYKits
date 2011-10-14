@@ -8,8 +8,10 @@
 
 @interface LYAiml: NSObject
 {
-	aiml::cInterpreter*	interpreter;
+	aiml::cInterpreter*		interpreter;
+	NSMutableDictionary*	data;
 }
+@property (retain, nonatomic) NSMutableDictionary*	data;
 
 - (int)load;
 - (NSString*)respond:(NSString*)s;

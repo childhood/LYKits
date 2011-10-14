@@ -50,9 +50,16 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 	#import "LYServiceKit.h"
 #endif
 #ifdef LY_ENABLE_LIB_AIML
-	@interface LYAiml: NSObject
-	- (NSString*)respond:(NSString*)s;
-	@end
+@interface LYAiml: NSObject
+{
+	NSMutableDictionary*	data;
+}
+@property (retain, nonatomic) NSMutableDictionary*	data;
+
+- (int)load;
+- (NSString*)respond:(NSString*)s;
+
+@end
 #endif
 
 #ifndef _g

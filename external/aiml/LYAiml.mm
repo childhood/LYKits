@@ -34,14 +34,26 @@ class cTestAppCallbacks : public cInterpreterCallbacks {
 
 @implementation LYAiml
 
+@synthesize data;
+
 - (id)init
 {
 	self = [super init];
 	if (self)
 	{
+		data = [[NSMutableDictionary alloc] init];
+		[data performSelector:@selector(key:v:) withObject:@"loaded" withObject:[NSNumber numberWithBool:NO]];
+		//	[data key:@"loaded" v:[NSNumber numberWithBool:NO]];
 		interpreter = cInterpreter::newInterpreter();
 	}
 	return self;
+}
+
+- (void)dealloc
+{
+	[data release];
+	delete interpreter;
+	[super dealloc];
 }
 
 - (int)load
@@ -55,16 +67,15 @@ class cTestAppCallbacks : public cInterpreterCallbacks {
 		cout << "Initializing interpreter..." << endl;
 		if (!interpreter->initialize([[@"libaiml.xml" performSelector:@selector(filename_bundle)] UTF8String])) throw 1;
 
-		string line;
-		cout << "Type \"quit\" to... guess..." << endl;
-
+		//	string line;
+		//	cout << "Type \"quit\" to... guess..." << endl;
 		string result;
 		std::list<cMatchLog> log;
-
 		cout << "AI: " << flush;
-
 		interpreter->respond("what is your name", "localhost", result, &log);
 		cout << result << "\n" << flush;
+		[data performSelector:@selector(key:v:) withObject:@"loaded" withObject:[NSNumber numberWithBool:YES]];
+		//	[data key:@"loaded" v:[NSNumber numberWithBool:YES]];
 	}
 	catch(int _ret)
 	{
@@ -85,12 +96,6 @@ class cTestAppCallbacks : public cInterpreterCallbacks {
 	//	cout << result << "\n" << flush;
 	NSString* ret = [NSString stringWithUTF8String:result.c_str()];
 	return ret;
-}
-
-- (void)dealloc
-{
-	delete interpreter;
-	[super dealloc];
 }
 
 @end
