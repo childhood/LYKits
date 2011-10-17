@@ -51,9 +51,11 @@
 @synthesize cell_bg;
 @synthesize cell_bg_top;
 @synthesize cell_bg_bottom;
+@synthesize cell_bg_middle;
 @synthesize cell_bg_selected;
 @synthesize cell_bg_top_selected;
 @synthesize cell_bg_bottom_selected;
+@synthesize cell_bg_middle_selected;
 @synthesize cell_bg_color_interlace;
 
 @synthesize search_bar;
@@ -201,9 +203,11 @@
 		cell_bg				= nil;
 		cell_bg_top			= nil;
 		cell_bg_bottom		= nil;
+		cell_bg_middle		= nil;
 		cell_bg				= nil;
 		cell_bg_top			= nil;
 		cell_bg_bottom		= nil;
+		cell_bg_middle		= nil;
 		cell_selection		= UITableViewCellSelectionStyleGray;
 		cell_image_rect		= CGRectMake(0, 0, 64, 64);
 		cell_image_mode		= UIViewContentModeScaleToFill;
@@ -574,7 +578,12 @@
 					[cell addGestureRecognizer:gesture];
 		}
 
-		if ((indexPath.row == 0) && (cell_bg_top != nil))
+		if ([[texts object_at_index:indexPath.section] count] == 1)
+		{
+			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg];
+			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_selected];
+		}
+		else if ((indexPath.row == 0) && (cell_bg_top != nil))
 		{
 			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_top];
 			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_top_selected];
@@ -583,6 +592,11 @@
 		{
 			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_bottom];
 			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_bottom_selected];
+		}
+		else if (cell_bg_middle != nil)
+		{
+			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_middle];
+			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_middle_selected];
 		}
 		else if (cell_bg != nil)
 		{

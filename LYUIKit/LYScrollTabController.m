@@ -102,6 +102,7 @@
 @synthesize data;
 @synthesize index;
 @synthesize height;
+@synthesize controller_fix;
 @synthesize bottom_space;
 
 - (id)init
@@ -113,10 +114,11 @@
 		bottom_space = 0;
 		scroll_tab = [[LYScrollTabController alloc] initWithFrame:CGRectMake(0, 0, [ly screen_width], height) delegate:self];
 		index = 0;
+		controller_fix = 0;
 		data = [[NSMutableArray alloc] init];
 		delegate = nil;
 
-		self.view.backgroundColor = [UIColor blackColor];
+		self.view.backgroundColor = [UIColor clearColor];
 	}
 
 	return self;
@@ -161,7 +163,7 @@
 	[self.view addSubview:controller.view];
 	[self.view bringSubviewToFront:scroll_tab.view];
 	[controller.view set_y:-k_ly_scroll_height_fix];
-	[controller.view set_h:screen_height() - height - 20];
+	[controller.view set_h:screen_height() - height - 20 + controller_fix];
 	//	NSLog(@"subview added: %@", controller.view);
 
 	[scroll_tab.view removeFromSuperview];
@@ -187,7 +189,17 @@
 - (void)show_end
 {
 	UIViewController* controller = [[data i:index] v:@"controller"];
-	[controller.view set_h:screen_height() - height - 20];
+	[controller.view set_h:screen_height() - height - 20 + controller_fix];
+}
+
+- (void)show_half:(CGFloat)duration
+{
+}
+
+- (void)hide_half:(CGFloat)duration
+{
+	[scroll_tab.view set_y:[ly screen_height] - k_ly_scroll_height_fix - 20 + 10 animation:duration];
+	[self hide_end];
 }
 
 - (void)hide:(CGFloat)duration

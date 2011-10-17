@@ -68,6 +68,7 @@
 	NSMutableArray*			data;
 	NSUInteger				index;
 	CGFloat					height;
+	CGFloat					controller_fix;
 	CGFloat					bottom_space;	//	used for ads, etc.
 	id						delegate;
 }
@@ -76,6 +77,7 @@
 @property(nonatomic, retain)	NSMutableArray*			data;
 @property(nonatomic)			NSUInteger				index;
 @property(nonatomic)			CGFloat					height;
+@property(nonatomic)			CGFloat					controller_fix;
 @property(nonatomic)			CGFloat					bottom_space;
 
 - (void)reload;
@@ -83,5 +85,7 @@
 - (void)hide:(CGFloat)duration;
 - (void)show_end;
 - (void)hide_end;
+- (void)show_half:(CGFloat)duration;
+- (void)hide_half:(CGFloat)duration;
 
 @end

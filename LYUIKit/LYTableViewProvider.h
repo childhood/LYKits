@@ -65,9 +65,11 @@
 	NSString*			cell_bg;
 	NSString*			cell_bg_top;
 	NSString*			cell_bg_bottom;
+	NSString*			cell_bg_middle;
 	NSString*			cell_bg_selected;
 	NSString*			cell_bg_top_selected;
 	NSString*			cell_bg_bottom_selected;
+	NSString*			cell_bg_middle_selected;
 
 	CGFloat				table_header_height;
 	CGFloat				table_footer_height;
@@ -123,9 +125,11 @@
 @property (nonatomic, retain) IBOutlet NSString*			cell_bg;
 @property (nonatomic, retain) IBOutlet NSString*			cell_bg_top;
 @property (nonatomic, retain) IBOutlet NSString*			cell_bg_bottom;
+@property (nonatomic, retain) IBOutlet NSString*			cell_bg_middle;
 @property (nonatomic, retain) IBOutlet NSString*			cell_bg_selected;
 @property (nonatomic, retain) IBOutlet NSString*			cell_bg_top_selected;
 @property (nonatomic, retain) IBOutlet NSString*			cell_bg_bottom_selected;
+@property (nonatomic, retain) IBOutlet NSString*			cell_bg_middle_selected;
 @property (nonatomic, retain) IBOutlet UIColor*				cell_bg_color_interlace;
 @property (nonatomic, retain) IBOutlet NSString*			accessory_name;
 
