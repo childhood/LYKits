@@ -44,6 +44,7 @@
 		[data key:@"controller-playlist" v:nil];
 		[data key:@"controller-picker" v:nil];
 		[data key:@"media-music" v:nil];
+		[data key:@"provider-accessory" v:@"checkmark"];
 		//	buttons
 		[data key:@"player-play" v:nil];
 		[data key:@"player-prev" v:nil];
@@ -647,7 +648,7 @@
 			[[provider.accessories objectAtIndex:0] removeAllObjects];
 			for (int i = 0; i < [[data v:@"playlist-items"] count]; i++)
 				if (index == i)
-					[[provider.accessories objectAtIndex:0] addObject:@"checkmark"];
+					[[provider.accessories objectAtIndex:0] addObject:[data v:@"provider-accessory"]];
 				else
 					[[provider.accessories objectAtIndex:0] addObject:@"none"];
 			[provider.view reloadData];

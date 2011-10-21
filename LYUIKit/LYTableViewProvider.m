@@ -1065,6 +1065,7 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
 	//	NSLog(@"SCROLL will drag");
+	//	if (scroll_drag_begin != -44)
 	scroll_drag_begin = view.contentOffset.y;
 	[delegate perform_string:@"scrollViewWillBeginDragging:" with:scrollView];
 }
@@ -1074,17 +1075,34 @@
 	if ((search_bar != nil) && (view.contentOffset.y < 0))
 	{
 		//	NSLog(@"drag from %f", scroll_drag_begin);
-		[UIView begin_animations:0.3];
 		if (scroll_drag_begin == -44)
-			view.contentOffset = CGPointMake(0, 0);
+		{
+			//	NSLog(@"to 0");
+			//	view.contentOffset = CGPointMake(0, 0);
+			[self performSelector:@selector(reset_content_offset:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.1];
+		}
 		else
+		{
+			//	NSLog(@"to -44: %f", scroll_drag_begin);
+			[UIView begin_animations:0.3];
 			view.contentOffset = CGPointMake(0, -44);
-		[UIView commitAnimations];
+			[UIView commitAnimations];
+		}
 	}
 
 	//	NSLog(@"SCROLL end dragging");
 	if ([delegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
 		[delegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+}
+
+- (void)reset_content_offset:(NSNumber*)number
+{
+	BOOL b = [number boolValue];
+	if (b)
+		[UIView begin_animations:0.3];
+	view.contentOffset = CGPointMake(0, 0);
+	if (b)
+		[UIView commitAnimations];
 }
 
 #pragma mark extra
@@ -1296,7 +1314,9 @@
 		}
 		backup_section++;
 	}
-	view.contentOffset = CGPointMake(0, 0);
+	//scroll_drag_begin = -44;
+	//view.contentOffset = CGPointMake(0, 0);
+	[self performSelector:@selector(reset_content_offset:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.31];
 	if (animated)
 		[self refresh_animated];
 	else
@@ -1383,6 +1403,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar*)search
 {
+	//	NSLog(@"search button clicked");
 	[search resignFirstResponder];
 	self.view.contentOffset = CGPointMake(0, -44);
 	[button_mask removeFromSuperview];
