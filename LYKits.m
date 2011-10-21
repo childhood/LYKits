@@ -554,12 +554,12 @@ static LYKits*	ly_shared_manager = nil;
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 		@"10",
 		@"Top 10",
-		@"15",
-		@"Top 15",
 		@"20",
 		@"Top 20",
 		@"30",
 		@"Top 30",
+		@"40",
+		@"Top 40",
 		@"50",
 		@"Top 50",
 		nil];

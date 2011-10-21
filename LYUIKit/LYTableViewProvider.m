@@ -140,6 +140,7 @@
 		[data setValue:[NSNumber numberWithBool:NO] forKey:@"move-enabled"];
 		[data setValue:[NSMutableArray array] forKey:@"edit-exclude"];
 		[data setValue:[NSMutableArray array] forKey:@"badge-array"];
+		[data setValue:[NSMutableArray array] forKey:@"badge2-array"];
 		[data setValue:[NSMutableArray array] forKey:@"filter-array"];
 		[data setValue:[NSMutableDictionary dictionary] forKey:@"cell-subviews"];
 		[data setValue:[NSMutableDictionary dictionary] forKey:@"cell-gestures"];
@@ -151,9 +152,12 @@
 		//	init preset ui
 		UILabel* label_badge = [[UILabel alloc] init];
 		label_badge.hidden = YES;
-
 		UIImageView* image_badge = [[UIImageView alloc] init];
 		image_badge.hidden = YES;
+		UILabel* label_badge2 = [[UILabel alloc] init];
+		label_badge2.hidden = YES;
+		UIImageView* image_badge2 = [[UIImageView alloc] init];
+		image_badge2.hidden = YES;
 
 		UIProgressView* progress_refresh = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
 		progress_refresh.frame = CGRectMake(18, 34, 200, 20);
@@ -161,11 +165,15 @@
 
 		[data setValue:label_badge forKey:@"badge-label"];
 		[data setValue:image_badge forKey:@"badge-image"];
+		[data setValue:label_badge2 forKey:@"badge2-label"];
+		[data setValue:image_badge2 forKey:@"badge2-image"];
 		[data setValue:progress_refresh forKey:@"refresh-progress"];
 
 		//	release preset ui
 		[label_badge release];
 		[image_badge release];
+		[label_badge2 release];
+		[image_badge2 release];
 		[progress_refresh release];
 
 		backup_texts = nil;
@@ -536,6 +544,29 @@
 				[label_badge release];
 				[image_badge release];
 			}
+			if (([[data v:@"badge2-image"] isHidden] == NO) &&
+				([[data v:@"badge2-label"] isHidden] == NO))
+			{
+				UIImageView* image_badge2 = [[UIImageView alloc] init];
+				UILabel* label_badge2 = [[UILabel alloc] init];
+
+				[image_badge2 copy_style:[data v:@"badge2-image"]];
+				[label_badge2 copy_style:[data v:@"badge2-label"]];
+
+				NSString* badge2_string = [[data v:@"badge2-array"] object_at_path:indexPath];
+				//	NSLog(@"badge2: %@", badge2_string);
+				if (badge2_string != nil)
+					label_badge2.text = badge2_string;
+				else
+					label_badge2.text = [NSString stringWithFormat:@"%i", indexPath.row + 1];
+				//	if (indexPath.row < 10)
+				//		[label_badge2 reset_x:-1];
+
+				[image_badge2 addSubview:label_badge2];
+				[cell addSubview:image_badge2];
+				[label_badge2 release];
+				[image_badge2 release];
+			}
 #endif
 
 			if (accessory != nil)
@@ -578,7 +609,7 @@
 					[cell addGestureRecognizer:gesture];
 		}
 
-		if ([[texts object_at_index:indexPath.section] count] == 1)
+		if (([[texts object_at_index:indexPath.section] count] == 1) && (cell_bg != nil))
 		{
 			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg];
 			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_selected];

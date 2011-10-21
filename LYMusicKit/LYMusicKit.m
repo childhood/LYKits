@@ -61,6 +61,10 @@
 		//	sliders
 		[data key:@"player-progress" v:nil];
 		[data key:@"player-volume" v:nil];
+		//	text
+		[data key:@"default-title" v:@""];
+		[data key:@"default-artist" v:@""];
+		[data key:@"default-album" v:@""];
 
 		LYTableViewProvider* provider = [[LYTableViewProvider alloc] initWithStyle:UITableViewStylePlain];
 		provider.delegate = self;
@@ -579,11 +583,23 @@
 	UIImageView* artwork	= [data v:@"player-artwork"];
 	UIImageView* reflection	= [data v:@"player-reflection"];
 	if (label_title != nil)
+	{
 		label_title.text = [player.nowPlayingItem valueForProperty:MPMediaItemPropertyTitle];
+		if (label_title.text == nil)
+			label_title.text = [data v:@"default-title"];
+	}
 	if (label_artist != nil)
+	{
 		label_artist.text = [player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtist];
+		if (label_artist.text == nil)
+			label_artist.text = [data v:@"default-artist"];
+	}
 	if (label_album != nil)
+	{
 		label_album.text = [player.nowPlayingItem valueForProperty:MPMediaItemPropertyAlbumTitle];
+		if (label_album.text == nil)
+			label_album.text = [data v:@"default-album"];
+	}
 	if (artwork != nil)
 	{
 		//NSLog(@"media artwork: %@", [[player.nowPlayingItem valueForProperty:MPMediaItemPropertyArtwork] imageWithSize:artwork.frame.size]);

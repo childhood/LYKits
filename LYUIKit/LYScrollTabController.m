@@ -136,6 +136,9 @@
 	int i;
 	UIViewController* controller;
 
+	//[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.view cache:YES];
+	//[UIView setAnimationDuration:0.7];
+
 	[scroll_tab.view set_y:[ly screen_height] - height - k_ly_scroll_height_fix - 20];
 	[scroll_tab.view set_h:height];
 	[scroll_tab.scroll_view set_h:height];
@@ -168,6 +171,8 @@
 
 	[scroll_tab.view removeFromSuperview];
 	[self.view addSubview:scroll_tab.view];
+
+	//[UIView commitAnimations];
 }
 
 - (void)show:(CGFloat)duration
@@ -198,7 +203,7 @@
 
 - (void)hide_half:(CGFloat)duration
 {
-	[scroll_tab.view set_y:[ly screen_height] - k_ly_scroll_height_fix - 20 + 10 animation:duration];
+	[scroll_tab.view set_y:[ly screen_height] - k_ly_scroll_height_fix - 20 - 10 animation:duration];
 	[self hide_end];
 }
 
