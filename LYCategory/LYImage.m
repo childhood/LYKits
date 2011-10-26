@@ -1,4 +1,6 @@
 #import "LYImage.h"
+#import <mach/mach.h>
+#import <mach/mach_host.h>
 
 @implementation UIImage (LYImage)
 
@@ -227,5 +229,71 @@
 	return UIGraphics.GetImageFromCurrentImageContext();
 }
 #endif
+
+- (UIImage*)image_filter:(NSString*)filter_name dict:(NSDictionary*)dict
+{
+	CIImage* input_image = [[CIImage alloc] initWithImage:self];
+	[input_image autorelease];
+	//CIContext* context = [CIContext contextWithOptions:nil];
+	//return [UIImage imageWithCGImage:[context createCGImage:input_image fromRect:input_image.extent]];
+
+	switch ((int)self.imageOrientation)
+	{
+		case UIImageOrientationUp:
+			NSLog(@"up");
+			break;
+		case UIImageOrientationDown:
+			NSLog(@"down");
+			input_image = [input_image imageByApplyingTransform:CGAffineTransformMakeRotation(M_PI)];
+			break;
+		case UIImageOrientationLeft:
+			NSLog(@"left");
+			input_image = [input_image imageByApplyingTransform:CGAffineTransformMakeRotation(M_PI / 2)];
+			break;
+		case UIImageOrientationRight:
+			NSLog(@"right");
+			input_image = [input_image imageByApplyingTransform:CGAffineTransformMakeRotation(-M_PI / 2)];
+			break;
+	}
+
+	CIFilter* filter = [CIFilter filterWithName:filter_name];
+	[filter setDefaults];
+	[filter setValue:input_image forKey:@"inputImage"];
+	for (NSString* key in dict)
+		[filter setValue:[dict objectForKey:key] forKey:key];
+
+	CIImage* output = [filter valueForKey:@"outputImage"];
+	CIContext* context = [CIContext contextWithOptions:nil];
+	CGImageRef ref = [context createCGImage:output fromRect:output.extent];
+	UIImage* ret = [UIImage imageWithCGImage:ref];
+
+	CGImageRelease(ref);
+
+	return ret;
+	//return [UIImage imageWithCIImage:output];
+}
+
+- (UIImage*)image_filter:(NSString*)filter_name key:(NSString*)key v:(id)value
+{
+	return [self image_filter:filter_name dict:[NSDictionary dictionaryWithObjectsAndKeys:value, key, nil]];
+}
+
+- (UIImage*)image_filter:(NSString*)filter_name key:(NSString*)key float:(CGFloat)f
+{
+	return [self image_filter:filter_name key:key v:[NSNumber numberWithFloat:f]];
+}
+
+- (UIImage*)image_filter:(NSString*)filter_name key:(NSString*)key image:(UIImage*)image
+{
+	CIImage* ci = [[CIImage alloc] initWithImage:image];
+	UIImage* ret = [self image_filter:filter_name key:key v:ci];
+	[ci release];
+	return ret;
+}
+
+- (UIImage*)image_filter:(NSString*)filter_name key:(NSString*)key r:(CGFloat)r g:(CGFloat)g b:(CGFloat)b a:(CGFloat)a
+{
+	return [self image_filter:filter_name key:key v:[CIColor colorWithRed:r green:g blue:b alpha:a]];
+}
 
 @end

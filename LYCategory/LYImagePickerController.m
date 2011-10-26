@@ -2,12 +2,12 @@
 
 @implementation UIImagePickerController (LYImagePickerController)
 
-- (void)set_ly_image:(UIImageView*)an_image
+- (void)set_image:(UIImageView*)an_image
 {
 	[self associate:@"ly-image" with:an_image];
 }
 
-- (void)set_ly_delegate:(id)a_delegate
+- (void)set_delegate:(id)a_delegate
 {
 	[self associate:@"ly_delegate" with:a_delegate];
 }
@@ -41,6 +41,7 @@
 			id	popover_controller = [NSClassFromString(@"UIPopoverController") class];
 			if ((popover_controller != nil) && (is_pad()))
 				[self associate:@"ly_pop" with:[[popover_controller alloc] initWithContentViewController:self]];
+			NSLog(@"pop: %@", [self associated:@"ly_pop"]);
 			[[self associated:@"ly_pop"] presentPopoverFromRect:nav.view.frame inView:nav.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
 	}

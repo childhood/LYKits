@@ -13,5 +13,9 @@
 - (UIImage*)image_overlay_center:(UIImage*)another_image;
 - (UIImage*)image_overlay:(UIImage*)another_image rect:(CGRect)a_rect mode:(CGBlendMode)mode alpha:(CGFloat)alpha;
 
-@end
+- (UIImage*)image_filter:(NSString*)filter_name dict:(NSDictionary*)dict;
+- (UIImage*)image_filter:(NSString*)filter_name key:(NSString*)key v:(id)value;
+- (UIImage*)image_filter:(NSString*)filter_name key:(NSString*)key float:(CGFloat)f;
+- (UIImage*)image_filter:(NSString*)filter_name key:(NSString*)key r:(CGFloat)r g:(CGFloat)g b:(CGFloat)b a:(CGFloat)a;
 
+@end

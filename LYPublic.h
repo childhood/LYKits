@@ -9,6 +9,13 @@ typedef void(^LYBlockVoidStringError)(NSString* str, NSError* error);
 typedef void(^LYBlockVoidObjError)(id obj, NSError* error);
 typedef BOOL(^LYBlockBoolArrayError)(NSArray* array, NSError* error);
 
+//	disabled: use -fno-objc-arc instead
+#ifdef TMP_LY_ENABLE_IOS5
+#	define autorelease self
+#	define release self
+#	define retain self
+#endif
+
 #import "LYCategory.h"
 #import "LYFoundation.h"
 #import "LYUIKit.h"
@@ -23,6 +30,7 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 //	#define LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_ROTATEPHONE
 //	#define LY_ENABLE_CATEGORY_VIEWCONTROLLER_ROTATE	//	XXX: study needed
 //
+//	#define LY_ENABLE_IOS5								//	ARC & storyboard
 //	#define LY_ENABLE_SDK_FACEBOOK						//	XXX: replaced by SHK
 //	#define LY_ENABLE_APP_STORE
 //	#define LY_ENABLE_APP_ADS
