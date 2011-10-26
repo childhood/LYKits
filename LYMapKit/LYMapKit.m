@@ -2,7 +2,7 @@
 
 //	testing classes here
 
-#if 1
+#if 0
 @implementation LYPlaceManager
 
 @synthesize location_manager;

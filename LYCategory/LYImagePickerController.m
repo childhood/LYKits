@@ -41,7 +41,7 @@
 			id	popover_controller = [NSClassFromString(@"UIPopoverController") class];
 			if ((popover_controller != nil) && (is_pad()))
 				[self associate:@"ly_pop" with:[[popover_controller alloc] initWithContentViewController:self]];
-			NSLog(@"pop: %@", [self associated:@"ly_pop"]);
+			//	NSLog(@"pop: %@", [self associated:@"ly_pop"]);
 			[[self associated:@"ly_pop"] presentPopoverFromRect:nav.view.frame inView:nav.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
 	}

@@ -8,7 +8,7 @@
  *
  */
 
-#if 1
+#if 0
 @interface LYPlaceManager: NSObject <CLLocationManagerDelegate, MKReverseGeocoderDelegate>
 {
 	CLLocationManager*	location_manager;
