@@ -166,6 +166,7 @@ static LYCache *ly_cache_manager = nil;
 
 	NSURL *url = [NSURL URLWithString:string_url];
 	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+		request.timeOutSeconds = 60;
 	//	[request setNumberOfTimesToRetryOnTimeout:2];
 	//	[request setPersistentConnectionTimeoutSeconds:30];
 	//	[request setShouldAttemptPersistentConnection:NO];

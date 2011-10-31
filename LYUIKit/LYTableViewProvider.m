@@ -886,7 +886,8 @@
 
 		array = [accessories object_at_index:indexPath.section];
 		if (array != nil)
-			[array removeObjectAtIndex:indexPath.row];
+			if (array.count > 0)
+				[array removeObjectAtIndex:indexPath.row];
 
 		[view delete_path:indexPath animation:animation_delete];
 

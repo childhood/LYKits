@@ -38,6 +38,7 @@ static LYKits*	ly_shared_manager = nil;
 		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-delete-fix-x"];
 		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-edit-fix-x"];
 		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-move-fix-x"];
+		[data key:@"manager-motion" v:nil];
 #ifdef LY_ENABLE_SERVICEKIT
 		[data key:@"service-lyric" v:[[LYServiceLyricWiki alloc] init]];
 #endif
@@ -142,6 +143,18 @@ static LYKits*	ly_shared_manager = nil;
 	@synchronized(self)
 	{
 		return screen_max();
+	}
+}
+
++ (CMMotionManager*)motion_manager
+{
+	@synchronized(self)
+	{
+		if ([[ly data] v:@"manager-motion"] == nil)
+		{
+			[[ly data] key:@"manager-motion" v:[[CMMotionManager alloc] init]];
+		}
+		return [[ly data] v:@"manager-motion"];
 	}
 }
 

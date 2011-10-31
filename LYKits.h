@@ -1,4 +1,5 @@
 #import "LYPublic.h"
+#import <CoreMotion/CoreMotion.h>
 
 #ifdef LY_ENABLE_MAPKIT
 #	import <MapKit/MapKit.h>
@@ -31,6 +32,8 @@
 + (CGFloat)screen_width;
 + (CGFloat)screen_height;
 + (CGFloat)screen_max;
+
++ (CMMotionManager*)motion_manager;
 
 + (UIBarButtonItem*)alloc_item_named:(NSString*)filename target:(id)target action:(SEL)action;
 + (UIBarButtonItem*)alloc_item_named:(NSString*)filename highlighted:(NSString*)filename_highlighted target:(id)target action:(SEL)action;
