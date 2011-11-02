@@ -147,6 +147,7 @@
 		[data setValue:@"Loading..." forKey:@"refresh-text"];
 		[data setValue:@"ly_transparent_64x64.png" forKey:@"image-placeholder"];
 		[data setValue:nil forKey:@"source-deleted-object"];
+		[data setValue:nil forKey:@"cell-class"];
 		//	[data setValue:nil forKey:@"source-deleted-row"];
 
 		//	init preset ui
@@ -448,7 +449,10 @@
 		[additional_view autoresizing_add_width:NO height:NO];
 		[additional_view autoresizing_flexible_left:NO right:NO top:NO bottom:YES];
 
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+		if ([data v:@"cell-class"] == nil)
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+		else
+			cell = [[[NSClassFromString([data v:@"cell-class"]) alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		cell.textLabel.text = [texts object_at_path:indexPath];
 		cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -459,7 +463,10 @@
 
 	if (cell == nil)
 	{
-		cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:nil] autorelease];
+		if ([data v:@"cell-class"] == nil)
+			cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:nil] autorelease];
+		else
+			cell = [[[NSClassFromString([data v:@"cell-class"]) alloc] initWithStyle:style reuseIdentifier:nil] autorelease];
 
 		text		= [texts object_at_path:indexPath];
 		detail		= [details object_at_path:indexPath];

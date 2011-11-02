@@ -46,7 +46,7 @@
 		if ([filename_original file_exists])
 		{
 			UIImage* the_image = [UIImage imageWithContentsOfFile:[filename_original filename_document]];
-			UIImage* resized_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+			UIImage* resized_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width * 2, self.frame.size.height * 2)];
 			[UIView begin_animations:0.3];
 			[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
 			[UIImagePNGRepresentation(resized_image) writeToFile:[filename filename_document] atomically:YES];
@@ -93,7 +93,7 @@
 	{
 		[UIView begin_animations:0.3];
 		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
-		the_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+		the_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width * 2, self.frame.size.height * 2)];
 		[data writeToFile:[filename_original filename_document] atomically:YES];
 		[UIImagePNGRepresentation(the_image) writeToFile:[filename filename_document] atomically:YES];
 		self.image = the_image;
@@ -158,7 +158,7 @@
 		{
 			//	NSLog(@"loading from original...");
 			UIImage* the_image = [UIImage imageWithContentsOfFile:[filename_original filename_document]];
-			UIImage* resized_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+			UIImage* resized_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width * 2, self.frame.size.height * 2)];
 			[UIView begin_animations:0.3];
 			[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
 			[UIImagePNGRepresentation(resized_image) writeToFile:[filename filename_document] atomically:YES];
@@ -205,7 +205,7 @@
 	{
 		[UIView begin_animations:0.3];
 		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
-		the_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width, self.frame.size.height)];
+		the_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width * 2, self.frame.size.height * 2)];
 		[data writeToFile:[filename_original filename_document] atomically:YES];
 		[UIImagePNGRepresentation(the_image) writeToFile:[filename filename_document] atomically:YES];
 		[self setBackgroundImage:the_image forState:UIControlStateNormal];

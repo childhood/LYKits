@@ -179,3 +179,29 @@
 //	editing
 - (void)bind_data:(NSMutableArray*)array filename:(NSString*)filename;
  */
+
+/*
+ * subclass to change cell layout
+ *
+@interface MyTableViewCell: UITableViewCell
+@end
+
+@implementation MyTableViewCell
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+#if 1
+	self.textLabel.frame = CGRectMake(self.textLabel.frame.origin.x, 
+			self.textLabel.frame.origin.y - 10,
+			self.textLabel.frame.size.width, 
+			self.textLabel.frame.size.height);
+	self.detailTextLabel.frame = CGRectMake(self.detailTextLabel.frame.origin.x, 
+			self.detailTextLabel.frame.origin.y - 9,
+			self.detailTextLabel.frame.size.width, 
+			self.detailTextLabel.frame.size.height);
+#endif
+}
+
+@end
+*/
