@@ -170,6 +170,7 @@
 		[data setValue:label_badge2 forKey:@"badge2-label"];
 		[data setValue:image_badge2 forKey:@"badge2-image"];
 		[data setValue:progress_refresh forKey:@"refresh-progress"];
+		[data setValue:progress_refresh forKey:@"refresh-view"];
 
 		//	release preset ui
 		[label_badge release];
@@ -486,7 +487,7 @@
 			//	NSLog(@"cell: refreshing");
 			cell.textLabel.text = [data v:@"refresh-text"];
 			cell.detailTextLabel.text = @" ";
-			[cell addSubview:[data v:@"refresh-progress"]];
+			[cell addSubview:[data v:@"refresh-view"]];
 			//	[cell.detailTextLabel addSubview:[data v:@"refresh-progress"]];
 			cell.selectionStyle	= UITableViewCellSelectionStyleNone;
 		}
