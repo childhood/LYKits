@@ -145,6 +145,7 @@
 		[data setValue:[NSMutableDictionary dictionary] forKey:@"cell-subviews"];
 		[data setValue:[NSMutableDictionary dictionary] forKey:@"cell-gestures"];
 		[data setValue:@"Loading..." forKey:@"refresh-text"];
+		[data setValue:[NSNumber numberWithBool:NO] forKey:@"refresh-disable-bg"];
 		[data setValue:@"ly_transparent_64x64.png" forKey:@"image-placeholder"];
 		[data setValue:nil forKey:@"source-deleted-object"];
 		[data setValue:nil forKey:@"cell-class"];
@@ -616,30 +617,33 @@
 					[cell addGestureRecognizer:gesture];
 		}
 
-		if (([[texts object_at_index:indexPath.section] count] == 1) && (cell_bg != nil))
+		if (!([[data v:@"state"] is:@"refresh"] && ([[data v:@"refresh-disable-bg"] boolValue] == YES)))
 		{
-			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg];
-			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_selected];
-		}
-		else if ((indexPath.row == 0) && (cell_bg_top != nil))
-		{
-			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_top];
-			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_top_selected];
-		}
-		else if ((indexPath.row == ([[texts object_at_index:indexPath.section] count] - 1)) && (cell_bg_bottom != nil))
-		{
-			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_bottom];
-			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_bottom_selected];
-		}
-		else if (cell_bg_middle != nil)
-		{
-			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_middle];
-			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_middle_selected];
-		}
-		else if (cell_bg != nil)
-		{
-			cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg];
-			cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_selected];
+			if (([[texts object_at_index:indexPath.section] count] == 1) && (cell_bg != nil))
+			{
+				cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg];
+				cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_selected];
+			}
+			else if ((indexPath.row == 0) && (cell_bg_top != nil))
+			{
+				cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_top];
+				cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_top_selected];
+			}
+			else if ((indexPath.row == ([[texts object_at_index:indexPath.section] count] - 1)) && (cell_bg_bottom != nil))
+			{
+				cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_bottom];
+				cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_bottom_selected];
+			}
+			else if (cell_bg_middle != nil)
+			{
+				cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_middle];
+				cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_middle_selected];
+			}
+			else if (cell_bg != nil)
+			{
+				cell.backgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg];
+				cell.selectedBackgroundView = [[UIImageView alloc] initWithImageNamed:cell_bg_selected];
+			}
 		}
 
 #if 0	//	moved to cell will display
