@@ -59,7 +59,7 @@
 
 - (NSString*)put_file_sync:(NSString*)filename;
 - (NSString*)put_data_sync:(NSData*)data;
-- (NSData*)get:(NSString*)key;
+- (NSData*)get_data_sync:(NSString*)key;
 
 @end
 #endif	//	AWS

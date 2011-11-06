@@ -275,7 +275,7 @@
 	return uid;
 }
 
-- (NSData*)get:(NSString*)key
+- (NSData*)get_data_sync:(NSString*)key
 {
 	[LYLoading show];
 	S3GetObjectRequest* request = [[S3GetObjectRequest alloc] initWithKey:key withBucket:@"us-general"];
