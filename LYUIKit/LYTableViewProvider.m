@@ -1110,6 +1110,18 @@
 
 - (void)reset_content_offset:(NSNumber*)number
 {
+#if 1
+	//if ([search_bar isFirstResponder])
+	if (search_bar != nil)
+	{
+		if (search_bar.text.length > 0)
+		{
+			NSLog(@"TABLE in search mode");
+			return;
+		}
+	}
+#endif
+
 	BOOL b = [number boolValue];
 	if (b)
 		[UIView begin_animations:0.3];
@@ -1329,7 +1341,7 @@
 	}
 	//scroll_drag_begin = -44;
 	//view.contentOffset = CGPointMake(0, 0);
-	[self performSelector:@selector(reset_content_offset:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.31];
+	[self performSelector:@selector(reset_content_offset:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.4];
 	if (animated)
 		[self refresh_animated];
 	else

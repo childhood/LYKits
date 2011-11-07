@@ -12,11 +12,13 @@
 
 @interface LYLoadingViewController: LYSingletonViewController
 {
-	IBOutlet UILabel*		label_loading;
+	IBOutlet UILabel*					label_loading;
+	IBOutlet UIActivityIndicatorView*	activity_indicator;
 	UINavigationController*	nav;
 	NSString*				theme;
 }
 @property (nonatomic, retain) UILabel*					label_loading;
+@property (nonatomic, retain) UIActivityIndicatorView*	activity_indicator;
 @property (nonatomic, retain) UINavigationController*	nav;
 @property (nonatomic, retain) NSString*					theme;
 + (id)shared;
@@ -26,8 +28,10 @@
 + (void)set_theme:(NSString*)a_theme;
 
 + (void)show;
++ (void)show_without_indicator;
 + (void)hide;
 + (void)start_loading_animation;
++ (void)start_loading_animation:(NSString*)option;
 
 + (void)enable_label:(NSString*)s;
 + (void)show_label:(NSString*)s;

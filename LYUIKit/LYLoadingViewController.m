@@ -5,6 +5,7 @@ static LYLoadingViewController *ly_loading_view_controller_manager = nil;
 @implementation LYLoadingViewController
 
 @synthesize label_loading;
+@synthesize activity_indicator;
 @synthesize nav;
 @synthesize theme;
 
@@ -72,7 +73,14 @@ static LYLoadingViewController *ly_loading_view_controller_manager = nil;
 		//	[[LYLoadingViewController view] setFrame:CGRectMake(0, 0, screen_width(), screen_height())];
 		//	NSLog(@"LOADING show: %@", [LYLoadingViewController view]);
 		//	[[LYLoadingViewController view] setFrame:CGRectMake(0, 0, screen_width(), screen_height())];
-		[NSThread detachNewThreadSelector:@selector(start_loading_animation) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector:@selector(start_loading_animation:) toTarget:self withObject:nil];
+	}
+}
++ (void)show_without_indicator
+{
+	@synchronized (self)
+	{
+		[NSThread detachNewThreadSelector:@selector(start_loading_animation:) toTarget:self withObject:@"disable-indicator"];
 	}
 }
 + (void)hide
@@ -85,9 +93,21 @@ static LYLoadingViewController *ly_loading_view_controller_manager = nil;
 }
 + (void)start_loading_animation
 {
+	@synchronized (self)
+	{
+		[self start_loading_animation:nil];
+	}
+}
++ (void)start_loading_animation:(NSString*)option
+{
 	NSString* s;
 	@synchronized (self)
 	{
+		if ([option is:@"disable-indicator"])
+			[[[LYLoading shared] activity_indicator] stopAnimating];
+		else
+			[[[LYLoading shared] activity_indicator] startAnimating];
+
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		if ([[LYLoadingViewController theme] isEqualToString:@"national motto"])
