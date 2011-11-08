@@ -250,11 +250,22 @@
 
 @implementation LYServiceAWSS3
 
+- (id)init
+{
+	self = [super init];
+	if (self)
+	{
+		[self.data key:@"s3-folder" v:@""];
+	}
+	return self;
+}
+
 - (NSString*)put_file_sync:(NSString*)filename
 {
 	[LYLoading show];
-	NSString* uid = [LYRandom unique_string];
+	NSString* uid = [[self.data v:@"s3-folder"] stringByAppendingString:[LYRandom unique_string]];
 	S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:uid inBucket:@"us-general"];
+	request.cannedACL = [S3CannedACL publicRead];
 	request.filename = filename;
 	[s3 putObject:request];
 	[request release];
@@ -265,7 +276,7 @@
 - (NSString*)put_data_sync:(NSData*)a_data
 {
 	[LYLoading show];
-	NSString* uid = [LYRandom unique_string];
+	NSString* uid = [[self.data v:@"s3-folder"] stringByAppendingString:[LYRandom unique_string]];
 	S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:uid inBucket:@"us-general"];
 	request.cannedACL = [S3CannedACL publicRead];
 	request.data = a_data;

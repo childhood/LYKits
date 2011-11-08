@@ -54,7 +54,7 @@
 	UIImage* image = [info valueForKey:@"UIImagePickerControllerEditedImage"];
 	if (image == nil)
 		image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
-	[[self associated:@"ly_image"] setImage:image];
+	[[self associated:@"ly-image"] setImage:image];
 	[self ly_dismiss];
 
 	if ([self associated:@"ly_delegate"] != nil)
