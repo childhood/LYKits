@@ -16,7 +16,15 @@
               
     if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS)
         NSLog(@"Failed to fetch vm statistics");
- 
+
+	NSLog(@"zero:	%uM", vm_stat.zero_fill_count * pagesize / 1024 / 1024);
+	NSLog(@"react:	%uM", vm_stat.reactivations * pagesize / 1024 / 1024);
+	NSLog(@"p.in:	%uM", vm_stat.pageins * pagesize / 1024 / 1024);
+	NSLog(@"p.out:	%uM", vm_stat.pageouts * pagesize / 1024 / 1024);
+	NSLog(@"faults:	%uM", vm_stat.faults * pagesize / 1024 / 1024);
+	NSLog(@"cow:	%uM", vm_stat.cow_faults * pagesize / 1024 / 1024);
+	NSLog(@"lookup:	%uM", vm_stat.lookups * pagesize / 1024 / 1024);
+	NSLog(@"hits:	%uM", vm_stat.hits * pagesize / 1024 / 1024);
     /* Stats in bytes */ 
     natural_t mem_used = (vm_stat.active_count +
                           vm_stat.inactive_count +
