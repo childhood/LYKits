@@ -118,3 +118,30 @@ UIView* ly_alloc_view_loading(void);
 
 @end
 
+
+@class 	LYServiceAWSSimpleDB;
+
+@interface LYSuarViewController: UIViewController
+{
+	LYServiceAWSSimpleDB*	sdb;
+
+	IBOutlet UIViewController*		controller_profile;
+	IBOutlet UISegmentedControl*	segment_profile_type;
+	IBOutlet UITextField*			field_profile_name;
+	IBOutlet UITextField*			field_profile_mail;
+	IBOutlet UITextField*			field_profile_pin1;
+	IBOutlet UITextField*			field_profile_pin2;
+
+	IBOutlet UIViewController*		controller_wall;
+	IBOutlet UITableView*			table_wall;
+	LYTableViewProvider*			provider_wall;
+}
+@property (nonatomic, retain) IBOutlet id	delegate;
+@property (nonatomic, retain) IBOutlet UITabBarController*		tab;
+@property (nonatomic, retain) IBOutlet UINavigationController*	nav_wall;
+@property (nonatomic, retain) IBOutlet UINavigationController*	nav_profile;
+
+- (IBAction)action_profile_type;
+- (void)load;
+
+@end

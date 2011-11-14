@@ -109,7 +109,7 @@
 	request_put.delegate = self;
 	[sdb putAttributes:request_put];
 	[request_put release];
-	callback_obj_error = callback;
+	callback_obj_error = [callback copy];
 }
 
 - (NSException*)put_sync
@@ -126,7 +126,7 @@
 	request_select.delegate = self;
 	[sdb select:request_select];
 	[request_select release];
-	callback_obj_error = callback;
+	callback_obj_error = [callback copy];
 }
 
 - (NSArray*)select_sync:(NSString*)query
@@ -169,15 +169,23 @@
 	{
 		//	NSLog(@"put successfully: %@", response);
 		callback_obj_error(nil, nil);
+		[callback_obj_error release];
 	}
 	else if ([response class] == [SimpleDBSelectResponse class])
 	{
+		SimpleDBAttribute* attr = nil;
 		SimpleDBSelectResponse* response_select = (SimpleDBSelectResponse*)response;
-		SimpleDBAttribute* attr = [[[response_select.items i:0] attributes] i:0];
-		if ([[attr name] is:@"Count"])
+		if (response_select.items.count > 0)
+			attr = [[[response_select.items i:0] attributes] i:0];
+		if ((attr != nil) && [[attr name] is:@"Count"])
 			callback_int_error([[attr value] intValue], nil);
 		else
-			callback_obj_error([self array_from_select:response_select], nil);
+		{
+			NSArray* array = [self array_from_select:response_select];
+			//	NSLog(@"xxx %@", callback_obj_error);
+			callback_obj_error(array, nil);
+			//[callback_obj_error release];
+		}
 		//	NSLog(@"select: %@", response_select.items);
 	}
 	else
@@ -402,7 +410,7 @@
 	//[request setPostValue:@"application/json" forKey:@"Content-Type"];
 	//[request setPostValue:[data v:@"username"] forKey:@"username"];
 	//[request setPostValue:[data v:@"password"] forKey:@"password"];
-	[request appendPostData:[[CJSONSerializer serializer] serializeDictionary:dict error:nil]];
+	[request appendPostData:(NSData*)[[CJSONSerializer serializer] serializeDictionary:dict error:nil]];
 	[request setRequestMethod:@"POST"];
 #if 0
 	NSLog(@"url: %@", url);
@@ -530,7 +538,7 @@
 			id obj = [dict_item v:key];
 
 			if ([obj isKindOfClass:[NSArray class]])
-				obj = [NSString stringWithUTF8String:[[[CJSONSerializer serializer] serializeArray:obj error:nil] bytes]];
+				obj = [NSString stringWithUTF8String:[(NSData*)[[CJSONSerializer serializer] serializeArray:obj error:nil] bytes]];
 			//	else if ([obj isKindOfClass:[NSString class]])
 			
 			if ([[dict v:@"s"] indexOfObject:key] != NSNotFound)
