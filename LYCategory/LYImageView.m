@@ -1,5 +1,7 @@
 #import "LYImageView.h"
 
+#define k_ly_tmp_image_flip_time	0.3
+
 @implementation UIImageView (LYImageView)
 
 - (id)initWithImageNamed:(NSString*)filename
@@ -78,6 +80,98 @@
 - (void)draw_cross_white
 {
 	[self draw_cross_with_r:1 g:1 b:1 a:1 width:1];
+}
+
+- (void)flip
+{
+	UIImage* image_front_top;
+	UIImage* image_front_bottom;
+	UIImage* image_back_top;
+	UIImage* image_back_bottom;
+	CGSize size;
+
+	size = CGSizeMake([self.image size].width, [self.image size].height/2);
+	UIGraphicsBeginImageContext(size);
+	[self.image drawAtPoint:CGPointMake(0.0, 0.0)];
+	image_front_top = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	[self.image drawAtPoint:CGPointMake(0.0, -[self.image size].height/2)];
+	image_front_bottom = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	UIGraphicsEndImageContext();
+
+	size = CGSizeMake([self.highlightedImage size].width, [self.highlightedImage size].height/2);
+	UIGraphicsBeginImageContext(size);
+	[self.highlightedImage drawAtPoint:CGPointMake(0.0, 0.0)];
+	image_back_top = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	[self.highlightedImage drawAtPoint:CGPointMake(0.0, -[self.highlightedImage size].height/2)];
+#if 0
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, size.height / 2);
+	CGContextConcatCTM(context, flipVertical);  
+#endif
+	image_back_bottom = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	UIGraphicsEndImageContext();
+
+	UIImageView* view_top = [[UIImageView alloc] initWithImage:image_back_top];
+	[self addSubview:view_top];
+
+	UIImageView* view_animation = [[UIImageView alloc] initWithImage:image_front_top];
+	[view_animation set_y:size.height / 2];
+	[self addSubview:view_animation];
+	[self associate:@"ly-flip-animation" with:view_animation];
+
+	UIImageView* view_animation2 = [[UIImageView alloc] initWithImage:[UIImage image_flip_vertically:image_back_bottom]];
+	[view_animation2 set_y:size.height / 2];
+	[self associate:@"ly-flip-animation2" with:view_animation2];
+
+#if 1
+	CATransform3D transform = CATransform3DIdentity;
+	float zDistance = 1000;
+	transform.m34 = 1.0 / -zDistance;	
+	//view_animation.layer.sublayerTransform = transform;
+	view_animation.layer.anchorPoint = CGPointMake(0.5, 1.0);
+	//view_animation.layer.transform = CATransform3DMakeRotation(0.7, 1.0, 0.0, 0.0);
+	CABasicAnimation *topAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+	topAnim.fromValue = [NSValue valueWithCATransform3D:CATransform3DConcat(CATransform3DMakeRotation(0, 1, 0, 0), transform)];
+	topAnim.duration = k_ly_tmp_image_flip_time / 2;
+	topAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DConcat(CATransform3DMakeRotation(-M_PI_2, 1, 0, 0), transform)];
+	topAnim.delegate = self;
+	topAnim.removedOnCompletion = NO;
+	topAnim.fillMode = kCAFillModeForwards;
+	[view_animation.layer addAnimation:topAnim forKey:@"topAnim"];
+	[self performSelector:@selector(flip_half) withObject:nil afterDelay:k_ly_tmp_image_flip_time / 2];
+	[self performSelector:@selector(flip_end) withObject:nil afterDelay:k_ly_tmp_image_flip_time];
+#endif
+}
+
+- (void)flip_half
+{
+	UIImageView* view_animation1 = [self associated:@"ly-flip-animation"];
+	[view_animation1 removeFromSuperview];
+
+	UIImageView* view_animation = [self associated:@"ly-flip-animation2"];
+	[self addSubview:view_animation];
+
+	CATransform3D transform = CATransform3DIdentity;
+	float zDistance = 1000;
+	transform.m34 = 1.0 / -zDistance;	
+	//view_animation.layer.sublayerTransform = transform;
+	view_animation.layer.anchorPoint = CGPointMake(0.5, 1.0);
+	//view_animation.layer.transform = CATransform3DMakeRotation(0.7, 1.0, 0.0, 0.0);
+	CABasicAnimation *topAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+	topAnim.fromValue = [NSValue valueWithCATransform3D:CATransform3DConcat(CATransform3DMakeRotation(-M_PI_2, 1, 0, 0), transform)];
+	topAnim.duration = k_ly_tmp_image_flip_time / 2;
+	topAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DConcat(CATransform3DMakeRotation(-M_PI_2 * 2, 1, 0, 0), transform)];
+	topAnim.delegate = self;
+	topAnim.removedOnCompletion = NO;
+	topAnim.fillMode = kCAFillModeForwards;
+	[view_animation.layer addAnimation:topAnim forKey:@"topAnim"];
+}
+
+- (void)flip_end
+{
+	UIImage* image = self.highlightedImage;
+	self.highlightedImage = self.image;
+	self.image = image;
 }
 
 @end

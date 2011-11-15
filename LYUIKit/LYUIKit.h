@@ -119,6 +119,7 @@ UIView* ly_alloc_view_loading(void);
 @end
 
 
+#ifdef LY_ENABLE_SERVICEKIT
 @class 	LYServiceAWSSimpleDB;
 
 @interface LYSuarViewController: UIViewController
@@ -145,3 +146,4 @@ UIView* ly_alloc_view_loading(void);
 - (void)load;
 
 @end
+#endif

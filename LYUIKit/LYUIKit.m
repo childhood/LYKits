@@ -461,6 +461,7 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 @end
 
 
+#ifdef LY_ENABLE_SERVICEKIT
 @implementation LYSuarViewController
 
 @synthesize delegate;
@@ -657,3 +658,4 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 }
 
 @end
+#endif

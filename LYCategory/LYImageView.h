@@ -9,5 +9,6 @@
 - (void)draw_frame_white;
 - (void)draw_cross_black;
 - (void)draw_cross_white;
+- (void)flip;
 
 @end
