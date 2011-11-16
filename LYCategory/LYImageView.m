@@ -82,20 +82,25 @@
 	[self draw_cross_with_r:1 g:1 b:1 a:1 width:1];
 }
 
-- (void)flip
+- (void)clock_flip
 {
+	if ([self associated:@"ly-clock-flip-lock"] != nil)
+		return;
+	[self associate:@"ly-clock-flip-lock" with:@"locked"];
+
 	UIImage* image_front_top;
-	UIImage* image_front_bottom;
+	//UIImage* image_front_bottom;
 	UIImage* image_back_top;
 	UIImage* image_back_bottom;
 	CGSize size;
 
 	size = CGSizeMake([self.image size].width, [self.image size].height/2);
+	//size = CGSizeMake(self.frame.size.width, self.frame.size.height / 2);
 	UIGraphicsBeginImageContext(size);
 	[self.image drawAtPoint:CGPointMake(0.0, 0.0)];
 	image_front_top = [UIGraphicsGetImageFromCurrentImageContext() retain];			
-	[self.image drawAtPoint:CGPointMake(0.0, -[self.image size].height/2)];
-	image_front_bottom = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	//[self.image drawAtPoint:CGPointMake(0.0, -[self.image size].height/2)];
+	//image_front_bottom = [UIGraphicsGetImageFromCurrentImageContext() retain];			
 	UIGraphicsEndImageContext();
 
 	size = CGSizeMake([self.highlightedImage size].width, [self.highlightedImage size].height/2);
@@ -113,15 +118,17 @@
 
 	UIImageView* view_top = [[UIImageView alloc] initWithImage:image_back_top];
 	[self addSubview:view_top];
+	[self associate:@"ly-clock-flip-top" with:view_top];
 
 	UIImageView* view_animation = [[UIImageView alloc] initWithImage:image_front_top];
 	[view_animation set_y:size.height / 2];
 	[self addSubview:view_animation];
-	[self associate:@"ly-flip-animation" with:view_animation];
+	[self associate:@"ly-clock-flip-animation" with:view_animation];
 
 	UIImageView* view_animation2 = [[UIImageView alloc] initWithImage:[UIImage image_flip_vertically:image_back_bottom]];
+	[image_back_bottom release];
 	[view_animation2 set_y:size.height / 2];
-	[self associate:@"ly-flip-animation2" with:view_animation2];
+	[self associate:@"ly-clock-flip-animation2" with:view_animation2];
 
 #if 1
 	CATransform3D transform = CATransform3DIdentity;
@@ -138,17 +145,19 @@
 	topAnim.removedOnCompletion = NO;
 	topAnim.fillMode = kCAFillModeForwards;
 	[view_animation.layer addAnimation:topAnim forKey:@"topAnim"];
-	[self performSelector:@selector(flip_half) withObject:nil afterDelay:k_ly_tmp_image_flip_time / 2];
-	[self performSelector:@selector(flip_end) withObject:nil afterDelay:k_ly_tmp_image_flip_time];
+	[self performSelector:@selector(clock_flip_half) withObject:nil afterDelay:k_ly_tmp_image_flip_time / 2];
+	[self performSelector:@selector(clock_flip_end) withObject:nil afterDelay:k_ly_tmp_image_flip_time];
 #endif
 }
 
-- (void)flip_half
+- (void)clock_flip_half
 {
-	UIImageView* view_animation1 = [self associated:@"ly-flip-animation"];
+	UIImageView* view_animation1 = [self associated:@"ly-clock-flip-animation"];
 	[view_animation1 removeFromSuperview];
+	[view_animation1.image release];
+	[view_animation1 release];
 
-	UIImageView* view_animation = [self associated:@"ly-flip-animation2"];
+	UIImageView* view_animation = [self associated:@"ly-clock-flip-animation2"];
 	[self addSubview:view_animation];
 
 	CATransform3D transform = CATransform3DIdentity;
@@ -167,11 +176,23 @@
 	[view_animation.layer addAnimation:topAnim forKey:@"topAnim"];
 }
 
-- (void)flip_end
+- (void)clock_flip_end
 {
+	UIImageView* view_top = [self associated:@"ly-clock-flip-top"];
+	[view_top removeFromSuperview];
+	[view_top.image release];
+	[view_top release];
+
+	UIImageView* view_animation = [self associated:@"ly-clock-flip-animation2"];
+	[view_animation removeFromSuperview];
+	//[view_animation.image release];
+	[view_animation release];
+
 	UIImage* image = self.highlightedImage;
 	self.highlightedImage = self.image;
 	self.image = image;
+
+	[self associate:@"ly-clock-flip-lock" with:nil];
 }
 
 @end
