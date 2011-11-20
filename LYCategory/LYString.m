@@ -763,10 +763,12 @@
 	NSString* s = self;
 	if ([s has_substring:s1] && [s has_substring:s2])
 	{
+		//	NSLog(@"%@, %@, %@", s1, s2, s);
 		s = [s stringByReplacingOccurrencesOfString:s1 withString:@"ly-separator-string-switch-001"];
 		s = [s stringByReplacingOccurrencesOfString:s2 withString:@"ly-separator-string-switch-002"];
 		s = [s stringByReplacingOccurrencesOfString:@"ly-separator-string-switch-001" withString:s2];
 		s = [s stringByReplacingOccurrencesOfString:@"ly-separator-string-switch-002" withString:s1];
+		//	NSLog(@"%@, %@, %@", s1, s2, s);
 	}
 	return s;
 }
@@ -774,14 +776,34 @@
 - (NSString*)_ly_k1
 {
 	NSString* s = self;
+	s = [s switch:@"3" with:@"8"];
+	//s = [s switch:@"7" with:@"4"];
 	s = [s switch:@"+" with:@"-"];
 	s = [s switch:@"1" with:@"l"];
 	s = [s switch:@"O" with:@"0"];
 	s = [s switch:@"z" with:@"2"];
 	s = [s switch:@"s" with:@"5"];
-	s = [s switch:@"a" with:@"b"];
 	s = [s switch:@"x" with:@"X"];
 	s = [s switch:@"9" with:@"6"];
+	s = [s switch:@"a" with:@"b"];
+	s = [s switch:@"A" with:@"B"];
+	s = [s switch:@"c" with:@"d"];
+	s = [s switch:@"e" with:@"f"];
+	s = [s switch:@"E" with:@"F"];
+	s = [s switch:@"g" with:@"h"];
+	s = [s switch:@"G" with:@"H"];
+	s = [s switch:@"i" with:@"y"];
+	s = [s switch:@"I" with:@"Y"];
+	s = [s switch:@"j" with:@"w"];
+	s = [s switch:@"J" with:@"W"];
+	s = [s switch:@"m" with:@"n"];
+	s = [s switch:@"M" with:@"N"];
+	s = [s switch:@"o" with:@"p"];
+	s = [s switch:@"S" with:@"P"];
+	s = [s switch:@"q" with:@"r"];
+	s = [s switch:@"Q" with:@"R"];
+	s = [s switch:@"t" with:@"v"];
+	s = [s switch:@"T" with:@"V"];
 	return s;
 }
 
