@@ -24,15 +24,23 @@
 	self.frame = CGRectMake(point.x, point.y, size.width, size.height);
 }
 
+- (UIImage*)screenshot
+{
+	return [[self get_screenshot:self.bounds] retain];
+}
+
 - (UIImage*)get_screenshot:(CGRect)screenRect
 {
 	//	CGRect screenRect = [[UIScreen mainScreen] bounds];
 
+	//	NSLog(@"size: %@", NSStringFromCGSize(screenRect.size));
 	UIGraphicsBeginImageContext(screenRect.size);
 
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
+#if 1
 	[[UIColor blackColor] set];
 	CGContextFillRect(ctx, screenRect);
+#endif
 	[self.layer renderInContext:ctx];
 	UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
 

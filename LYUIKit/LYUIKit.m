@@ -461,7 +461,7 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 @end
 
 
-#ifdef LY_ENABLE_SERVICEKIT
+#ifdef LY_ENABLE_SDK_AWS
 @implementation LYSuarViewController
 
 @synthesize delegate;
@@ -659,3 +659,49 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 
 @end
 #endif
+
+
+@implementation LYFlipImageView
+
+@synthesize data;
+
+- (id)initWithFrame:(CGRect)rect
+{
+	self = [super initWithFrame:rect];
+	if (self)
+	{
+		data = [[NSMutableDictionary alloc] init];
+		[data key:@"chars" v:[[NSMutableArray alloc] init]];
+		[self set_char_numbers];
+
+		UILabel* label = [[UILabel alloc] initWithFrame:rect];
+		label.textColor = [UIColor whiteColor];
+		label.textAlignment = UITextAlignmentCenter;
+		label.backgroundColor = [UIColor blackColor];
+		label.font = [UIFont systemFontOfSize:512];
+		label.minimumFontSize = 10;
+		label.adjustsFontSizeToFitWidth = YES;
+		[data key:@"label" v:label];
+	}
+	return self;
+}
+
+- (void)dealloc
+{
+	[data release];
+}
+
+- (void)set_char_numbers
+{
+	NSMutableArray* array = [data v:@"chars"];
+	[array removeAllObjects];
+	for (char c = '0'; c <= '9'; c++)
+		[array addObject:[NSString stringWithFormat:@"%c", c]];
+	NSLog(@"xxx %@", array);
+}
+
+- (void)flip_to:(NSString*)c
+{
+}
+
+@end

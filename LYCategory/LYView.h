@@ -4,6 +4,7 @@
 @interface UIView (LYView)
 
 - (UIViewController*)view_controller;
+- (UIImage*)screenshot;
 - (UIImage*)get_screenshot:(CGRect)screenRect;
 - (void)copy_style:(UIView*)target;
 

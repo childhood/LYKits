@@ -119,7 +119,7 @@ UIView* ly_alloc_view_loading(void);
 @end
 
 
-#ifdef LY_ENABLE_SERVICEKIT
+#ifdef LY_ENABLE_SDK_AWS
 @class 	LYServiceAWSSimpleDB;
 
 @interface LYSuarViewController: UIViewController
@@ -147,3 +147,10 @@ UIView* ly_alloc_view_loading(void);
 
 @end
 #endif
+
+
+@interface LYFlipImageView: UIImageView
+@property (nonatomic, retain) NSMutableDictionary*	data;
+- (void)set_char_numbers;
+- (void)flip_to:(NSString*)c;
+@end
