@@ -773,6 +773,7 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 
 - (void)dealloc
 {
+	[super dealloc];
 	[data release];
 }
 
