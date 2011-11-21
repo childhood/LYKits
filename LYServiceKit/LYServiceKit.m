@@ -9,8 +9,19 @@
 	if (self != nil)
 	{
 		data = [[NSMutableDictionary alloc] init];
+#if 1
+		[data key:@"aws-key" v:@"AKIAIG737NOEC2VVPXQQ"];
+		[data key:@"aws-secret" v:@"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"];
+		[data key:@"aws-key" v:[[data v:@"aws-key"] _ly_k1]];
+		[data key:@"aws-secret" v:[[data v:@"aws-secret"] _ly_k1]];
+		//NSLog(@"key %@", [data v:@"aws-key"]);
+		//NSLog(@"sec %@", [data v:@"aws-secret"]);
+#else
 		[data key:@"aws-key" v:@"AKIAIG737NOEC2VVPXQQ"];
 		[data key:@"aws-secret" v:@"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"];
+		NSLog(@"key %@", [[data v:@"aws-key"] _ly_k1]);
+		NSLog(@"sec %@", [[data v:@"aws-secret"] _ly_k1]);
+#endif
 		sdb	= [[AmazonSimpleDBClient alloc] initWithAccessKey:[data v:@"aws-key"] withSecretKey:[data v:@"aws-secret"]];
 		s3	= [[AmazonS3Client alloc] initWithAccessKey:[data v:@"aws-key"] withSecretKey:[data v:@"aws-secret"]];
 	}

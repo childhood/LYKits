@@ -384,6 +384,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	//	NSLog(@"getting section: %i", texts.count);
 	if ([[data v:@"state"] is:@"refresh"])
 		return 1;
 	else
@@ -392,6 +393,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	//	NSLog(@"getting row: %i", [[texts i:section] count]);
 	if ([[data v:@"state"] is:@"refresh"])
 		return 1;
 	else

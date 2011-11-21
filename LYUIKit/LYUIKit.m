@@ -476,6 +476,7 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 	{
 		[self loadView];
 		sdb	= [[LYServiceAWSSimpleDB alloc] init];
+		provider_wall = nil;
 	}
 	return self;
 }
@@ -486,8 +487,73 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 	[super dealloc];
 }
 
+- (IBAction)load_wall
+{
+	if (provider_wall == nil)
+	{
+		provider_wall = [[LYTableViewProvider alloc] initWithTableView:table_wall];
+		provider_wall.texts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		provider_wall.details = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		provider_wall.image_urls = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		provider_wall.delegate = self;
+		provider_wall.cell_height = 64;
+
+		UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 38, 20, 20)];
+		activity.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+		[activity startAnimating];
+		[provider_wall.data key:@"refresh-view" v:activity];
+		//[provider_wall apply_theme_color:[UIColor blackColor] on:[UIColor whiteColor]];
+	}
+
+	[provider_wall.data key:@"state" v:@"refresh"];
+	[table_wall reloadData];
+	NSString* query = [NSString stringWithFormat:
+		@"select * from `posts` where `author-mail` = '%@' and `date-create` > '20110101-00:00:00' order by `date-create` desc",
+		[@"ly-suar-profile-mail" setting_string]];
+		NSLog(@"query: %@", query);
+	[sdb select:query block:^(id obj, NSError* error)
+	{
+		NSArray* array = (NSArray*)obj;
+		//	NSLog(@"query result: %@", error);
+		//	NSLog(@"wall: %@", array);
+		[provider_wall.data key:@"state" v:@""];
+		[[provider_wall.texts i:0] removeAllObjects];
+		for (NSDictionary* dict_item in array)
+		{
+			NSDictionary* dict = [dict_item v:@"attr-dict"];
+			NSString* s;
+
+			s = [dict v:@"text-title"];
+			if ([s is:@""])
+				s = @"Untitled";
+			[[provider_wall.texts i:0] addObject:s];
+
+			s = [dict v:@"text-body"];
+			if ([s is:@""])
+				s = @"No description.";
+			[[provider_wall.details i:0] addObject:s];
+
+			s = [dict v:@"photo-main"];
+			if ([s is:@""])
+				s = @"";
+			else
+			{
+				if (![[s substringToIndex:4] is:@"raw/"])
+					s = [@"raw/" stringByAppendingString:s];
+				s = [@"http://s3.amazonaws.com/us-general/" stringByAppendingString:s];
+			}
+			[[provider_wall.image_urls i:0] addObject:s];
+		}
+		[table_wall reloadData];
+		//	NSLog(@"titles %@", provider_wall.texts);
+	}];
+}
+
 - (void)load
 {
+	[[provider_wall.texts i:0] addObject:@"No Post"];
+	[table_wall reloadData];
+
 	if ([@"ly-suar-profile-pin" setting_string] == nil)
 	{
 		segment_profile_type.selectedSegmentIndex = 1;
@@ -655,6 +721,25 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 		[field_profile_pin2 resignFirstResponder];
 
 	return YES;
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)controller
+{
+	//	NSLog(@"should select index: %i", tab.selectedIndex);
+	if (controller == nav_wall)
+		if ([@"ly-suar-profile-pin" setting_string] == nil)
+			return NO;
+	return YES;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+	//	NSLog(@"index: %i", tab.selectedIndex);
+	if (tab.selectedIndex == 1)
+	{
+		if (provider_wall == nil)
+			[self load_wall];
+	}
 }
 
 @end

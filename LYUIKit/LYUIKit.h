@@ -122,7 +122,7 @@ UIView* ly_alloc_view_loading(void);
 #ifdef LY_ENABLE_SDK_AWS
 @class 	LYServiceAWSSimpleDB;
 
-@interface LYSuarViewController: UIViewController
+@interface LYSuarViewController: UIViewController <UITabBarControllerDelegate>
 {
 	LYServiceAWSSimpleDB*	sdb;
 
