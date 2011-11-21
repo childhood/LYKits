@@ -24,7 +24,7 @@
 	self.frame = CGRectMake(point.x, point.y, size.width, size.height);
 }
 
-- (UIImage*)screenshot
+- (UIImage*)snapshot
 {
 	return [[self get_screenshot:self.bounds] retain];
 }

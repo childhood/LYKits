@@ -1,6 +1,6 @@
 #import "LYImageView.h"
 
-#define k_ly_tmp_image_flip_time	0.15
+#define k_ly_tmp_image_flip_time	1.15
 
 @implementation UIImageView (LYImageView)
 

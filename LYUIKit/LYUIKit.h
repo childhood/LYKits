@@ -151,6 +151,10 @@ UIView* ly_alloc_view_loading(void);
 
 @interface LYFlipImageView: UIImageView
 @property (nonatomic, retain) NSMutableDictionary*	data;
-- (void)set_char_numbers;
-- (void)flip_to:(NSString*)c;
+
+- (void)set_sequence_numbers;
+- (void)flip_to:(NSString*)s;
+- (void)reload;
+- (void)reload:(NSNumber*)number;
+
 @end

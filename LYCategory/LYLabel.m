@@ -14,6 +14,8 @@
 		self.numberOfLines	= target.numberOfLines;
 		self.shadowColor	= target.shadowColor;
 		self.shadowOffset	= target.shadowOffset;
+		self.minimumFontSize = target.minimumFontSize;
+		self.adjustsFontSizeToFitWidth = target.adjustsFontSizeToFitWidth;
 	}
 }
 

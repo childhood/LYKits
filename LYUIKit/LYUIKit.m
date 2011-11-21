@@ -756,17 +756,24 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 	if (self)
 	{
 		data = [[NSMutableDictionary alloc] init];
-		[data key:@"chars" v:[[NSMutableArray alloc] init]];
-		[self set_char_numbers];
+		[data key:@"sequence" v:[[NSMutableArray alloc] init]];
+		[self set_sequence_numbers];
 
-		UILabel* label = [[UILabel alloc] initWithFrame:rect];
-		label.textColor = [UIColor whiteColor];
-		label.textAlignment = UITextAlignmentCenter;
-		label.backgroundColor = [UIColor blackColor];
-		label.font = [UIFont systemFontOfSize:512];
-		label.minimumFontSize = 10;
-		label.adjustsFontSizeToFitWidth = YES;
-		[data key:@"label" v:label];
+		UILabel* label1 = [[UILabel alloc] initWithFrame:rect];
+		label1.textColor = [UIColor whiteColor];
+		label1.textAlignment = UITextAlignmentCenter;
+		label1.backgroundColor = [UIColor blackColor];
+		label1.font = [UIFont systemFontOfSize:128];
+		label1.minimumFontSize = 10;
+		label1.adjustsFontSizeToFitWidth = YES;
+		UILabel* label2 = [[UILabel alloc] initWithFrame:rect];
+		[label2 copy_style:label1];
+		[data key:@"label1" v:label1];
+		[data key:@"label2" v:label2];
+
+		[data key:@"index" v:[NSNumber numberWithInt:0]];
+		[self set_sequence_numbers];
+		[self reload];
 	}
 	return self;
 }
@@ -777,17 +784,57 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 	[data release];
 }
 
-- (void)set_char_numbers
+- (void)set_sequence_numbers
 {
-	NSMutableArray* array = [data v:@"chars"];
+	NSMutableArray* array = [data v:@"sequence"];
 	[array removeAllObjects];
 	for (char c = '0'; c <= '9'; c++)
 		[array addObject:[NSString stringWithFormat:@"%c", c]];
-	NSLog(@"xxx %@", array);
 }
 
-- (void)flip_to:(NSString*)c
+- (void)reload
 {
+	[self reload:[data v:@"index"]];
+}
+
+- (void)reload:(NSNumber*)number
+{
+	NSArray* sequence = [data v:@"sequence"];
+	int index = [number intValue];
+	UILabel* label1 = [data v:@"label1"];
+	label1.text = [sequence i:index];
+	self.image = [label1 snapshot];
+
+	index++;
+	if (index >= sequence.count)
+		index = 0;
+	UILabel* label2 = [data v:@"label2"];
+	label2.text = [sequence i:index];
+	self.highlightedImage = [label2 snapshot];
+
+	[self clock_flip];
+}
+
+- (NSString*)value
+{
+	NSArray* sequence = [data v:@"sequence"];
+	int index = [[data v:@"index"] intValue];
+	return [sequence i:index];
+}
+
+- (void)flip_to:(NSString*)s
+{
+	int index = [[data v:@"index"] intValue];
+	int i = 0;
+	while ([[[data v:@"sequence"] i:index] is:s] == NO)
+	{
+		[self performSelector:@selector(reload:) withObject:[NSNumber numberWithInt:index] afterDelay:(1.15 + 0.05) * i];
+		i++;
+		index++;
+		if (index >= [[data v:@"sequence"] count])
+			index = 0;
+	}
+	[data key:@"index" v:[NSNumber numberWithInt:index]];
 }
 
 @end
