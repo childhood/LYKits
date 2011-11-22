@@ -466,8 +466,9 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 
 @synthesize delegate;
 @synthesize tab;
-@synthesize nav_wall;
 @synthesize nav_profile;
+@synthesize nav_wall;
+@synthesize nav_public;
 
 - (id)init
 {
@@ -477,6 +478,7 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 		[self loadView];
 		sdb	= [[LYServiceAWSSimpleDB alloc] init];
 		provider_wall = nil;
+		provider_public = nil;
 	}
 	return self;
 }
@@ -489,35 +491,46 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 
 - (IBAction)load_wall
 {
-	if (provider_wall == nil)
+	NSString* query = [NSString stringWithFormat:
+		@"select * from `posts` where `author-mail` = '%@' and `date-create` > '20110101-00:00:00' order by `date-create` desc",
+		[@"ly-suar-profile-mail" setting_string]];
+	[self reload_provider:&provider_wall table:table_wall query:query];
+}
+
+- (IBAction)load_public
+{
+	NSString* query = @"select * from `posts` where `date-create` > '20110101-00:00:00' order by `date-create` desc";
+	[self reload_provider:&provider_public table:table_public query:query];
+}
+
+- (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query
+{
+	LYTableViewProvider* provider = *a_provider;
+	if (provider == nil)
 	{
-		provider_wall = [[LYTableViewProvider alloc] initWithTableView:table_wall];
-		provider_wall.texts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
-		provider_wall.details = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
-		provider_wall.image_urls = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
-		provider_wall.delegate = self;
-		provider_wall.cell_height = 64;
+		provider = [[LYTableViewProvider alloc] initWithTableView:table];
+		provider.texts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		provider.details = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		provider.image_urls = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		provider.delegate = self;
+		provider.cell_height = 64;
 
 		UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 38, 20, 20)];
 		activity.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
 		[activity startAnimating];
-		[provider_wall.data key:@"refresh-view" v:activity];
-		//[provider_wall apply_theme_color:[UIColor blackColor] on:[UIColor whiteColor]];
+		[provider.data key:@"refresh-view" v:activity];
+		//[provider apply_theme_color:[UIColor blackColor] on:[UIColor whiteColor]];
 	}
 
-	[provider_wall.data key:@"state" v:@"refresh"];
-	[table_wall reloadData];
-	NSString* query = [NSString stringWithFormat:
-		@"select * from `posts` where `author-mail` = '%@' and `date-create` > '20110101-00:00:00' order by `date-create` desc",
-		[@"ly-suar-profile-mail" setting_string]];
-		NSLog(@"query: %@", query);
+	[provider.data key:@"state" v:@"refresh"];
+	[table reloadData];
 	[sdb select:query block:^(id obj, NSError* error)
 	{
 		NSArray* array = (NSArray*)obj;
-		//	NSLog(@"query result: %@", error);
-		//	NSLog(@"wall: %@", array);
-		[provider_wall.data key:@"state" v:@""];
-		[[provider_wall.texts i:0] removeAllObjects];
+		//	NSLog(@"query error: %@", error);
+		//	NSLog(@"query result: %@", array);
+		[provider.data key:@"state" v:@""];
+		[[provider.texts i:0] removeAllObjects];
 		for (NSDictionary* dict_item in array)
 		{
 			NSDictionary* dict = [dict_item v:@"attr-dict"];
@@ -525,13 +538,26 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 
 			s = [dict v:@"text-title"];
 			if ([s is:@""])
-				s = @"Untitled";
-			[[provider_wall.texts i:0] addObject:s];
+			{
+				s = [dict v:@"author-app"];
+				if ([s is:@"org.superarts.PhotoShare"])
+					s = @"Via Photo Share";
+				else if ([s is:@"org.superarts.PhotoShare"])
+					s = @"Via Photo Share";
+				else
+					s = @"Untitled";
+			}
+			[[provider.texts i:0] addObject:s];
 
 			s = [dict v:@"text-body"];
 			if ([s is:@""])
-				s = @"No description.";
-			[[provider_wall.details i:0] addObject:s];
+			{
+				s = [dict v:@"date-create"];
+				s = [s local_medium_date_from:@"yyyyMMdd-HH:mm:ss"];
+				if ((s == nil) || ([s is:@""]))
+					s = @"No description.";
+			}
+			[[provider.details i:0] addObject:s];
 
 			s = [dict v:@"photo-main"];
 			if ([s is:@""])
@@ -542,10 +568,11 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 					s = [@"raw/" stringByAppendingString:s];
 				s = [@"http://s3.amazonaws.com/us-general/" stringByAppendingString:s];
 			}
-			[[provider_wall.image_urls i:0] addObject:s];
+			[[provider.image_urls i:0] addObject:s];
 		}
-		[table_wall reloadData];
-		//	NSLog(@"titles %@", provider_wall.texts);
+		[table reloadData];
+		*a_provider = provider;
+		//	NSLog(@"titles %@", provider.texts);
 	}];
 }
 
@@ -553,6 +580,8 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 {
 	[[provider_wall.texts i:0] addObject:@"No Post"];
 	[table_wall reloadData];
+	[[provider_public.texts i:0] addObject:@"No Post"];
+	[table_public reloadData];
 
 	if ([@"ly-suar-profile-pin" setting_string] == nil)
 	{
@@ -729,6 +758,9 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 	if (controller == nav_wall)
 		if ([@"ly-suar-profile-pin" setting_string] == nil)
 			return NO;
+	if (controller == nav_public)
+		if ([@"ly-suar-profile-pin" setting_string] == nil)
+			return NO;
 	return YES;
 }
 
@@ -739,6 +771,11 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 	{
 		if (provider_wall == nil)
 			[self load_wall];
+	}
+	else if (tab.selectedIndex == 2)
+	{
+		if (provider_public == nil)
+			[self load_public];
 	}
 }
 

@@ -136,14 +136,20 @@ UIView* ly_alloc_view_loading(void);
 	IBOutlet UIViewController*		controller_wall;
 	IBOutlet UITableView*			table_wall;
 	LYTableViewProvider*			provider_wall;
+
+	IBOutlet UIViewController*		controller_public;
+	IBOutlet UITableView*			table_public;
+	LYTableViewProvider*			provider_public;
 }
 @property (nonatomic, retain) IBOutlet id	delegate;
 @property (nonatomic, retain) IBOutlet UITabBarController*		tab;
-@property (nonatomic, retain) IBOutlet UINavigationController*	nav_wall;
 @property (nonatomic, retain) IBOutlet UINavigationController*	nav_profile;
+@property (nonatomic, retain) IBOutlet UINavigationController*	nav_wall;
+@property (nonatomic, retain) IBOutlet UINavigationController*	nav_public;
 
 - (IBAction)action_profile_type;
 - (void)load;
+- (void)reload_provider:(LYTableViewProvider**)provider table:(UITableView*)table query:(NSString*)query;
 
 @end
 #endif

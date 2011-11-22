@@ -107,9 +107,9 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<bool key="IBUIHorizontal">NO</bool>
-				<object class="IBUINavigationController" key="IBUISelectedViewController" id="542328882">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="328752079">
-						<string key="IBUITitle">My Posts</string>
+				<object class="IBUINavigationController" key="IBUISelectedViewController" id="74276133">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="159110943">
+						<string key="IBUITitle">Public</string>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<reference key="IBUITabBar" ref="411007066"/>
 					</object>
@@ -121,7 +121,7 @@
 					</object>
 					<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					<bool key="IBUIHorizontal">NO</bool>
-					<object class="IBUINavigationBar" key="IBUINavigationBar" id="861524201">
+					<object class="IBUINavigationBar" key="IBUINavigationBar" id="273450643">
 						<nil key="NSNextResponder"/>
 						<int key="NSvFlags">256</int>
 						<string key="NSFrameSize">{0, 0}</string>
@@ -133,17 +133,18 @@
 						<int key="IBUIBarStyle">1</int>
 					</object>
 					<array class="NSMutableArray" key="IBUIViewControllers">
-						<object class="IBUIViewController" id="585591432">
-							<object class="IBUIView" key="IBUIView" id="514397032">
+						<object class="IBUIViewController" id="238821942">
+							<object class="IBUIView" key="IBUIView" id="873469855">
 								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">274</int>
 								<array class="NSMutableArray" key="NSSubviews">
-									<object class="IBUITableView" id="759389282">
-										<reference key="NSNextResponder" ref="514397032"/>
+									<object class="IBUITableView" id="896230631">
+										<reference key="NSNextResponder" ref="873469855"/>
 										<int key="NSvFlags">274</int>
 										<string key="NSFrameSize">{320, 367}</string>
-										<reference key="NSSuperview" ref="514397032"/>
+										<reference key="NSSuperview" ref="873469855"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="411007066"/>
 										<string key="NSReuseIdentifierKey">_NS:418</string>
 										<object class="NSColor" key="IBUIBackgroundColor" id="836767668">
 											<int key="NSColorSpace">3</int>
@@ -163,7 +164,7 @@
 								<string key="NSFrame">{{0, 64}, {320, 367}}</string>
 								<reference key="NSSuperview"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="759389282"/>
+								<reference key="NSNextKeyView" ref="896230631"/>
 								<string key="NSReuseIdentifierKey">_NS:196</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
@@ -172,24 +173,24 @@
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
-							<object class="IBUINavigationItem" key="IBUINavigationItem" id="255513719">
+							<object class="IBUINavigationItem" key="IBUINavigationItem" id="602095310">
 								<reference key="IBUINavigationBar"/>
-								<string key="IBUITitle">My Posts</string>
-								<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="146704693">
+								<string key="IBUITitle">Public</string>
+								<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="179222038">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									<int key="IBUIStyle">1</int>
-									<reference key="IBUINavigationItem" ref="255513719"/>
+									<reference key="IBUINavigationItem" ref="602095310"/>
 									<int key="IBUISystemItemIdentifier">13</int>
 								</object>
-								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="426094318">
+								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="332730019">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									<int key="IBUIStyle">1</int>
-									<reference key="IBUINavigationItem" ref="255513719"/>
-									<int key="IBUISystemItemIdentifier">7</int>
+									<reference key="IBUINavigationItem" ref="602095310"/>
+									<int key="IBUISystemItemIdentifier">0</int>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
-							<reference key="IBUIParentViewController" ref="542328882"/>
+							<reference key="IBUIParentViewController" ref="74276133"/>
 							<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 								<int key="IBUIInterfaceOrientation">1</int>
 								<int key="interfaceOrientation">1</int>
@@ -419,7 +420,6 @@
 											<int key="NSvFlags">292</int>
 											<string key="NSFrame">{{20, 304}, {280, 44}}</string>
 											<reference key="NSSuperview" ref="398523615"/>
-											<reference key="NSNextKeyView" ref="411007066"/>
 											<string key="NSReuseIdentifierKey">_NS:273</string>
 											<bool key="IBUIOpaque">NO</bool>
 											<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -537,10 +537,9 @@ AAgACAAIAAEAAQABAAE</bytes>
 							</object>
 						</array>
 					</object>
-					<reference ref="542328882"/>
-					<object class="IBUINavigationController" id="74276133">
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="159110943">
-							<string key="IBUITitle">Public</string>
+					<object class="IBUINavigationController" id="542328882">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="328752079">
+							<string key="IBUITitle">My Posts</string>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							<reference key="IBUITabBar" ref="411007066"/>
 						</object>
@@ -552,7 +551,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<bool key="IBUIHorizontal">NO</bool>
-						<object class="IBUINavigationBar" key="IBUINavigationBar" id="273450643">
+						<object class="IBUINavigationBar" key="IBUINavigationBar" id="861524201">
 							<nil key="NSNextResponder"/>
 							<int key="NSvFlags">256</int>
 							<string key="NSFrameSize">{0, 0}</string>
@@ -564,16 +563,16 @@ AAgACAAIAAEAAQABAAE</bytes>
 							<int key="IBUIBarStyle">1</int>
 						</object>
 						<array class="NSMutableArray" key="IBUIViewControllers">
-							<object class="IBUIViewController" id="238821942">
-								<object class="IBUIView" key="IBUIView" id="873469855">
+							<object class="IBUIViewController" id="585591432">
+								<object class="IBUIView" key="IBUIView" id="514397032">
 									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">274</int>
 									<array class="NSMutableArray" key="NSSubviews">
-										<object class="IBUITableView" id="896230631">
-											<reference key="NSNextResponder" ref="873469855"/>
+										<object class="IBUITableView" id="759389282">
+											<reference key="NSNextResponder" ref="514397032"/>
 											<int key="NSvFlags">274</int>
 											<string key="NSFrameSize">{320, 367}</string>
-											<reference key="NSSuperview" ref="873469855"/>
+											<reference key="NSSuperview" ref="514397032"/>
 											<string key="NSReuseIdentifierKey">_NS:418</string>
 											<reference key="IBUIBackgroundColor" ref="836767668"/>
 											<bool key="IBUIClipsSubviews">YES</bool>
@@ -588,7 +587,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 										</object>
 									</array>
 									<string key="NSFrame">{{0, 64}, {320, 367}}</string>
-									<reference key="NSNextKeyView" ref="896230631"/>
+									<reference key="NSNextKeyView" ref="759389282"/>
 									<string key="NSReuseIdentifierKey">_NS:196</string>
 									<object class="NSColor" key="IBUIBackgroundColor">
 										<int key="NSColorSpace">3</int>
@@ -597,23 +596,23 @@ AAgACAAIAAEAAQABAAE</bytes>
 									</object>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
-								<object class="IBUINavigationItem" key="IBUINavigationItem" id="602095310">
-									<string key="IBUITitle">My Wall</string>
-									<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="179222038">
+								<object class="IBUINavigationItem" key="IBUINavigationItem" id="255513719">
+									<string key="IBUITitle">My Posts</string>
+									<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="146704693">
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIStyle">1</int>
-										<reference key="IBUINavigationItem" ref="602095310"/>
+										<reference key="IBUINavigationItem" ref="255513719"/>
 										<int key="IBUISystemItemIdentifier">13</int>
 									</object>
-									<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="332730019">
+									<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="426094318">
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIStyle">1</int>
-										<reference key="IBUINavigationItem" ref="602095310"/>
-										<int key="IBUISystemItemIdentifier">0</int>
+										<reference key="IBUINavigationItem" ref="255513719"/>
+										<int key="IBUISystemItemIdentifier">7</int>
 									</object>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
-								<reference key="IBUIParentViewController" ref="74276133"/>
+								<reference key="IBUIParentViewController" ref="542328882"/>
 								<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 									<int key="IBUIInterfaceOrientation">1</int>
 									<int key="interfaceOrientation">1</int>
@@ -623,6 +622,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 							</object>
 						</array>
 					</object>
+					<reference ref="74276133"/>
 				</array>
 				<object class="IBUITabBar" key="IBUITabBar" id="411007066">
 					<reference key="NSNextResponder"/>
@@ -639,7 +639,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<reference ref="328752079"/>
 						<reference ref="159110943"/>
 					</array>
-					<reference key="IBUISelectedItem" ref="328752079"/>
+					<reference key="IBUISelectedItem" ref="159110943"/>
 				</object>
 			</object>
 		</array>
@@ -743,6 +743,30 @@ AAgACAAIAAEAAQABAAE</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">nav_public</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="74276133"/>
+					</object>
+					<int key="connectionID">87</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">controller_public</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="238821942"/>
+					</object>
+					<int key="connectionID">88</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">table_public</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="896230631"/>
+					</object>
+					<int key="connectionID">89</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="535193150"/>
 						<reference key="destination" ref="841351856"/>
@@ -813,6 +837,14 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">86</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">load_public</string>
+						<reference key="source" ref="179222038"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">90</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -1139,7 +1171,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">86</int>
+			<int key="maxID">90</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1159,6 +1191,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="controller_profile">UIViewController</string>
+						<string key="controller_public">UIViewController</string>
 						<string key="controller_wall">UIViewController</string>
 						<string key="delegate">id</string>
 						<string key="field_profile_mail">UITextField</string>
@@ -1166,14 +1199,20 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<string key="field_profile_pin1">UITextField</string>
 						<string key="field_profile_pin2">UITextField</string>
 						<string key="nav_profile">UINavigationController</string>
+						<string key="nav_public">UINavigationController</string>
 						<string key="nav_wall">UINavigationController</string>
 						<string key="segment_profile_type">UISegmentedControl</string>
 						<string key="tab">UITabBarController</string>
+						<string key="table_public">UITableView</string>
 						<string key="table_wall">UITableView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="controller_profile">
 							<string key="name">controller_profile</string>
+							<string key="candidateClassName">UIViewController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="controller_public">
+							<string key="name">controller_public</string>
 							<string key="candidateClassName">UIViewController</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="controller_wall">
@@ -1204,6 +1243,10 @@ AAgACAAIAAEAAQABAAE</bytes>
 							<string key="name">nav_profile</string>
 							<string key="candidateClassName">UINavigationController</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="nav_public">
+							<string key="name">nav_public</string>
+							<string key="candidateClassName">UINavigationController</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="nav_wall">
 							<string key="name">nav_wall</string>
 							<string key="candidateClassName">UINavigationController</string>
@@ -1215,6 +1258,10 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<object class="IBToOneOutletInfo" key="tab">
 							<string key="name">tab</string>
 							<string key="candidateClassName">UITabBarController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="table_public">
+							<string key="name">table_public</string>
+							<string key="candidateClassName">UITableView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="table_wall">
 							<string key="name">table_wall</string>
