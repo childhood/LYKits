@@ -808,6 +808,8 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 		[data key:@"label1" v:label1];
 		[data key:@"label2" v:label2];
 
+		[data key:@"state" v:@""];
+		[data key:@"mode" v:@"text"];
 		[data key:@"index" v:[NSNumber numberWithInt:0]];
 		[self set_sequence_numbers];
 		[self reload];
@@ -829,25 +831,74 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 		[array addObject:[NSString stringWithFormat:@"%c", c]];
 }
 
+- (void)set_sequence_lowercase
+{
+	NSMutableArray* array = [data v:@"sequence"];
+	[array removeAllObjects];
+	for (char c = 'a'; c <= 'z'; c++)
+		[array addObject:[NSString stringWithFormat:@"%c", c]];
+}
+
+- (void)set_sequence_uppercase
+{
+	NSMutableArray* array = [data v:@"sequence"];
+	[array removeAllObjects];
+	for (char c = 'A'; c <= 'Z'; c++)
+		[array addObject:[NSString stringWithFormat:@"%c", c]];
+}
+
 - (void)reload
 {
-	[self reload:[data v:@"index"]];
+	//[self reload:[data v:@"index"]];
+	NSArray* sequence = [data v:@"sequence"];
+	int index = [[data v:@"index"] intValue];
+
+	if ([[data v:@"mode"] is:@"text"])
+	{
+		UILabel* label1 = [data v:@"label1"];
+		label1.text = [sequence i:index];
+		self.image = [label1 snapshot];
+	}
+	else if ([[data v:@"mode"] is:@"image"])
+	{
+		self.image = [UIImage imageNamed:[sequence i:index]];
+	}
 }
 
 - (void)reload:(NSNumber*)number
 {
 	NSArray* sequence = [data v:@"sequence"];
 	int index = [number intValue];
-	UILabel* label1 = [data v:@"label1"];
-	label1.text = [sequence i:index];
-	self.image = [label1 snapshot];
+
+	if ([[data v:@"mode"] is:@"text"])
+	{
+		[self.image release];
+		self.image = nil;
+		UILabel* label1 = [data v:@"label1"];
+		label1.text = [sequence i:index];
+		self.image = [label1 snapshot];
+	}
+	else if ([[data v:@"mode"] is:@"image"])
+	{
+		self.image = [UIImage imageNamed:[sequence i:index]];
+	}
 
 	index++;
 	if (index >= sequence.count)
 		index = 0;
-	UILabel* label2 = [data v:@"label2"];
-	label2.text = [sequence i:index];
-	self.highlightedImage = [label2 snapshot];
+
+	if ([[data v:@"mode"] is:@"text"])
+	{
+		[self.highlightedImage release];
+		self.highlightedImage = nil;
+		UILabel* label2 = [data v:@"label2"];
+		label2.text = [sequence i:index];
+		self.highlightedImage = [label2 snapshot];
+	}
+	else if ([[data v:@"mode"] is:@"image"])
+	{
+		self.highlightedImage = [UIImage imageNamed:[sequence i:index]];
+	}
 
 	[self clock_flip];
 }
@@ -859,19 +910,32 @@ static LYMiniApps *ly_mini_apps_shared_controller = nil;
 	return [sequence i:index];
 }
 
-- (void)flip_to:(NSString*)s
+- (BOOL)flip_to:(NSString*)s
 {
 	int index = [[data v:@"index"] intValue];
 	int i = 0;
+	CGFloat f = [[ly.data v:@"animation-clock-flip-duration"] floatValue];
+	if ([[data v:@"state"] is:@"locked"])
+		return NO;
+	[data key:@"state" v:@"locked"];
 	while ([[[data v:@"sequence"] i:index] is:s] == NO)
 	{
-		[self performSelector:@selector(reload:) withObject:[NSNumber numberWithInt:index] afterDelay:(1.15 + 0.05) * i];
+		//	NSLog(@"current: %@\t%@", [[data v:@"sequence"] i:index], s);
+		[self performSelector:@selector(reload:) withObject:[NSNumber numberWithInt:index] afterDelay:(f + 0.05) * i];
 		i++;
 		index++;
 		if (index >= [[data v:@"sequence"] count])
 			index = 0;
 	}
 	[data key:@"index" v:[NSNumber numberWithInt:index]];
+	[self performSelector:@selector(set_state:) withObject:@"" afterDelay:(f + 0.05) * (i - 1) + f];
+	return YES;
+}
+
+- (void)set_state:(NSString*)s
+{
+	//	NSLog(@"set state: %@", s);
+	[data key:@"state" v:s];
 }
 
 @end
