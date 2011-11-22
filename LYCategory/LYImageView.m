@@ -1,7 +1,5 @@
 #import "LYImageView.h"
 
-#define k_ly_tmp_image_flip_time	1.15
-
 @implementation UIImageView (LYImageView)
 
 - (id)initWithImageNamed:(NSString*)filename
@@ -84,9 +82,26 @@
 
 - (void)clock_flip
 {
+	CGFloat f = [[ly.data v:@"animation-clock-flip-duration"] floatValue];
+	//	NSLog(@"animation %f", f);
+
 	if ([self associated:@"ly-clock-flip-lock"] != nil)
 		return;
 	[self associate:@"ly-clock-flip-lock" with:@"locked"];
+
+#if 1
+	UIImage* image1;
+	UIImage* image2;
+	image1 = [[self.image image_with_size:self.frame.size] retain];
+	image2 = [[self.highlightedImage image_with_size:self.frame.size] retain];
+	//[self.image release];
+	//[self.highlightedImage release];
+	//self.image = nil;
+	//self.highlightedImage = nil;
+	self.image = image1;
+	self.highlightedImage = image2;
+#endif
+	//	[UIDevice log_memory_usage];
 
 	UIImage* image_front_top;
 	//UIImage* image_front_bottom;
@@ -132,26 +147,26 @@
 
 #if 1
 	CATransform3D transform = CATransform3DIdentity;
-	float zDistance = 1000;
-	transform.m34 = 1.0 / -zDistance;	
+	transform.m34 = 0.001;
 	//view_animation.layer.sublayerTransform = transform;
 	view_animation.layer.anchorPoint = CGPointMake(0.5, 1.0);
 	//view_animation.layer.transform = CATransform3DMakeRotation(0.7, 1.0, 0.0, 0.0);
 	CABasicAnimation *topAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
 	topAnim.fromValue = [NSValue valueWithCATransform3D:CATransform3DConcat(CATransform3DMakeRotation(0, 1, 0, 0), transform)];
-	topAnim.duration = k_ly_tmp_image_flip_time / 2;
+	topAnim.duration = f / 2;
 	topAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DConcat(CATransform3DMakeRotation(-M_PI_2, 1, 0, 0), transform)];
 	topAnim.delegate = self;
 	topAnim.removedOnCompletion = NO;
 	topAnim.fillMode = kCAFillModeForwards;
 	[view_animation.layer addAnimation:topAnim forKey:@"topAnim"];
-	[self performSelector:@selector(clock_flip_half) withObject:nil afterDelay:k_ly_tmp_image_flip_time / 2];
-	[self performSelector:@selector(clock_flip_end) withObject:nil afterDelay:k_ly_tmp_image_flip_time];
+	[self performSelector:@selector(clock_flip_half) withObject:nil afterDelay:f / 2];
+	[self performSelector:@selector(clock_flip_end) withObject:nil afterDelay:f];
 #endif
 }
 
 - (void)clock_flip_half
 {
+	CGFloat f = [[ly.data v:@"animation-clock-flip-duration"] floatValue];
 	UIImageView* view_animation1 = [self associated:@"ly-clock-flip-animation"];
 	[view_animation1 removeFromSuperview];
 	[view_animation1.image release];
@@ -168,7 +183,7 @@
 	//view_animation.layer.transform = CATransform3DMakeRotation(0.7, 1.0, 0.0, 0.0);
 	CABasicAnimation *topAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
 	topAnim.fromValue = [NSValue valueWithCATransform3D:CATransform3DConcat(CATransform3DMakeRotation(-M_PI_2, 1, 0, 0), transform)];
-	topAnim.duration = k_ly_tmp_image_flip_time / 2;
+	topAnim.duration = f / 2;
 	topAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DConcat(CATransform3DMakeRotation(-M_PI_2 * 2, 1, 0, 0), transform)];
 	topAnim.delegate = self;
 	topAnim.removedOnCompletion = NO;

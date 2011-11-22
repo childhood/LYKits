@@ -153,7 +153,9 @@ UIView* ly_alloc_view_loading(void);
 @property (nonatomic, retain) NSMutableDictionary*	data;
 
 - (void)set_sequence_numbers;
-- (void)flip_to:(NSString*)s;
+- (void)set_sequence_uppercase;
+- (void)set_sequence_lowercase;
+- (BOOL)flip_to:(NSString*)s;
 - (void)reload;
 - (void)reload:(NSNumber*)number;
 
