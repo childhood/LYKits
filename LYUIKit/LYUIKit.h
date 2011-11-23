@@ -15,6 +15,9 @@
 #import "LY3DImageView.h"
 #import "LYListController.h"
 //#import "LYTableController.h"
+#import "LYPickerViewProvider.h"
+#import "LYFlipImageView.h"
+#import "LYSpinImageView.h"
 
 BOOL CGPointInRect(CGPoint point, CGRect rect);
 UIInterfaceOrientation get_interface_orientation();
@@ -63,19 +66,7 @@ UIView* ly_alloc_view_loading(void);
  *
  */
 
-@interface LYPickerViewProvider: NSObject <UIPickerViewDelegate, UIPickerViewDataSource>
-{
-	NSMutableArray*		titles;
-	NSObject*			delegate;
-}
-@property (nonatomic, retain) NSMutableArray*	titles;
-@property (nonatomic, retain) NSObject*			delegate;
-
-- (id)initWithPicker:(UIPickerView*)picker;
-//	- (id)initWithTitles:(NSArray*)titles;
-
-@end
-
+#if 0
 @interface LYMiniApps: LYSingletonClass
 {
 	UINavigationController*	nav;
@@ -87,82 +78,6 @@ UIView* ly_alloc_view_loading(void);
 - (void)show_flashlight:(UIColor*)color;
 - (void)show_image:(NSString*)filename;
 @end
-
-#import <unistd.h>
-
-@interface LYSpinImageView: UIImageView
-{
-	NSMutableArray*	image_names;
-	CGPoint		location_begin;
-	NSInteger	index;
-	NSInteger	setting_pixel_per_frame;		//	move how many pixels to change frame
-	NSDate*		date_last;
-	NSThread*	thread_animation;
-	CGFloat		speed_last;
-
-	CGFloat		factor_sensitivity;
-	NSInteger	factor_sleep;
-	CGFloat		factor_duration;
-	CGFloat		factor_time;
-}
-@property (nonatomic, retain) NSMutableArray*	image_names;
-@property (nonatomic) CGFloat	factor_sensitivity;
-@property (nonatomic) NSInteger	factor_sleep;
-@property (nonatomic) CGFloat	factor_duration;
-@property (nonatomic) CGFloat	factor_time;
-
-- (void)set_name_format:(NSString*)format from:(NSInteger)head to:(NSInteger)tail;
-- (void)refresh;
-- (void)spin:(CGFloat)factor;
-- (void)apply_default_factors;
-
-@end
-
-
-#ifdef LY_ENABLE_SDK_AWS
-@class 	LYServiceAWSSimpleDB;
-
-@interface LYSuarViewController: UIViewController <UITabBarControllerDelegate>
-{
-	LYServiceAWSSimpleDB*	sdb;
-
-	IBOutlet UIViewController*		controller_profile;
-	IBOutlet UISegmentedControl*	segment_profile_type;
-	IBOutlet UITextField*			field_profile_name;
-	IBOutlet UITextField*			field_profile_mail;
-	IBOutlet UITextField*			field_profile_pin1;
-	IBOutlet UITextField*			field_profile_pin2;
-
-	IBOutlet UIViewController*		controller_wall;
-	IBOutlet UITableView*			table_wall;
-	LYTableViewProvider*			provider_wall;
-
-	IBOutlet UIViewController*		controller_public;
-	IBOutlet UITableView*			table_public;
-	LYTableViewProvider*			provider_public;
-}
-@property (nonatomic, retain) IBOutlet id	delegate;
-@property (nonatomic, retain) IBOutlet UITabBarController*		tab;
-@property (nonatomic, retain) IBOutlet UINavigationController*	nav_profile;
-@property (nonatomic, retain) IBOutlet UINavigationController*	nav_wall;
-@property (nonatomic, retain) IBOutlet UINavigationController*	nav_public;
-
-- (IBAction)action_profile_type;
-- (void)load;
-- (void)reload_provider:(LYTableViewProvider**)provider table:(UITableView*)table query:(NSString*)query;
-
-@end
 #endif
 
 
-@interface LYFlipImageView: UIImageView
-@property (nonatomic, retain) NSMutableDictionary*	data;
-
-- (void)set_sequence_numbers;
-- (void)set_sequence_uppercase;
-- (void)set_sequence_lowercase;
-- (BOOL)flip_to:(NSString*)s;
-- (void)reload;
-- (void)reload:(NSNumber*)number;
-
-@end

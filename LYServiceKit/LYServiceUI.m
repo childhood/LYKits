@@ -1,5 +1,329 @@
 #import "LYServiceUI.h"
 
+
+#ifdef LY_ENABLE_SDK_AWS
+@implementation LYSuarViewController
+
+@synthesize delegate;
+@synthesize tab;
+@synthesize nav_profile;
+@synthesize nav_wall;
+@synthesize nav_public;
+
+- (id)init
+{
+	self = [super init];
+	if (self)
+	{
+		[self loadView];
+		sdb	= [[LYServiceAWSSimpleDB alloc] init];
+		provider_wall = nil;
+		provider_public = nil;
+	}
+	return self;
+}
+
+- (void)dealloc
+{
+	[sdb release];
+	[super dealloc];
+}
+
+- (IBAction)load_wall
+{
+	NSString* query = [NSString stringWithFormat:
+		@"select * from `posts` where `author-mail` = '%@' and `date-create` > '20110101-00:00:00' order by `date-create` desc",
+		[@"ly-suar-profile-mail" setting_string]];
+	[self reload_provider:&provider_wall table:table_wall query:query];
+}
+
+- (IBAction)load_public
+{
+	NSString* query = @"select * from `posts` where `date-create` > '20110101-00:00:00' order by `date-create` desc";
+	[self reload_provider:&provider_public table:table_public query:query];
+}
+
+- (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query
+{
+	LYTableViewProvider* provider = *a_provider;
+	if (provider == nil)
+	{
+		provider = [[LYTableViewProvider alloc] initWithTableView:table];
+		provider.texts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		provider.details = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		provider.image_urls = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		provider.delegate = self;
+		provider.cell_height = 64;
+
+		UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 38, 20, 20)];
+		activity.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+		[activity startAnimating];
+		[provider.data key:@"refresh-view" v:activity];
+		//[provider apply_theme_color:[UIColor blackColor] on:[UIColor whiteColor]];
+	}
+
+	[provider.data key:@"state" v:@"refresh"];
+	[table reloadData];
+	[sdb select:query block:^(id obj, NSError* error)
+	{
+		NSArray* array = (NSArray*)obj;
+		//	NSLog(@"query error: %@", error);
+		//	NSLog(@"query result: %@", array);
+		[provider.data key:@"state" v:@""];
+		[[provider.texts i:0] removeAllObjects];
+		for (NSDictionary* dict_item in array)
+		{
+			NSDictionary* dict = [dict_item v:@"attr-dict"];
+			NSString* s;
+
+			s = [dict v:@"text-title"];
+			if ([s is:@""])
+			{
+				s = [dict v:@"author-app"];
+				if ([s is:@"org.superarts.PhotoShare"])
+					s = @"Via Photo Share";
+				else if ([s is:@"org.superarts.PhotoShare"])
+					s = @"Via Photo Share";
+				else
+					s = @"Untitled";
+			}
+			[[provider.texts i:0] addObject:s];
+
+			s = [dict v:@"text-body"];
+			if ([s is:@""])
+			{
+				s = [dict v:@"date-create"];
+				s = [s local_medium_date_from:@"yyyyMMdd-HH:mm:ss"];
+				if ((s == nil) || ([s is:@""]))
+					s = @"No description.";
+			}
+			[[provider.details i:0] addObject:s];
+
+			s = [dict v:@"photo-main"];
+			if ([s is:@""])
+				s = @"";
+			else
+			{
+				if (![[s substringToIndex:4] is:@"raw/"])
+					s = [@"raw/" stringByAppendingString:s];
+				s = [@"http://s3.amazonaws.com/us-general/" stringByAppendingString:s];
+			}
+			[[provider.image_urls i:0] addObject:s];
+		}
+		[table reloadData];
+		*a_provider = provider;
+		//	NSLog(@"titles %@", provider.texts);
+	}];
+}
+
+- (void)load
+{
+	[[provider_wall.texts i:0] addObject:@"No Post"];
+	[table_wall reloadData];
+	[[provider_public.texts i:0] addObject:@"No Post"];
+	[table_public reloadData];
+
+	if ([@"ly-suar-profile-pin" setting_string] == nil)
+	{
+		segment_profile_type.selectedSegmentIndex = 1;
+		[self action_profile_type];
+		[field_profile_name becomeFirstResponder];
+	}
+	else
+	{
+		field_profile_name.text = [@"ly-suar-profile-name" setting_string];
+		field_profile_mail.text = [@"ly-suar-profile-mail" setting_string];
+		field_profile_pin1.text = [@"ly-suar-profile-pin" setting_string];
+		field_profile_pin2.text = [@"ly-suar-profile-pin" setting_string];
+	}
+}
+
+#pragma mark action
+
+- (IBAction)action_delegate_dismiss
+{
+	[delegate perform_string:@"suar_dismiss"];
+}
+
+- (IBAction)action_profile_type
+{
+	switch (segment_profile_type.selectedSegmentIndex)
+	{
+		case 0:
+			field_profile_name.hidden = YES;
+			field_profile_pin2.hidden = YES;
+			break;
+		case 1:
+			field_profile_name.hidden = NO;
+			field_profile_pin2.hidden = NO;
+			break;
+	}
+}
+
+- (IBAction)action_profile_done
+{
+	if (segment_profile_type.selectedSegmentIndex == 0)
+	{
+		//	login
+		[LYLoading enable_label:@"Logging in..."];
+		[[LYLoading shared] setNav:nil];
+		[LYLoading show];
+		NSString* query = [NSString stringWithFormat:@"select * from `users` where itemName() = '%@'",
+			field_profile_mail.text];
+		//	NSLog(@"query: %@", query);
+		[sdb select:query block:^(id obj, NSError* error)
+		{
+			NSArray* array = (NSArray*)obj;
+			//	NSLog(@"login: %@", array);
+			[LYLoading performSelector:@selector(hide) withObject:nil afterDelay:0.5];
+			if (error != nil)
+			{
+				[@"Login Failed" show_alert_message:error.localizedDescription];
+				return;
+			}
+			if (array.count == 0)
+			{
+				[@"Login Failed" show_alert_message:@"Username not found. Please try again or choose \"Register\" to create a new profile."];
+				return;
+			}
+			if (![[[[array i:0] v:@"attr-dict"] v:@"pin"] is:field_profile_pin1.text])
+				[@"Login Failed" show_alert_message:@"Your username/password combination is not correct. Please try again or choose \"Register\" to create a new profile."];
+			else
+			{
+				[@"ly-suar-profile-name" setting_string:[[[array i:0] v:@"attr-dict"] v:@"name-display"]];
+				[@"ly-suar-profile-mail" setting_string:field_profile_mail.text];
+				[@"ly-suar-profile-pin" setting_string:field_profile_pin1.text];
+				field_profile_name.text = [@"ly-suar-profile-name" setting_string];
+				field_profile_pin2.text = [@"ly-suar-profile-pin" setting_string];
+				//[nav dismissModalViewControllerAnimated:YES];
+				[self action_delegate_dismiss];
+			}
+		}];
+	}
+	else
+	{
+		//	register
+		if (field_profile_name.text.length < 3)
+		{
+			[@"Name Too Short" show_alert_message:@"The name you entered is too short. Please choose a valid name."];
+			[field_profile_name becomeFirstResponder];
+			return;
+		}
+		if ([field_profile_mail.text is_email] == NO)
+		{
+			[@"Invalid E-mail Address" show_alert_message:@"Please enter a valid e-mail address."];
+			[field_profile_mail becomeFirstResponder];
+			return;
+		}
+		if ([field_profile_pin1.text is:field_profile_pin2.text] == NO)
+		{
+			[@"Passwords Mismatch" show_alert_message:@"Please make sure the two passwords you've entered are identical."];
+			[field_profile_pin1 becomeFirstResponder];
+			return;
+		}
+		if (field_profile_pin1.text.length < 5)
+		{
+			[@"Password Too Short" show_alert_message:@"The password must have at least 5 characters. Please try again."];
+			[field_profile_pin1 becomeFirstResponder];
+			return;
+		}
+		[LYLoading enable_label:@"Checking username..."];
+		[[LYLoading shared] setNav:nil];
+		[LYLoading show];
+		
+		NSString* query = [NSString stringWithFormat:@"select * from `users` where itemName() = '%@' and pin is not null",
+			field_profile_mail.text];
+		//	NSLog(@"query: %@", query);
+		[sdb select:query block:^(id obj, NSError* error)
+		{
+			NSArray* array = (NSArray*)obj;
+			if (array.count > 0)
+			{
+				[@"Email already registered" show_alert_message:@"This email address has already been registered. Please choose another email as username and try again."];
+				[LYLoading performSelector:@selector(hide) withObject:nil afterDelay:0.5];
+			}
+			else
+			{
+				[sdb put:@"users" name:field_profile_mail.text];
+				[sdb key:@"name-display" unique:field_profile_name.text];
+				[sdb key:@"pin" unique:field_profile_pin1.text];
+				[sdb key:@"app" value:@"org.superarts.SPS"];
+				[sdb put_block:^(id obj, NSError* error)
+				{
+					NSLog(@"register: %@, %@", obj, error);
+					if (error == nil)
+					{
+						[@"ly-suar-profile-name" setting_string:field_profile_name.text];
+						[@"ly-suar-profile-mail" setting_string:field_profile_mail.text];
+						[@"ly-suar-profile-pin" setting_string:field_profile_pin1.text];
+						//[nav dismissModalViewControllerAnimated:YES];
+						[self action_delegate_dismiss];
+					}
+					else
+					{
+						[@"Registration Failed" show_alert_message:[NSString stringWithFormat:@"Error: %@", error.localizedDescription]];
+					}
+					NSLog(@"xxx");
+					[LYLoading performSelector:@selector(hide) withObject:nil afterDelay:0.5];
+				}];
+			}
+		}];
+	}
+}
+
+#pragma mark delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)field
+{
+	if (field == field_profile_name)
+		[field_profile_mail becomeFirstResponder];
+	else if (field == field_profile_mail)
+		[field_profile_pin1 becomeFirstResponder];
+	else if (field == field_profile_pin1)
+	{
+		if (segment_profile_type.selectedSegmentIndex == 0)
+			[field_profile_pin1 resignFirstResponder];
+		else
+			[field_profile_pin2 becomeFirstResponder];
+	}
+	else if (field == field_profile_pin2)
+		[field_profile_pin2 resignFirstResponder];
+
+	return YES;
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)controller
+{
+	//	NSLog(@"should select index: %i", tab.selectedIndex);
+	if (controller == nav_wall)
+		if ([@"ly-suar-profile-pin" setting_string] == nil)
+			return NO;
+	if (controller == nav_public)
+		if ([@"ly-suar-profile-pin" setting_string] == nil)
+			return NO;
+	return YES;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+	//	NSLog(@"index: %i", tab.selectedIndex);
+	if (tab.selectedIndex == 1)
+	{
+		if (provider_wall == nil)
+			[self load_wall];
+	}
+	else if (tab.selectedIndex == 2)
+	{
+		if (provider_public == nil)
+			[self load_public];
+	}
+}
+
+@end
+#endif
+
+
+#if 0
 @implementation LYServiceUI
 
 @synthesize label_login_note;
@@ -243,3 +567,4 @@
 }
 
 @end
+#endif
