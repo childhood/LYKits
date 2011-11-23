@@ -1,12 +1,13 @@
 #import "LYServiceKit.h"
 
-
 #ifdef LY_ENABLE_SDK_AWS
-@class 	LYServiceAWSSimpleDB;
+@class LYServiceAWSSimpleDB;
+@class LYTableViewProvider;
 
 @interface LYSuarViewController: UIViewController <UITabBarControllerDelegate>
 {
-	LYServiceAWSSimpleDB*	sdb;
+	LYServiceAWSSimpleDB*	sdb_wall;
+	LYServiceAWSSimpleDB*	sdb_public;
 
 	IBOutlet UIViewController*		controller_profile;
 	IBOutlet UISegmentedControl*	segment_profile_type;
@@ -31,7 +32,7 @@
 
 - (IBAction)action_profile_type;
 - (void)load;
-- (void)reload_provider:(LYTableViewProvider**)provider table:(UITableView*)table query:(NSString*)query;
+- (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query sdb:(LYServiceAWSSimpleDB*)sdb;
 
 @end
 #endif

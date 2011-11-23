@@ -1,6 +1,5 @@
 #import "LYServiceUI.h"
 
-
 #ifdef LY_ENABLE_SDK_AWS
 @implementation LYSuarViewController
 
@@ -16,7 +15,8 @@
 	if (self)
 	{
 		[self loadView];
-		sdb	= [[LYServiceAWSSimpleDB alloc] init];
+		sdb_wall	= [[LYServiceAWSSimpleDB alloc] init];
+		sdb_public	= [[LYServiceAWSSimpleDB alloc] init];
 		provider_wall = nil;
 		provider_public = nil;
 	}
@@ -25,7 +25,8 @@
 
 - (void)dealloc
 {
-	[sdb release];
+	[sdb_wall release];
+	[sdb_public release];
 	[super dealloc];
 }
 
@@ -34,16 +35,16 @@
 	NSString* query = [NSString stringWithFormat:
 		@"select * from `posts` where `author-mail` = '%@' and `date-create` > '20110101-00:00:00' order by `date-create` desc",
 		[@"ly-suar-profile-mail" setting_string]];
-	[self reload_provider:&provider_wall table:table_wall query:query];
+	[self reload_provider:&provider_wall table:table_wall query:query sdb:sdb_wall];
 }
 
 - (IBAction)load_public
 {
 	NSString* query = @"select * from `posts` where `date-create` > '20110101-00:00:00' order by `date-create` desc";
-	[self reload_provider:&provider_public table:table_public query:query];
+	[self reload_provider:&provider_public table:table_public query:query sdb:sdb_public];
 }
 
-- (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query
+- (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query sdb:(LYServiceAWSSimpleDB*)sdb
 {
 	LYTableViewProvider* provider = *a_provider;
 	if (provider == nil)
@@ -171,7 +172,7 @@
 		NSString* query = [NSString stringWithFormat:@"select * from `users` where itemName() = '%@'",
 			field_profile_mail.text];
 		//	NSLog(@"query: %@", query);
-		[sdb select:query block:^(id obj, NSError* error)
+		[sdb_wall select:query block:^(id obj, NSError* error)
 		{
 			NSArray* array = (NSArray*)obj;
 			//	NSLog(@"login: %@", array);
@@ -234,7 +235,7 @@
 		NSString* query = [NSString stringWithFormat:@"select * from `users` where itemName() = '%@' and pin is not null",
 			field_profile_mail.text];
 		//	NSLog(@"query: %@", query);
-		[sdb select:query block:^(id obj, NSError* error)
+		[sdb_wall select:query block:^(id obj, NSError* error)
 		{
 			NSArray* array = (NSArray*)obj;
 			if (array.count > 0)
@@ -244,11 +245,11 @@
 			}
 			else
 			{
-				[sdb put:@"users" name:field_profile_mail.text];
-				[sdb key:@"name-display" unique:field_profile_name.text];
-				[sdb key:@"pin" unique:field_profile_pin1.text];
-				[sdb key:@"app" value:@"org.superarts.SPS"];
-				[sdb put_block:^(id obj, NSError* error)
+				[sdb_wall put:@"users" name:field_profile_mail.text];
+				[sdb_wall key:@"name-display" unique:field_profile_name.text];
+				[sdb_wall key:@"pin" unique:field_profile_pin1.text];
+				[sdb_wall key:@"app" value:@"org.superarts.SPS"];
+				[sdb_wall put_block:^(id obj, NSError* error)
 				{
 					NSLog(@"register: %@, %@", obj, error);
 					if (error == nil)
@@ -391,7 +392,7 @@
 	//	[nav dismissModalViewControllerAnimated:YES];
 	//	NSLog(@"current dict: %@", current_dict);
 	//	return;
-	[[data v:@"db"] sdb:@"post" insert_unique:dict block:^(NSString* str, NSError* error)
+	[[data v:@"db"] sdb_wall:@"post" insert_unique:dict block:^(NSString* str, NSError* error)
 	{
 		NSLog(@"SUI post insert: %@ - %@", error, str);
 #if 0
@@ -444,7 +445,7 @@
 	{
 		//	login
 		[LYLoading show_label:@"Logging in..."];
-		[[data v:@"db"] sdb:@"user" verify:[NSDictionary dictionaryWithObjectsAndKeys:
+		[[data v:@"db"] sdb_wall:@"user" verify:[NSDictionary dictionaryWithObjectsAndKeys:
 			field_login_mail.text,
 			@"email",
 			field_login_pin1.text,
@@ -523,7 +524,7 @@
 					[[data v:@"nav"] dismissModalViewControllerAnimated:YES];
 
 					//[[data v:@"db"] name:@"db100_model" key:[array objectAtIndex:0] block:^(NSArray* array, NSError* error)
-					[[data v:@"db"] sdb:@"user" key:[array objectAtIndex:0] block:^(NSDictionary* dict, NSError* error)
+					[[data v:@"db"] sdb_wall:@"user" key:[array objectAtIndex:0] block:^(NSDictionary* dict, NSError* error)
 					{
 						//	NSLog(@"xxx %@, %@", dict, error);
 						[data key:@"user" v:dict];

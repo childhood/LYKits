@@ -14,7 +14,11 @@
 #import <AWSiOSSDK/AmazonLogger.h>
 #import <AWSiOSSDK/SimpleDB/AmazonSimpleDBClient.h>
 #import <AWSiOSSDK/S3/AmazonS3Client.h>
+#import "LYServiceAWS.h"
 #endif
+
+#import "LYServiceFaceDotCom.h"
+#import "LYServiceLyricWiki.h"
 
 @class LYTextAlertView;
 
