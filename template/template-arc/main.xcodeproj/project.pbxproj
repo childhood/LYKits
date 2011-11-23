@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A750749147C8C9E0078DD7C /* LYFlipImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A750744147C8C9E0078DD7C /* LYFlipImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2A75074A147C8C9E0078DD7C /* LYPickerViewProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A750746147C8C9E0078DD7C /* LYPickerViewProvider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2A75074B147C8C9E0078DD7C /* LYSpinImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A750748147C8C9E0078DD7C /* LYSpinImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2A750754147C8CE50078DD7C /* LYServiceKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A75074F147C8CE50078DD7C /* LYServiceKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2A750755147C8CE50078DD7C /* LYServiceUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A750751147C8CE50078DD7C /* LYServiceUI.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2A750756147C8CE50078DD7C /* LYServiceUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A750752147C8CE50078DD7C /* LYServiceUI.xib */; };
+		2A750757147C8CE50078DD7C /* LYSuarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A750753147C8CE50078DD7C /* LYSuarViewController.xib */; };
+		2A75075E147C8E8D0078DD7C /* LYServiceAWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A750759147C8E8D0078DD7C /* LYServiceAWS.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2A75075F147C8E8D0078DD7C /* LYServiceFaceDotCom.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A75075B147C8E8D0078DD7C /* LYServiceFaceDotCom.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2A750760147C8E8D0078DD7C /* LYServiceLyricWiki.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A75075D147C8E8D0078DD7C /* LYServiceLyricWiki.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2AE7EBF0143ED80800B831E1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AE7EBEF143ED80800B831E1 /* UIKit.framework */; };
 		2AE7EBF2143ED80800B831E1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AE7EBF1143ED80800B831E1 /* Foundation.framework */; };
 		2AE7EBF4143ED80800B831E1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AE7EBF3143ED80800B831E1 /* CoreGraphics.framework */; };
@@ -153,6 +163,24 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A750743147C8C9E0078DD7C /* LYFlipImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYFlipImageView.h; sourceTree = "<group>"; };
+		2A750744147C8C9E0078DD7C /* LYFlipImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYFlipImageView.m; sourceTree = "<group>"; };
+		2A750745147C8C9E0078DD7C /* LYPickerViewProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYPickerViewProvider.h; sourceTree = "<group>"; };
+		2A750746147C8C9E0078DD7C /* LYPickerViewProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYPickerViewProvider.m; sourceTree = "<group>"; };
+		2A750747147C8C9E0078DD7C /* LYSpinImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYSpinImageView.h; sourceTree = "<group>"; };
+		2A750748147C8C9E0078DD7C /* LYSpinImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYSpinImageView.m; sourceTree = "<group>"; };
+		2A75074E147C8CE50078DD7C /* LYServiceKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYServiceKit.h; sourceTree = "<group>"; };
+		2A75074F147C8CE50078DD7C /* LYServiceKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYServiceKit.m; sourceTree = "<group>"; };
+		2A750750147C8CE50078DD7C /* LYServiceUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYServiceUI.h; sourceTree = "<group>"; };
+		2A750751147C8CE50078DD7C /* LYServiceUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYServiceUI.m; sourceTree = "<group>"; };
+		2A750752147C8CE50078DD7C /* LYServiceUI.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LYServiceUI.xib; sourceTree = "<group>"; };
+		2A750753147C8CE50078DD7C /* LYSuarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LYSuarViewController.xib; sourceTree = "<group>"; };
+		2A750758147C8E8D0078DD7C /* LYServiceAWS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYServiceAWS.h; sourceTree = "<group>"; };
+		2A750759147C8E8D0078DD7C /* LYServiceAWS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYServiceAWS.m; sourceTree = "<group>"; };
+		2A75075A147C8E8D0078DD7C /* LYServiceFaceDotCom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYServiceFaceDotCom.h; sourceTree = "<group>"; };
+		2A75075B147C8E8D0078DD7C /* LYServiceFaceDotCom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYServiceFaceDotCom.m; sourceTree = "<group>"; };
+		2A75075C147C8E8D0078DD7C /* LYServiceLyricWiki.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYServiceLyricWiki.h; sourceTree = "<group>"; };
+		2A75075D147C8E8D0078DD7C /* LYServiceLyricWiki.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYServiceLyricWiki.m; sourceTree = "<group>"; };
 		2AE7EBEB143ED80800B831E1 /* main.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = main.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AE7EBEF143ED80800B831E1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2AE7EBF1143ED80800B831E1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -423,6 +451,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A75074D147C8CE50078DD7C /* LYServiceKit */ = {
+			isa = PBXGroup;
+			children = (
+				2A75074E147C8CE50078DD7C /* LYServiceKit.h */,
+				2A75074F147C8CE50078DD7C /* LYServiceKit.m */,
+				2A750750147C8CE50078DD7C /* LYServiceUI.h */,
+				2A750751147C8CE50078DD7C /* LYServiceUI.m */,
+				2A750752147C8CE50078DD7C /* LYServiceUI.xib */,
+				2A750753147C8CE50078DD7C /* LYSuarViewController.xib */,
+				2A750758147C8E8D0078DD7C /* LYServiceAWS.h */,
+				2A750759147C8E8D0078DD7C /* LYServiceAWS.m */,
+				2A75075A147C8E8D0078DD7C /* LYServiceFaceDotCom.h */,
+				2A75075B147C8E8D0078DD7C /* LYServiceFaceDotCom.m */,
+				2A75075C147C8E8D0078DD7C /* LYServiceLyricWiki.h */,
+				2A75075D147C8E8D0078DD7C /* LYServiceLyricWiki.m */,
+			);
+			path = LYServiceKit;
+			sourceTree = "<group>";
+		};
 		2AE7EBE0143ED80800B831E1 = {
 			isa = PBXGroup;
 			children = (
@@ -501,6 +548,7 @@
 				2AE7ECB3143ED86A00B831E1 /* LYFoundation */,
 				2AE7ECC8143ED86A00B831E1 /* LYKits.h */,
 				2AE7ECC9143ED86A00B831E1 /* LYKits.m */,
+				2A75074D147C8CE50078DD7C /* LYServiceKit */,
 				2AE7ECCA143ED86A00B831E1 /* LYMapKit */,
 				2AE7ECCF143ED86A00B831E1 /* LYMusicKit */,
 				2AE7ECDB143ED86A00B831E1 /* LYPublic.h */,
@@ -786,6 +834,12 @@
 				2AE7ED13143ED86A00B831E1 /* LYTableViewProvider.m */,
 				2AE7ED14143ED86A00B831E1 /* LYTextAlertView.h */,
 				2AE7ED15143ED86A00B831E1 /* LYTextAlertView.m */,
+				2A750743147C8C9E0078DD7C /* LYFlipImageView.h */,
+				2A750744147C8C9E0078DD7C /* LYFlipImageView.m */,
+				2A750745147C8C9E0078DD7C /* LYPickerViewProvider.h */,
+				2A750746147C8C9E0078DD7C /* LYPickerViewProvider.m */,
+				2A750747147C8C9E0078DD7C /* LYSpinImageView.h */,
+				2A750748147C8C9E0078DD7C /* LYSpinImageView.m */,
 				2AE7ED16143ED86A00B831E1 /* LYUIKit.h */,
 				2AE7ED17143ED86A00B831E1 /* LYUIKit.m */,
 				2AE7ED18143ED86A00B831E1 /* style */,
@@ -935,6 +989,8 @@
 				2AE7EDAE143ED86A00B831E1 /* ly_theme_table_metal01_nav.png in Resources */,
 				2AE7EDAF143ED86A00B831E1 /* ly_theme_table_metal01_nav0.png in Resources */,
 				2AE7EDB4143EDA8400B831E1 /* Application.xib in Resources */,
+				2A750756147C8CE50078DD7C /* LYServiceUI.xib in Resources */,
+				2A750757147C8CE50078DD7C /* LYSuarViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1032,6 +1088,14 @@
 				2AE7EDA5143ED86A00B831E1 /* LYTableViewProvider.m in Sources */,
 				2AE7EDA6143ED86A00B831E1 /* LYTextAlertView.m in Sources */,
 				2AE7EDA7143ED86A00B831E1 /* LYUIKit.m in Sources */,
+				2A750749147C8C9E0078DD7C /* LYFlipImageView.m in Sources */,
+				2A75074A147C8C9E0078DD7C /* LYPickerViewProvider.m in Sources */,
+				2A75074B147C8C9E0078DD7C /* LYSpinImageView.m in Sources */,
+				2A750754147C8CE50078DD7C /* LYServiceKit.m in Sources */,
+				2A750755147C8CE50078DD7C /* LYServiceUI.m in Sources */,
+				2A75075E147C8E8D0078DD7C /* LYServiceAWS.m in Sources */,
+				2A75075F147C8E8D0078DD7C /* LYServiceFaceDotCom.m in Sources */,
+				2A750760147C8E8D0078DD7C /* LYServiceLyricWiki.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1098,7 +1162,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jane Aks (E8KVLPSTY6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "main/main-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1106,7 +1170,7 @@
 				INFOPLIST_FILE = "main/main-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F48C7E7E-26CD-431E-BE79-711A7BE2CEDC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1115,7 +1179,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jane Aks (E8KVLPSTY6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "main/main-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1123,7 +1187,7 @@
 				INFOPLIST_FILE = "main/main-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F48C7E7E-26CD-431E-BE79-711A7BE2CEDC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
