@@ -82,7 +82,7 @@
 
 - (void)clock_flip
 {
-	CGFloat f = [[ly.data v:@"animation-clock-flip-duration"] floatValue];
+	CGFloat f = [[[ly data] v:@"animation-clock-flip-duration"] floatValue];
 	//	NSLog(@"animation %f", f);
 
 	if ([self associated:@"ly-clock-flip-lock"] != nil)
@@ -166,7 +166,7 @@
 
 - (void)clock_flip_half
 {
-	CGFloat f = [[ly.data v:@"animation-clock-flip-duration"] floatValue];
+	CGFloat f = [[[ly data] v:@"animation-clock-flip-duration"] floatValue];
 	UIImageView* view_animation1 = [self associated:@"ly-clock-flip-animation"];
 	[view_animation1 removeFromSuperview];
 	[view_animation1.image release];

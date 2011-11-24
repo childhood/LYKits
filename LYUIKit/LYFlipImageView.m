@@ -132,7 +132,7 @@
 {
 	int index = [[data v:@"index"] intValue];
 	int i = 0;
-	CGFloat f = [[ly.data v:@"animation-clock-flip-duration"] floatValue];
+	CGFloat f = [[[ly data] v:@"animation-clock-flip-duration"] floatValue];
 	if ([[data v:@"state"] is:@"locked"])
 		return NO;
 	[data key:@"state" v:@"locked"];
