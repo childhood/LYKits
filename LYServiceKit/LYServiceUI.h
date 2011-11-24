@@ -1,8 +1,10 @@
 #import "LYServiceKit.h"
+//	#import "LYUIKit.h"
 
 #ifdef LY_ENABLE_SDK_AWS
 @class LYServiceAWSSimpleDB;
 @class LYTableViewProvider;
+@class LYAsyncImageView;
 
 @interface LYSuarViewController: UIViewController <UITabBarControllerDelegate>
 {
@@ -19,10 +21,17 @@
 	IBOutlet UIViewController*		controller_wall;
 	IBOutlet UITableView*			table_wall;
 	LYTableViewProvider*			provider_wall;
+	NSMutableArray*					array_wall;
 
 	IBOutlet UIViewController*		controller_public;
 	IBOutlet UITableView*			table_public;
 	LYTableViewProvider*			provider_public;
+	NSMutableArray*					array_public;
+
+	IBOutlet UIViewController*		controller_detail;
+	IBOutlet UILabel*				label_detail_title;
+	IBOutlet UITextView*			text_detail_body;
+	IBOutlet LYAsyncImageView*		image_detail_photo;
 }
 @property (nonatomic, retain) IBOutlet id	delegate;
 @property (nonatomic, retain) IBOutlet UITabBarController*		tab;
@@ -32,7 +41,7 @@
 
 - (IBAction)action_profile_type;
 - (void)load;
-- (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query sdb:(LYServiceAWSSimpleDB*)sdb;
+- (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query sdb:(LYServiceAWSSimpleDB*)sd data:(NSMutableArray*)array_data;
 
 @end
 #endif

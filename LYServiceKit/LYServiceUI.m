@@ -19,6 +19,8 @@
 		sdb_public	= [[LYServiceAWSSimpleDB alloc] init];
 		provider_wall = nil;
 		provider_public = nil;
+		array_wall = [[NSMutableArray alloc] init];
+		array_public = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -35,16 +37,16 @@
 	NSString* query = [NSString stringWithFormat:
 		@"select * from `posts` where `author-mail` = '%@' and `date-create` > '20110101-00:00:00' order by `date-create` desc",
 		[@"ly-suar-profile-mail" setting_string]];
-	[self reload_provider:&provider_wall table:table_wall query:query sdb:sdb_wall];
+	[self reload_provider:&provider_wall table:table_wall query:query sdb:sdb_wall data:array_wall];
 }
 
 - (IBAction)load_public
 {
 	NSString* query = @"select * from `posts` where `date-create` > '20110101-00:00:00' order by `date-create` desc";
-	[self reload_provider:&provider_public table:table_public query:query sdb:sdb_public];
+	[self reload_provider:&provider_public table:table_public query:query sdb:sdb_public data:array_public];
 }
 
-- (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query sdb:(LYServiceAWSSimpleDB*)sdb
+- (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query sdb:(LYServiceAWSSimpleDB*)sdb data:(NSMutableArray*)array_data
 {
 	LYTableViewProvider* provider = *a_provider;
 	if (provider == nil)
@@ -68,6 +70,7 @@
 	[sdb select:query block:^(id obj, NSError* error)
 	{
 		NSArray* array = (NSArray*)obj;
+		[array_data setArray:array];
 		//	NSLog(@"query error: %@", error);
 		//	NSLog(@"query result: %@", array);
 		[provider.data key:@"state" v:@""];
@@ -264,7 +267,6 @@
 					{
 						[@"Registration Failed" show_alert_message:[NSString stringWithFormat:@"Error: %@", error.localizedDescription]];
 					}
-					NSLog(@"xxx");
 					[LYLoading performSelector:@selector(hide) withObject:nil afterDelay:0.5];
 				}];
 			}
@@ -317,6 +319,31 @@
 	{
 		if (provider_public == nil)
 			[self load_public];
+	}
+	[nav_wall popToRootViewControllerAnimated:NO];
+	[nav_public popToRootViewControllerAnimated:NO];
+}
+
+- (void)tableView:(UITableView *)table didSelectRowAtIndexPath:(NSIndexPath *)path
+{
+	if (table == table_wall)
+	{
+		NSDictionary* dict = [[array_wall i:path.row] v:@"attr-dict"];
+		[nav_wall pushViewController:controller_detail animated:YES];
+		controller_detail.title = [dict v:@"text-title"];
+		label_detail_title.text = [dict v:@"text-title"];
+		text_detail_body.text = [dict v:@"text-body"];
+
+		NSString* s = [dict v:@"photo-main"];;
+		if (![[s substringToIndex:4] is:@"raw/"])
+			s = [@"raw/" stringByAppendingString:s];
+		s = [@"http://s3.amazonaws.com/us-general/" stringByAppendingString:s];
+		[image_detail_photo load_url:s];
+		NSLog(@"data %@", dict);
+	}
+	else if (table == table_public)
+	{
+		[nav_public pushViewController:controller_detail animated:YES];
 	}
 }
 
