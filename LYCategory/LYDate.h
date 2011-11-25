@@ -9,6 +9,7 @@
 
 @interface NSDate (LYDate)
 + (NSDate*)date_from_string:(NSString*)string format:(NSString*)format;
++ (NSDate*)date_from_date:(NSDate*)date time:(NSDate*)time;
 + (NSDate*)yesterday;
 + (NSDate*)tomorrow;
 - (NSDate*)yesterday;

@@ -11,6 +11,15 @@
 	return date;
 }
 
++ (NSDate*)date_from_date:(NSDate*)date time:(NSDate*)time
+{
+	long long d = date.timeIntervalSince1970;
+	long long t = time.timeIntervalSince1970;
+	d /= 24 * 60 * 60;
+	t %= 24 * 60 * 60;
+	return [NSDate dateWithTimeIntervalSince1970: d * 24 * 60 * 60 + t];
+}
+
 + (NSDate*)yesterday
 {
 	return [NSDate dateWithTimeIntervalSinceNow:-86400.0];
