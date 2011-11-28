@@ -19,6 +19,7 @@
 		provider_table = nil;
 		data = [[NSMutableDictionary alloc] init];
 		[data key:@"edit-enabled" v:[NSNumber numberWithBool:NO]];
+		[data key:@"sort" v:@"alphabet"];
 	}
 	return self;
 }
@@ -46,6 +47,7 @@
 		provider_table.cell_height = 48;
 		provider_table.delegate = self;
 		[provider_table.texts add_array:@"No Entry", nil];
+		[provider_table.accessories add_array:nil];
 	}
 	//	[table reloadData];
 
@@ -102,6 +104,23 @@
 
 - (void)refresh_named:(NSString*)a_name dict:(NSDictionary*)a_dict default:(NSString*)a_default
 {
+	NSArray* array;
+	if (dict != nil)
+		[dict release];
+	dict = [a_dict retain];
+	array = [a_dict allKeys];
+	if ([[data v:@"sort"] is:@"alphabet"])
+		array = [array sortedArrayUsingSelector:@selector(compare:)];
+	[self refresh_named:a_name array:array default:a_default];
+}
+
+- (void)refresh_named:(NSString*)a_name array:(NSArray*)array
+{
+	[self refresh_named:a_name array:array default:nil];
+}
+
+- (void)refresh_named:(NSString*)a_name array:(NSArray*)array default:(NSString*)a_default
+{
 	if ([self isViewLoaded] == NO)
 		[self viewDidLoad];
 
@@ -110,22 +129,28 @@
 	bar_picker.topItem.title = a_name;
 	name = a_name;
 
-	if (dict != nil)
-		[dict release];
-	dict = [a_dict retain];
-
 	[provider_table.texts removeAllObjects];
-	[provider_table.texts addObject:[NSMutableArray arrayWithArray:[[a_dict allKeys] sortedArrayUsingSelector:@selector(compare:)]]];
+	[provider_table.texts addObject:array];
 	[table reloadData];
+
+	[[provider_table.accessories i:0] removeAllObjects];
+	int i;
+	for (i = 0; i < array.count; i++)
+		[[provider_table.accessories i:0] addObject:@"none"];
+	if (a_default != nil)
+	{
+		i = [array indexOfObject:a_default];
+		[[provider_table.accessories i:0] replaceObjectAtIndex:i withObject:@"checkmark"];
+	}
 
 	//	picker
 	[provider_picker.titles removeAllObjects];
-	[provider_picker.titles addObject:[[a_dict allKeys] sortedArrayUsingSelector:@selector(compare:)]];
+	[provider_picker.titles addObject:array];
 	[picker reloadAllComponents];
 
 	if (a_default != nil)
 	{
-		[picker selectRow:[[provider_picker.titles objectAtIndex:0] indexOfObject:a_default] inComponent:0 animated:NO];
+		[picker selectRow:[array indexOfObject:a_default] inComponent:0 animated:NO];
 	}
 }
 
