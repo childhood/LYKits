@@ -14,12 +14,12 @@
 {
 	IBOutlet UILabel*					label_loading;
 	IBOutlet UIActivityIndicatorView*	activity_indicator;
-	UINavigationController*	nav;
+	//UINavigationController*	nav;
 	NSString*				theme;
 }
 @property (nonatomic, retain) UILabel*					label_loading;
 @property (nonatomic, retain) UIActivityIndicatorView*	activity_indicator;
-@property (nonatomic, retain) UINavigationController*	nav;
+@property (nonatomic, retain) UIViewController*			nav;
 @property (nonatomic, retain) NSString*					theme;
 + (id)shared;
 + (UIView*)view;

@@ -122,6 +122,8 @@
 
 - (void)load
 {
+	tab.modalPresentationStyle = UIModalPresentationFormSheet;
+	tab.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[[provider_wall.texts i:0] addObject:@"No Post"];
 	[table_wall reloadData];
 	[[provider_public.texts i:0] addObject:@"No Post"];
@@ -170,7 +172,7 @@
 	{
 		//	login
 		[LYLoading enable_label:@"Logging in..."];
-		[[LYLoading shared] setNav:nil];
+		[[LYLoading shared] setNav:tab];
 		[LYLoading show];
 		NSString* query = [NSString stringWithFormat:@"select * from `users` where itemName() = '%@'",
 			field_profile_mail.text];
@@ -324,26 +326,36 @@
 	[nav_public popToRootViewControllerAnimated:NO];
 }
 
+- (void)reload_detail_nav:(UINavigationController*)nav data:(NSMutableArray*)array provider:(LYTableViewProvider*)provider path:(NSIndexPath*)path
+{
+	NSDictionary* dict = [[array i:path.row] v:@"attr-dict"];
+	[nav pushViewController:controller_detail animated:YES];
+#if 0
+	controller_detail.title = [dict v:@"text-title"];
+	label_detail_title.text = [dict v:@"text-title"];
+	text_detail_body.text = [dict v:@"text-body"];
+#endif
+	controller_detail.title = [provider.texts object_at_path:path];
+	label_detail_title.text = [provider.texts object_at_path:path];
+	text_detail_body.text = [provider.details object_at_path:path];
+
+	NSString* s = [dict v:@"photo-main"];;
+	if (![[s substringToIndex:4] is:@"raw/"])
+		s = [@"raw/" stringByAppendingString:s];
+	s = [@"http://s3.amazonaws.com/us-general/" stringByAppendingString:s];
+	[image_detail_photo load_url:s];
+	//	NSLog(@"data %@", dict);
+}
+
 - (void)tableView:(UITableView *)table didSelectRowAtIndexPath:(NSIndexPath *)path
 {
 	if (table == table_wall)
 	{
-		NSDictionary* dict = [[array_wall i:path.row] v:@"attr-dict"];
-		[nav_wall pushViewController:controller_detail animated:YES];
-		controller_detail.title = [dict v:@"text-title"];
-		label_detail_title.text = [dict v:@"text-title"];
-		text_detail_body.text = [dict v:@"text-body"];
-
-		NSString* s = [dict v:@"photo-main"];;
-		if (![[s substringToIndex:4] is:@"raw/"])
-			s = [@"raw/" stringByAppendingString:s];
-		s = [@"http://s3.amazonaws.com/us-general/" stringByAppendingString:s];
-		[image_detail_photo load_url:s];
-		NSLog(@"data %@", dict);
+		[self reload_detail_nav:nav_wall data:array_wall provider:provider_wall path:path];
 	}
 	else if (table == table_public)
 	{
-		[nav_public pushViewController:controller_detail animated:YES];
+		[self reload_detail_nav:nav_public data:array_public provider:provider_public path:path];
 	}
 }
 

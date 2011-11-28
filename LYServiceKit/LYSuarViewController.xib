@@ -110,6 +110,10 @@
 				<object class="IBUINavigationController" key="IBUISelectedViewController" id="74276133">
 					<object class="IBUITabBarItem" key="IBUITabBarItem" id="159110943">
 						<string key="IBUITitle">Public</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ly-tab-group.png</string>
+						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 					<reference key="IBUIParentViewController" ref="535193150"/>
@@ -205,6 +209,10 @@
 					<object class="IBUINavigationController" id="888057021">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="316801375">
 							<string key="IBUITitle">Profile</string>
+							<object class="NSCustomResource" key="IBUIImage">
+								<string key="NSClassName">NSImage</string>
+								<string key="NSResourceName">ly-tab-home.png</string>
+							</object>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
 						<reference key="IBUIParentViewController" ref="535193150"/>
@@ -234,7 +242,7 @@
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="IBUILabel" id="499200714">
 											<reference key="NSNextResponder" ref="398523615"/>
-											<int key="NSvFlags">292</int>
+											<int key="NSvFlags">290</int>
 											<string key="NSFrame">{{20, 25}, {280, 21}}</string>
 											<reference key="NSSuperview" ref="398523615"/>
 											<reference key="NSNextKeyView" ref="314952988"/>
@@ -264,7 +272,7 @@
 										</object>
 										<object class="IBUILabel" id="637388178">
 											<reference key="NSNextResponder" ref="398523615"/>
-											<int key="NSvFlags">292</int>
+											<int key="NSvFlags">290</int>
 											<string key="NSFrame">{{20, 142}, {280, 21}}</string>
 											<reference key="NSSuperview" ref="398523615"/>
 											<reference key="NSNextKeyView" ref="610975194"/>
@@ -287,7 +295,7 @@
 										</object>
 										<object class="IBUITextField" id="342715907">
 											<reference key="NSNextResponder" ref="398523615"/>
-											<int key="NSvFlags">-2147483356</int>
+											<int key="NSvFlags">-2147483358</int>
 											<string key="NSFrame">{{20, 20}, {280, 31}}</string>
 											<reference key="NSSuperview" ref="398523615"/>
 											<reference key="NSNextKeyView" ref="499200714"/>
@@ -319,7 +327,7 @@
 										</object>
 										<object class="IBUITextField" id="314952988">
 											<reference key="NSNextResponder" ref="398523615"/>
-											<int key="NSvFlags">292</int>
+											<int key="NSvFlags">290</int>
 											<string key="NSFrame">{{20, 59}, {280, 31}}</string>
 											<reference key="NSSuperview" ref="398523615"/>
 											<reference key="NSNextKeyView" ref="262481021"/>
@@ -351,7 +359,7 @@
 										</object>
 										<object class="IBUITextField" id="262481021">
 											<reference key="NSNextResponder" ref="398523615"/>
-											<int key="NSvFlags">292</int>
+											<int key="NSvFlags">290</int>
 											<string key="NSFrame">{{20, 98}, {280, 31}}</string>
 											<reference key="NSSuperview" ref="398523615"/>
 											<reference key="NSNextKeyView" ref="912577270"/>
@@ -384,7 +392,7 @@
 										</object>
 										<object class="IBUITextField" id="912577270">
 											<reference key="NSNextResponder" ref="398523615"/>
-											<int key="NSvFlags">-2147483356</int>
+											<int key="NSvFlags">-2147483358</int>
 											<string key="NSFrame">{{20, 137}, {280, 31}}</string>
 											<reference key="NSSuperview" ref="398523615"/>
 											<reference key="NSNextKeyView" ref="637388178"/>
@@ -417,7 +425,7 @@
 										</object>
 										<object class="IBUISegmentedControl" id="610975194">
 											<reference key="NSNextResponder" ref="398523615"/>
-											<int key="NSvFlags">292</int>
+											<int key="NSvFlags">269</int>
 											<string key="NSFrame">{{20, 304}, {280, 44}}</string>
 											<reference key="NSSuperview" ref="398523615"/>
 											<string key="NSReuseIdentifierKey">_NS:273</string>
@@ -451,63 +459,8 @@
 									<reference key="NSNextKeyView" ref="342715907"/>
 									<string key="NSReuseIdentifierKey">_NS:196</string>
 									<object class="NSColor" key="IBUIBackgroundColor">
-										<int key="NSColorSpace">10</int>
-										<object class="NSImage" key="NSImage">
-											<int key="NSImageFlags">549453824</int>
-											<string key="NSSize">{512, 1}</string>
-											<array class="NSMutableArray" key="NSReps">
-												<array>
-													<integer value="0"/>
-													<object class="NSBitmapImageRep">
-														<object class="NSData" key="NSTIFFRepresentation">
-															<bytes key="NS.bytes">TU0AKgAACAjFzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/
-y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/
-xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/
-xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/
-xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/
-xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/
-xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/
-y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/
-y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/
-xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/
-xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/
-xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/
-xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/
-xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/
-y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/
-y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/
-xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/
-xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/
-xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/
-xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/
-xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/
-y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/
-y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/
-xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/
-xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/
-xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/
-xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/
-xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/
-y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/
-y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/
-xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/
-xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/
-xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/xczS/8vS2P/L0tj/xczU/8XM1P/FzNT/
-xczU/8XM0v/L0tj/y9LY/8XM1P/FzNT/xczU/8XM1P/FzNL/y9LY/8vS2P/FzNT/xczU/8XM1P/FzNT/
-xczS/8vS2P/L0tj/xczU/wANAQAAAwAAAAECAAAAAQEAAwAAAAEAAQAAAQIAAwAAAAQAAAiqAQMAAwAA
-AAEAAQAAAQYAAwAAAAEAAgAAAREABAAAAAEAAAAIARIAAwAAAAEAAQAAARUAAwAAAAEABAAAARYAAwAA
-AAEAAQAAARcABAAAAAEAAAgAARwAAwAAAAEAAQAAAVIAAwAAAAEAAQAAAVMAAwAAAAQAAAiyAAAAAAAI
-AAgACAAIAAEAAQABAAE</bytes>
-														</object>
-													</object>
-												</array>
-											</array>
-											<object class="NSColor" key="NSColor" id="963696708">
-												<int key="NSColorSpace">3</int>
-												<bytes key="NSWhite">MCAwAA</bytes>
-											</object>
-										</object>
-										<string key="IBUIColorCocoaTouchKeyPath">groupTableViewBackgroundColor</string>
+										<int key="NSColorSpace">3</int>
+										<bytes key="NSWhite">MC44NgA</bytes>
 									</object>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
@@ -545,6 +498,10 @@ AAgACAAIAAEAAQABAAE</bytes>
 					<object class="IBUINavigationController" id="542328882">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="328752079">
 							<string key="IBUITitle">My Posts</string>
+							<object class="NSCustomResource" key="IBUIImage">
+								<string key="NSClassName">NSImage</string>
+								<string key="NSResourceName">ly-tab-user.png</string>
+							</object>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
 						<reference key="IBUIParentViewController" ref="535193150"/>
@@ -613,11 +570,11 @@ AAgACAAIAAEAAQABAAE</bytes>
 										<reference key="IBUINavigationItem" ref="255513719"/>
 										<int key="IBUISystemItemIdentifier">13</int>
 									</object>
-									<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="426094318">
+									<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="40864005">
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIStyle">1</int>
 										<reference key="IBUINavigationItem" ref="255513719"/>
-										<int key="IBUISystemItemIdentifier">7</int>
+										<int key="IBUISystemItemIdentifier">0</int>
 									</object>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
@@ -640,7 +597,10 @@ AAgACAAIAAEAAQABAAE</bytes>
 					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView"/>
 					<string key="NSReuseIdentifierKey">_NS:473</string>
-					<reference key="IBUIBackgroundColor" ref="963696708"/>
+					<object class="NSColor" key="IBUIBackgroundColor">
+						<int key="NSColorSpace">3</int>
+						<bytes key="NSWhite">MCAwAA</bytes>
+					</object>
 					<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				</object>
 			</object>
@@ -651,7 +611,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="IBUILabel" id="540648203">
 							<reference key="NSNextResponder" ref="714619704"/>
-							<int key="NSvFlags">292</int>
+							<int key="NSvFlags">290</int>
 							<string key="NSFrame">{{20, 20}, {280, 21}}</string>
 							<reference key="NSSuperview" ref="714619704"/>
 							<reference key="NSNextKeyView" ref="785593948"/>
@@ -672,17 +632,18 @@ AAgACAAIAAEAAQABAAE</bytes>
 						</object>
 						<object class="IBUIImageView" id="785593948">
 							<reference key="NSNextResponder" ref="714619704"/>
-							<int key="NSvFlags">292</int>
+							<int key="NSvFlags">274</int>
 							<string key="NSFrame">{{20, 20}, {280, 280}}</string>
 							<reference key="NSSuperview" ref="714619704"/>
 							<reference key="NSNextKeyView" ref="757294571"/>
 							<string key="NSReuseIdentifierKey">_NS:567</string>
+							<int key="IBUIContentMode">2</int>
 							<bool key="IBUIUserInteractionEnabled">NO</bool>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
 						<object class="IBUITextView" id="757294571">
 							<reference key="NSNextResponder" ref="714619704"/>
-							<int key="NSvFlags">292</int>
+							<int key="NSvFlags">266</int>
 							<string key="NSFrame">{{20, 297}, {280, 70}}</string>
 							<reference key="NSSuperview" ref="714619704"/>
 							<reference key="NSNextKeyView"/>
@@ -977,6 +938,14 @@ AAgACAAIAAEAAQABAAE</bytes>
 					</object>
 					<int key="connectionID">84</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">action_delegate_dismiss</string>
+						<reference key="source" ref="40864005"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">108</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1085,9 +1054,9 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<int key="objectID">36</int>
 						<reference key="object" ref="255513719"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="426094318"/>
 							<reference ref="146704693"/>
 							<reference ref="815712031"/>
+							<reference ref="40864005"/>
 						</array>
 						<reference key="parent" ref="585591432"/>
 					</object>
@@ -1125,11 +1094,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<int key="objectID">46</int>
 						<reference key="object" ref="437630529"/>
 						<reference key="parent" ref="1036064421"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">47</int>
-						<reference key="object" ref="426094318"/>
-						<reference key="parent" ref="255513719"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">49</int>
@@ -1302,6 +1266,11 @@ AAgACAAIAAEAAQABAAE</bytes>
 						<reference key="object" ref="39838542"/>
 						<reference key="parent" ref="602095310"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">107</int>
+						<reference key="object" ref="40864005"/>
+						<reference key="parent" ref="255513719"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1312,6 +1281,7 @@ AAgACAAIAAEAAQABAAE</bytes>
 				<string key="104.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="105.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="106.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="107.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="28.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="30.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1326,7 +1296,6 @@ AAgACAAIAAEAAQABAAE</bytes>
 				<string key="40.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="44.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="46.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="47.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="49.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="50.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1361,13 +1330,18 @@ AAgACAAIAAEAAQABAAE</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">106</int>
+			<int key="maxID">108</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="ly-tab-group.png">{32, 32}</string>
+			<string key="ly-tab-home.png">{32, 32}</string>
+			<string key="ly-tab-user.png">{32, 32}</string>
+		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">933</string>
 	</data>
 </archive>

@@ -1,6 +1,24 @@
 #import "LYServiceKit.h"
 //	#import "LYUIKit.h"
 
+/*
+	suar = [[LYSuarViewController alloc] init];
+	suar.delegate = self;
+	[suar loadView];
+	[suar load];
+
+- (void)suar_dismiss
+{
+	[nav dismissModalViewControllerAnimated:YES];
+}
+
+- (IBAction)action_suar_present
+{
+	[nav presentModalViewController:suar.tab animated:YES];
+}
+
+*/
+
 #ifdef LY_ENABLE_SDK_AWS
 @class LYServiceAWSSimpleDB;
 @class LYTableViewProvider;
@@ -32,6 +50,8 @@
 	IBOutlet UILabel*				label_detail_title;
 	IBOutlet UITextView*			text_detail_body;
 	IBOutlet LYAsyncImageView*		image_detail_photo;
+
+	IBOutlet UIBarButtonItem*		item_profile_cancel;
 }
 @property (nonatomic, retain) IBOutlet id	delegate;
 @property (nonatomic, retain) IBOutlet UITabBarController*		tab;
