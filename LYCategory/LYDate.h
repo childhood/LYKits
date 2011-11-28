@@ -14,6 +14,10 @@
 + (NSDate*)tomorrow;
 - (NSDate*)yesterday;
 - (NSDate*)tomorrow;
+- (NSDate*)next_week;
+- (NSDate*)next_fortnight;
+- (NSDate*)next_month;
+- (NSDate*)next_year;
 - (BOOL)is_same_date:(NSDate*)date1;
 - (BOOL)is_same_month:(NSDate*)date1;
 @end

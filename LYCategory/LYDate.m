@@ -40,6 +40,30 @@
 	return [NSDate dateWithTimeInterval:86400.0 sinceDate:self];
 }
 
+- (NSDate*)next_week
+{
+	return [NSDate dateWithTimeInterval:86400.0 * 7 sinceDate:self];
+}
+
+- (NSDate*)next_fortnight
+{
+	return [NSDate dateWithTimeInterval:86400.0 * 14 sinceDate:self];
+}
+
+- (NSDate*)next_month
+{
+	NSDateComponents* comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit ) fromDate:self];
+	[comp setMonth:comp.month + 1];
+	return [[NSCalendar currentCalendar] dateFromComponents:comp];
+}
+
+- (NSDate*)next_year
+{
+	NSDateComponents* comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit ) fromDate:self];
+	[comp setYear:comp.year + 1];
+	return [[NSCalendar currentCalendar] dateFromComponents:comp];
+}
+
 - (BOOL)is_same_month:(NSDate*)date1
 {
 	NSCalendar* calendar = [NSCalendar currentCalendar];

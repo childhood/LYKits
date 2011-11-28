@@ -56,6 +56,8 @@
 
 - (void)refresh_named:(NSString*)a_name dict:(NSDictionary*)a_dict;
 - (void)refresh_named:(NSString*)a_name dict:(NSDictionary*)a_dict default:(NSString*)a_default;
+- (void)refresh_named:(NSString*)a_name array:(NSArray*)array;
+- (void)refresh_named:(NSString*)a_name array:(NSArray*)array default:(NSString*)a_default;
 - (BOOL)is_named:(NSString*)a_name;
 
 - (IBAction)action_dismiss;
