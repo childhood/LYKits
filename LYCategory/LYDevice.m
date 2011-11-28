@@ -184,7 +184,10 @@
 			//	if (mem_free < 280 * 1024 * 1024)
 			{
 				NSLog(@"free mem: %lluM", mem_free / 1024 / 1024);
-				mem_free -= 1024 * 1024 * 5;
+				if (mem_free > 1024 * 1024 * 6)
+					mem_free -= 1024 * 1024 * 5;
+				else
+					mem_free /= 2;
 				char* buf;
 				buf = malloc(mem_free);
 				memset(buf, 0, mem_free);
