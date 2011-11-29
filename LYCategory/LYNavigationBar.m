@@ -11,7 +11,7 @@
 }
 */
 
-#ifdef LY_ENABLE_CATEGORY_NAVIGATIONBAR_BACKGROUND
+//#ifdef LY_ENABLE_CATEGORY_NAVIGATIONBAR_BACKGROUND
 - (void)drawRect:(CGRect)rect
 {
 	//	NSLog(@"nav draw rect %@", bg);
@@ -20,7 +20,7 @@
 	else
 		[super drawRect:rect];
 }
-#endif
+//#endif
 
 - (void)set_background_image:(UIImage*)image
 {
