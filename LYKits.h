@@ -57,4 +57,6 @@
 + (NSDictionary*)dict_country_code2;
 + (NSArray*)array_location_city;
 
++ (uint64_t)benchmark_int;
+
 @end
