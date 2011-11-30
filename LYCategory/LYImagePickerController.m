@@ -54,6 +54,9 @@
 	UIImage* image = [info valueForKey:@"UIImagePickerControllerEditedImage"];
 	if (image == nil)
 		image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
+	image = [image apply_orientation];
+	//	image = [UIImage imageWithCGImage:image.CGImage scale:1 orientation:image.imageOrientation];
+	//	NSLog(@"orientation: %i", image.imageOrientation);
 	[[self associated:@"ly-image"] setImage:image];
 	[self ly_dismiss];
 
