@@ -40,6 +40,7 @@ static LYKits*	ly_shared_manager = nil;
 		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-move-fix-x"];
 		[data setValue:[NSNumber numberWithFloat:0.15] forKey:@"animation-clock-flip-duration"];
 		[data key:@"manager-motion" v:nil];
+		[data key:@"benchmark-base" v:nil];
 #ifdef LY_ENABLE_SERVICEKIT
 		[data key:@"service-lyric" v:[[LYServiceLyricWiki alloc] init]];
 #endif
@@ -401,7 +402,7 @@ static LYKits*	ly_shared_manager = nil;
 
 #pragma mark benchmark
 
-+ (uint64_t)benchmark_int
++ (uint64_t)benchmark_empty
 {
 	uint64_t ret = 0;
 	uint64_t h64, t64;
@@ -412,9 +413,158 @@ static LYKits*	ly_shared_manager = nil;
 		ret++;
 		gettimeofday(&tail, NULL);
 		t64 = tail.tv_sec * 1000000 + tail.tv_usec;
-		//	NSLog(@"xxx %llu", t64 - h64);	200 vs 400000
+	}	while (t64 - h64 < 1000000);
+	[ly.data key:@"benchmark-base" v:[NSNumber numberWithLongLong:ret]];
+	return ret;
+}
+
++ (uint64_t)benchmark_int
+{
+	uint64_t ret = 0;
+	uint64_t h64, t64;
+	struct timeval head, tail;
+	gettimeofday(&head, NULL);
+	h64 = head.tv_sec * 1000000 + head.tv_usec;
+	int i1 = 3;
+	int i2 = 7;
+	do {
+		ret++;
+		gettimeofday(&tail, NULL);
+		t64 = tail.tv_sec * 1000000 + tail.tv_usec;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
+		i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2; i1 *= i2;
 	}	while (t64 - h64 < 1000000);
 	return ret;
 }
 
++ (uint64_t)benchmark_float
+{
+	uint64_t ret = 0;
+	uint64_t h64, t64;
+	struct timeval head, tail;
+	gettimeofday(&head, NULL);
+	h64 = head.tv_sec * 1000000 + head.tv_usec;
+	float f1 = 3;
+	float f2 = 7;
+	do {
+		ret++;
+		gettimeofday(&tail, NULL);
+		t64 = tail.tv_sec * 1000000 + tail.tv_usec;
+		f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2;
+		f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2;
+		f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2;
+		f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2;
+		f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2; f1 *= f2;
+	}	while (t64 - h64 < 1000000);
+	return ret;
+}
+
++ (uint64_t)benchmark_memory
+{
+	uint64_t ret = 0;
+	uint64_t h64, t64;
+	struct timeval head, tail;
+	gettimeofday(&head, NULL);
+	h64 = head.tv_sec * 1000000 + head.tv_usec;
+	char buf[100000];
+	do {
+		ret++;
+		gettimeofday(&tail, NULL);
+		t64 = tail.tv_sec * 1000000 + tail.tv_usec;
+		memset(&buf, (char)ret, 100000);
+	}	while (t64 - h64 < 1000000);
+	return ret + [[UIDevice currentDevice] totalMemory] / 1000;
+}
+
++ (uint64_t)benchmark_disk_write
+{
+	uint64_t ret = 0;
+	uint64_t h64, t64;
+	struct timeval head, tail;
+	gettimeofday(&head, NULL);
+	h64 = head.tv_sec * 1000000 + head.tv_usec;
+	char buf[1000000];
+	memset(&buf, 0xc8, 1000000);
+	FILE* fp;
+	fp = fopen([[@"benchmark.bin" filename_private] UTF8String], "wb");
+	do {
+		ret++;
+		gettimeofday(&tail, NULL);
+		t64 = tail.tv_sec * 1000000 + tail.tv_usec;
+		fwrite(buf, 1000000, 1, fp);
+	}	while (t64 - h64 < 1000000);
+	fclose(fp);
+	return ret;
+}
+
++ (uint64_t)benchmark_disk_read
+{
+	uint64_t ret = 0;
+	uint64_t h64, t64;
+	struct timeval head, tail;
+	gettimeofday(&head, NULL);
+	h64 = head.tv_sec * 1000000 + head.tv_usec;
+	char buf[1000000];
+	FILE* fp;
+	//fp = fopen([[@"Default.png" filename_bundle] UTF8String], "rb");
+	fp = fopen([[@"benchmark.bin" filename_private] UTF8String], "rb");
+	do {
+		ret++;
+		gettimeofday(&tail, NULL);
+		t64 = tail.tv_sec * 1000000 + tail.tv_usec;
+		fread(buf, 1000000, 1, fp);
+	}	while (t64 - h64 < 1000000);
+	fclose(fp);
+	return ret;
+}
+
++ (uint64_t)benchmark_colibrate:(uint64_t)u64
+{
+	if ([ly.data v:@"benchmark-base"] == nil)
+		[ly benchmark_empty];
+	uint64_t base = [[ly.data v:@"benchmark-base"] longLongValue];
+	if (base > u64)
+		return base / (base - u64) * u64;
+	else
+		return 0;
+}
+
 @end
+
+/*
+#if 0
+	NSLog(@"0: %llu", [ly benchmark_empty]);
+	NSLog(@"1: %llu", [ly benchmark_int]);
+	NSLog(@"2: %llu", [ly benchmark_float]);
+	NSLog(@"3: %llu", [ly benchmark_memory]);
+	NSLog(@"4: %llu", [ly benchmark_disk_write]);
+	NSLog(@"5: %llu", [ly benchmark_disk_read]);
+#endif
+#if 1
+	NSLog(@"1: %llu", [ly benchmark_colibrate:[ly benchmark_int]]);
+	NSLog(@"2: %llu", [ly benchmark_colibrate:[ly benchmark_float]]);
+	NSLog(@"3: %llu", [ly benchmark_memory]);
+	NSLog(@"4: %llu", [ly benchmark_colibrate:[ly benchmark_disk_write]]);
+	NSLog(@"5: %llu", [ly benchmark_colibrate:[ly benchmark_disk_read]]);
+#endif
+
+ * 3gs
+ * 2011-12-01 16:07:47.138 EventBoard[25146:707] 1: 795453
+ * 2011-12-01 16:07:48.143 EventBoard[25146:707] 2: 442630
+ * 2011-12-01 16:07:49.150 EventBoard[25146:707] 3: 276730
+ * 2011-12-01 16:07:50.942 EventBoard[25146:707] 4: 25
+ * 2011-12-01 16:07:51.947 EventBoard[25146:707] 5: 1190184
+ *
+ * macpro
+ * 2011-12-01 13:02:34.074 EventBoard[89662:13d03] 1: 2833493
+ * 2011-12-01 13:02:35.075 EventBoard[89662:13d03] 2: 4159674
+ * 2011-12-01 13:02:36.077 EventBoard[89662:13d03] 2: 2314711
+ */
