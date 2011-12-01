@@ -481,7 +481,7 @@ static LYKits*	ly_shared_manager = nil;
 		t64 = tail.tv_sec * 1000000 + tail.tv_usec;
 		memset(&buf, (char)ret, 100000);
 	}	while (t64 - h64 < 1000000);
-	return ret + [[UIDevice currentDevice] totalMemory] / 1000;
+	return ret + [UIDevice memory_free] / 1000;
 }
 
 + (uint64_t)benchmark_disk_write
@@ -569,4 +569,11 @@ static LYKits*	ly_shared_manager = nil;
  * 2011-12-01 16:09:21.467 EventBoard[93634:13d03] 3: 2317530
  * 2011-12-01 16:09:22.883 EventBoard[93634:13d03] 4: 33
  * 2011-12-01 16:09:23.885 EventBoard[93634:13d03] 5: 3525389
+ *
+ * imac
+ * 2011-12-01 18:01:51.294 HWMaster[64169:14003] 1: 3516403
+ * 2011-12-01 18:01:52.296 HWMaster[64169:14003] 2: 5299807
+ * 2011-12-01 18:01:53.296 HWMaster[64169:14003] 3: 2498171
+ * 2011-12-01 18:01:54.311 HWMaster[64169:14003] 4: 110
+ * 2011-12-01 18:01:55.311 HWMaster[64169:14003] 5: 8202354
  */
