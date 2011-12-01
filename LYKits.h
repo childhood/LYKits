@@ -57,6 +57,12 @@
 + (NSDictionary*)dict_country_code2;
 + (NSArray*)array_location_city;
 
++ (uint64_t)benchmark_empty;
 + (uint64_t)benchmark_int;
++ (uint64_t)benchmark_float;
++ (uint64_t)benchmark_memory;
++ (uint64_t)benchmark_disk_write;
++ (uint64_t)benchmark_disk_read;
++ (uint64_t)benchmark_colibrate:(uint64_t)u64;
 
 @end
