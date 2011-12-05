@@ -57,6 +57,9 @@
 		provider.image_urls = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
 		provider.delegate = self;
 		provider.cell_height = 64;
+		provider.detail_label.hidden = NO;
+		provider.detail_label.lineBreakMode = UILineBreakModeWordWrap;
+		provider.detail_label.numberOfLines = 2;
 
 		UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 38, 20, 20)];
 		activity.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
@@ -81,7 +84,7 @@
 			NSString* s;
 
 			s = [dict v:@"text-title"];
-			if ([s is:@""])
+			if ((s == nil) || [s is:@""])
 			{
 				s = [dict v:@"author-app"];
 				if ([s is:@"org.superarts.PhotoShare"])
@@ -94,23 +97,29 @@
 			[[provider.texts i:0] addObject:s];
 
 			s = [dict v:@"text-body"];
-			if ([s is:@""])
+			if ((s == nil) || [s is:@""])
 			{
 				s = [dict v:@"date-create"];
 				s = [s local_medium_date_from:@"yyyyMMdd-HH:mm:ss"];
 				if ((s == nil) || ([s is:@""]))
 					s = @"No description.";
 			}
+			if (table != table_wall)
+				s = [NSString stringWithFormat:@"By %@\n%@", [dict v:@"author-name"], s];
 			[[provider.details i:0] addObject:s];
 
-			s = [dict v:@"photo-main"];
-			if ([s is:@""])
-				s = @"";
-			else
+			s = [dict v:@"photo-icon"];
+			if ((s == nil) || [s is:@""])
 			{
-				if (![[s substringToIndex:4] is:@"raw/"])
-					s = [@"raw/" stringByAppendingString:s];
-				s = [@"http://s3.amazonaws.com/us-general/" stringByAppendingString:s];
+				s = [dict v:@"photo-main"];
+				if ((s == nil) || [s is:@""])
+					s = @"https://s3.amazonaws.com/us-general/photo/icon/suar.png";
+				else
+				{
+					if (![[s substringToIndex:4] is:@"raw/"])
+						s = [@"raw/" stringByAppendingString:s];
+					s = [@"https://s3.amazonaws.com/us-general/" stringByAppendingString:s];
+				}
 			}
 			[[provider.image_urls i:0] addObject:s];
 		}
@@ -133,7 +142,7 @@
 	{
 		segment_profile_type.selectedSegmentIndex = 1;
 		[self action_profile_type];
-		[field_profile_name becomeFirstResponder];
+		//[field_profile_name becomeFirstResponder];
 	}
 	else
 	{
@@ -340,9 +349,11 @@
 	text_detail_body.text = [provider.details object_at_path:path];
 
 	NSString* s = [dict v:@"photo-main"];;
+	if ((s == nil) || [s is:@""])
+		return;
 	if (![[s substringToIndex:4] is:@"raw/"])
 		s = [@"raw/" stringByAppendingString:s];
-	s = [@"http://s3.amazonaws.com/us-general/" stringByAppendingString:s];
+	s = [@"https://s3.amazonaws.com/us-general/" stringByAppendingString:s];
 	[image_detail_photo load_url:s];
 	//	NSLog(@"data %@", dict);
 }

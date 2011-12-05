@@ -16,6 +16,7 @@
 		self.shadowOffset	= target.shadowOffset;
 		self.minimumFontSize = target.minimumFontSize;
 		self.adjustsFontSizeToFitWidth = target.adjustsFontSizeToFitWidth;
+		self.highlightedTextColor = target.highlightedTextColor;
 	}
 }
 

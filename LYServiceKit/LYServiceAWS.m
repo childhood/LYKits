@@ -160,7 +160,7 @@
 	request_select.delegate = self;
 	[sdb select:request_select];
 	[request_select release];
-	callback_int_error = callback;
+	callback_int_error = [callback copy];
 }
 
 - (int)count_sync:(NSString*)query
@@ -190,7 +190,10 @@
 		if (response_select.items.count > 0)
 			attr = [[[response_select.items i:0] attributes] i:0];
 		if ((attr != nil) && [[attr name] is:@"Count"])
+		{
 			callback_int_error([[attr value] intValue], nil);
+			[callback_int_error release];
+		}
 		else
 		{
 			NSArray* array = [self array_from_select:response_select];
