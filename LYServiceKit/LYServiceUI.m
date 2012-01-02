@@ -138,7 +138,7 @@
 	[[provider_public.texts i:0] addObject:@"No Post"];
 	[table_public reloadData];
 
-	if ([@"ly-suar-profile-pin" setting_string] == nil)
+	if ([@"ly-suar-profile-name" setting_string] == nil)
 	{
 		segment_profile_type.selectedSegmentIndex = 1;
 		[self action_profile_type];
@@ -150,6 +150,7 @@
 		field_profile_mail.text = [@"ly-suar-profile-mail" setting_string];
 		field_profile_pin1.text = [@"ly-suar-profile-pin" setting_string];
 		field_profile_pin2.text = [@"ly-suar-profile-pin" setting_string];
+		label_profile_hint.text = [NSString stringWithFormat:@"You have logged in as %@", field_profile_name.text];
 	}
 }
 
@@ -282,6 +283,54 @@
 				}];
 			}
 		}];
+	}
+}
+
+- (IBAction)action_detail_action
+{
+	UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Select Action"
+													   delegate:self
+											  cancelButtonTitle:nil
+										 destructiveButtonTitle:nil
+											  otherButtonTitles:nil];
+	switch (tab.selectedIndex)
+	{
+		case 1:
+			[sheet addButtonWithTitle:@"Change to Private"];
+			[sheet addButtonWithTitle:@"Delete Post"];
+			break;
+		case 2:
+			[sheet addButtonWithTitle:@"Send Friend Request"];
+			break;
+	}
+	[sheet addButtonWithTitle:@"Cancel"];
+	[sheet showFromTabBar:tab.tabBar];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)index
+{
+	NSLog(@"action selected: %i", index);
+	switch (tab.selectedIndex)
+	{
+		case 1:
+			switch (index)
+			{
+				case 0:
+					//	change access right
+					break;
+				case 1:
+					//	delete post
+					break;
+			}
+			break;
+		case 2:
+			switch (index)
+			{
+				case 0:
+					//	add friend
+					break;
+			}
+			break;
 	}
 }
 

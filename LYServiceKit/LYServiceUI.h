@@ -24,7 +24,7 @@
 @class LYTableViewProvider;
 @class LYAsyncImageView;
 
-@interface LYSuarViewController: UIViewController <UITabBarControllerDelegate>
+@interface LYSuarViewController: UIViewController <UITabBarControllerDelegate, UIActionSheetDelegate>
 {
 	LYServiceAWSSimpleDB*	sdb_wall;
 	LYServiceAWSSimpleDB*	sdb_public;
@@ -35,6 +35,7 @@
 	IBOutlet UITextField*			field_profile_mail;
 	IBOutlet UITextField*			field_profile_pin1;
 	IBOutlet UITextField*			field_profile_pin2;
+	IBOutlet UILabel*				label_profile_hint;
 
 	IBOutlet UIViewController*		controller_wall;
 	IBOutlet UITableView*			table_wall;

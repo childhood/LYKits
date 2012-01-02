@@ -2,6 +2,7 @@
 
 @implementation LYTextAlertView
 
+@synthesize alert;
 @synthesize delegate;
 @synthesize action_done;
 @synthesize text_fields;
