@@ -34,6 +34,8 @@
 	//	NSLog(@"list load: %@", controller_parent);
 	[super viewDidLoad];
 	self.view.frame = CGRectMake(0, 20, [ly screen_width], [ly screen_height] - 20);
+	view_table.frame = CGRectMake(0, 0, [ly screen_width], [ly screen_height]);
+	view_picker.frame = CGRectMake(0, 0, [ly screen_width], [ly screen_height]);
 
 	if (provider_table != nil)
 	{

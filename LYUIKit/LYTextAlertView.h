@@ -21,6 +21,7 @@
 	NSString*						action_done;
 }
 @property (nonatomic, retain) id				delegate;
+@property (nonatomic, retain) UIAlertView*		alert;
 @property (nonatomic, retain) NSString*			action_done;
 @property (nonatomic, retain) NSMutableArray*	text_fields;
 
