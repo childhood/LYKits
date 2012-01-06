@@ -149,6 +149,7 @@
 		[data setValue:@"ly_transparent_64x64.png" forKey:@"image-placeholder"];
 		[data setValue:nil forKey:@"source-deleted-object"];
 		[data setValue:nil forKey:@"cell-class"];
+		[data setValue:nil forKey:@"backup-accessories-highlighted"];
 		//	[data setValue:nil forKey:@"source-deleted-row"];
 
 		//	init preset ui
@@ -1285,8 +1286,17 @@
 		backup_image_urls = [[NSMutableArray alloc] initWithArray:image_urls];
 	[image_urls removeAllObjects];
 	if (backup_accessories == nil)
+	{
+		NSLog(@"new backup");
 		backup_accessories = [[NSMutableArray alloc] initWithArray:accessories];
+	}
 	[accessories removeAllObjects];
+#if 1
+	if ([data v:@"backup-accessories-highlighted"] == nil)
+		[data key:@"backup-accessories-highlighted" 
+				v:[NSMutableArray arrayWithArray:[data v:@"accessory-highlighted"]]];
+	[[data v:@"accessory-highlighted"] removeAllObjects];
+#endif
 	if (backup_subviews == nil)
 		backup_subviews = [[NSMutableDictionary alloc] initWithDictionary:[data v:@"cell-subviews"]];
 	[[data v:@"cell-subviews"] removeAllObjects];
@@ -1306,6 +1316,7 @@
 		[images addObject:[NSMutableArray array]];
 		[image_urls addObject:[NSMutableArray array]];
 		[accessories addObject:[NSMutableArray array]];
+		[[data v:@"accessory-highlighted"] addObject:[NSMutableArray array]];
 
 		for (row = 0; row < array.count; row++)
 		{
@@ -1330,6 +1341,11 @@
 					[[image_urls objectAtIndex:backup_section] addObject:[backup_image_urls object_at_path:path]];
 				if ([backup_accessories object_at_path:path] != nil)
 					[[accessories objectAtIndex:backup_section] addObject:[backup_accessories object_at_path:path]];
+#if 1
+				if ([[data v:@"backup-accessories-highlighted"] object_at_path:path] != nil)
+					[[[data v:@"accessory-highlighted"] objectAtIndex:backup_section] addObject:
+					 [[data v:@"backup-accessories-highlighted"] object_at_path:path]];
+#endif
 				if ([backup_subviews objectForKey:path] != nil)
 				{
 					[[data v:@"cell-subviews"] setObject:[backup_subviews objectForKey:path] 
@@ -1354,21 +1370,34 @@
 
 - (void)filter_remove
 {
+	if (backup_texts == nil)
+		return;
+
 	[texts setArray:backup_texts];
 	[details setArray:backup_details];
 	[images setArray:backup_images];
 	[image_urls setArray:backup_image_urls];
 	[accessories setArray:backup_accessories];
+	[[data v:@"accessory_highlighted"] setArray:[data v:@"backup-accessories-highlighted"]];
 	[[data v:@"cell-subviews"] setDictionary:backup_subviews];
 
-	backup_texts = [backup_texts release_nil];
-	backup_details = [backup_details release_nil];
-	backup_images = [backup_images release_nil];
-	backup_image_urls = [backup_image_urls release_nil];
-	backup_accessories = [backup_accessories release_nil];
-	backup_subviews = [backup_subviews release_nil];
+	[data key:@"backup-accessories-highlighted" v:nil];
+	[backup_texts release];
+	[backup_details release];
+	[backup_images release];
+	[backup_image_urls release];
+	[backup_accessories release];
+	[backup_subviews release];
 
-	backup_dict = [backup_dict release_nil];
+	backup_texts = nil;
+	backup_details = nil;
+	backup_images = nil;
+	backup_image_urls = nil;
+	backup_accessories = nil;
+	backup_subviews = nil;
+
+	[backup_dict release];
+	backup_dict = nil;
 #if 0
 	[backup_headers release_nil];
 	[backup_footers release_nil];
@@ -1408,6 +1437,7 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
+	[button_mask set_height:view.contentSize.height];
 	[view addSubview:button_mask];
 }
 

@@ -12,6 +12,19 @@
 	return self;
 }
 
+#ifdef LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_LANDSCAPE
+/*
+-(UIDeviceOrientation)interfaceOrientation
+{
+	return UIInterfaceOrientationLandscapeRight;
+}
+*/
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+}
+#endif
+
 #ifdef LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_ROTATE
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -93,4 +106,12 @@
 		[delegate didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 #endif
+@end
+
+
+@implementation LYRightViewController
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+}
 @end

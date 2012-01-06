@@ -12,3 +12,7 @@ id		delegate;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 #endif
 @end
+
+
+@interface LYRightViewController: UIViewController
+@end
