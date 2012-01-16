@@ -414,7 +414,7 @@ static LYKits*	ly_shared_manager = nil;
 		gettimeofday(&tail, NULL);
 		t64 = tail.tv_sec * 1000000 + tail.tv_usec;
 	}	while (t64 - h64 < 1000000);
-	[ly.data key:@"benchmark-base" v:[NSNumber numberWithLongLong:ret]];
+	[[ly data] key:@"benchmark-base" v:[NSNumber numberWithLongLong:ret]];
 	return ret;
 }
 
@@ -528,9 +528,9 @@ static LYKits*	ly_shared_manager = nil;
 
 + (uint64_t)benchmark_colibrate:(uint64_t)u64
 {
-	if ([ly.data v:@"benchmark-base"] == nil)
+	if ([[ly data] v:@"benchmark-base"] == nil)
 		[ly benchmark_empty];
-	uint64_t base = [[ly.data v:@"benchmark-base"] longLongValue];
+	uint64_t base = [[[ly data] v:@"benchmark-base"] longLongValue];
 	if (base > u64)
 		return base / (base - u64) * u64;
 	else

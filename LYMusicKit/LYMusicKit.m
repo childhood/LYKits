@@ -44,6 +44,7 @@
 		[data key:@"controller-playlist" v:nil];
 		[data key:@"controller-picker" v:nil];
 		[data key:@"media-music" v:nil];
+		[data key:@"media-match" v:nil];
 		[data key:@"provider-accessory" v:@"checkmark"];
 		//	buttons
 		[data key:@"player-play" v:nil];
@@ -84,10 +85,18 @@
 																 selector:@selector(player_progress_timer) 
 																 userInfo:nil repeats:YES];
 		[timer_progress fire];
-		[self sync];
+		//[LYLoading show];
+		[LYLoading performSelector:@selector(show) withObject:nil afterDelay:0.0];
+		[self performSelector:@selector(sync_loading) withObject:nil afterDelay:0.1];
 		[self load_backup];
 	}
 	return self;
+}
+
+- (void)sync_loading
+{
+	[self sync];
+	[LYLoading hide];
 }
 
 - (void)dealloc
@@ -99,14 +108,25 @@
 - (void)sync
 {
 	NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+	NSMutableDictionary* match = [NSMutableDictionary dictionary];
 	for (MPMediaItem* item in [MPMediaQuery songsQuery].items)
 	{
 		NSString* s = [NSString stringWithFormat:@"%@\n%@",
 						  [item valueForProperty:MPMediaItemPropertyTitle],
 						  [item valueForProperty:MPMediaItemPropertyArtist]];
 		[dict setObject:item forKey:s];
+		s = [NSString stringWithFormat:@"%@\n%@",
+						  [[item valueForProperty:MPMediaItemPropertyTitle] lowercaseString],
+						  [[item valueForProperty:MPMediaItemPropertyArtist] lowercaseString]];
+		[match setObject:item forKey:s];
+		if ([[[item valueForProperty:MPMediaItemPropertyArtist] lowercaseString] has_substring:@"adele"])
+			NSLog(@"DEBUG adele: '%@'\n'%@'\n'%@'\n'%@'", 
+		 [item valueForProperty:MPMediaItemPropertyTitle], 
+		 [item valueForProperty:MPMediaItemPropertyArtist], 
+		 s, item);
 	}
 	[data key:@"media-music" v:dict];
+	[data key:@"media-match" v:match];
 	//	[data key:@"media-music" v:[MPMediaQuery songsQuery].items];
 	//	NSLog(@"music: %@", [data v:@"media-music"]);
 }
@@ -362,8 +382,14 @@
 	{
 #if 1
 		NSString* s = [NSString stringWithFormat:@"%@\n%@", [dict v:@"title"], [dict v:@"artist"]];
+		s = [s lowercaseString];
+		if ([[data v:@"media-match"] v:s] != nil)
+			[array addObject:[[data v:@"media-match"] v:s]];
+#if 0
+		NSString* s = [NSString stringWithFormat:@"%@\n%@", [dict v:@"title"], [dict v:@"artist"]];
 		if ([[data v:@"media-music"] v:s] != nil)
 			[array addObject:[[data v:@"media-music"] v:s]];
+#endif
 		/*
 		for (MPMediaItem* item in [data v:@"media-music"])
 		{
