@@ -150,6 +150,8 @@
 		[data setValue:nil forKey:@"source-deleted-object"];
 		[data setValue:nil forKey:@"cell-class"];
 		[data setValue:nil forKey:@"backup-accessories-highlighted"];
+		[data setValue:nil forKey:@"backup-badge-array"];
+		[data setValue:nil forKey:@"backup-badge2-array"];
 		//	[data setValue:nil forKey:@"source-deleted-row"];
 
 		//	init preset ui
@@ -1296,6 +1298,14 @@
 		[data key:@"backup-accessories-highlighted" 
 				v:[NSMutableArray arrayWithArray:[data v:@"accessory-highlighted"]]];
 	[[data v:@"accessory-highlighted"] removeAllObjects];
+	if ([data v:@"backup-badge-array"] == nil)
+		[data key:@"backup-badge-array" 
+				v:[NSMutableArray arrayWithArray:[data v:@"badge-array"]]];
+	[[data v:@"badge-array"] removeAllObjects];
+	if ([data v:@"backup-badge2-array"] == nil)
+		[data key:@"backup-badge2-array" 
+				v:[NSMutableArray arrayWithArray:[data v:@"badge2-array"]]];
+	[[data v:@"badge2-array"] removeAllObjects];
 #endif
 	if (backup_subviews == nil)
 		backup_subviews = [[NSMutableDictionary alloc] initWithDictionary:[data v:@"cell-subviews"]];
@@ -1317,6 +1327,8 @@
 		[image_urls addObject:[NSMutableArray array]];
 		[accessories addObject:[NSMutableArray array]];
 		[[data v:@"accessory-highlighted"] addObject:[NSMutableArray array]];
+		[[data v:@"badge-array"] addObject:[NSMutableArray array]];
+		[[data v:@"badge2-array"] addObject:[NSMutableArray array]];
 
 		for (row = 0; row < array.count; row++)
 		{
@@ -1345,6 +1357,12 @@
 				if ([[data v:@"backup-accessories-highlighted"] object_at_path:path] != nil)
 					[[[data v:@"accessory-highlighted"] objectAtIndex:backup_section] addObject:
 					 [[data v:@"backup-accessories-highlighted"] object_at_path:path]];
+				if ([[data v:@"backup-badge-array"] object_at_path:path] != nil)
+					[[[data v:@"badge-array"] objectAtIndex:backup_section] addObject:
+					 [[data v:@"backup-badge-array"] object_at_path:path]];
+				if ([[data v:@"backup-badge2-array"] object_at_path:path] != nil)
+					[[[data v:@"badge2-array"] objectAtIndex:backup_section] addObject:
+					 [[data v:@"backup-badge2-array"] object_at_path:path]];
 #endif
 				if ([backup_subviews objectForKey:path] != nil)
 				{
@@ -1378,10 +1396,14 @@
 	[images setArray:backup_images];
 	[image_urls setArray:backup_image_urls];
 	[accessories setArray:backup_accessories];
-	[[data v:@"accessory_highlighted"] setArray:[data v:@"backup-accessories-highlighted"]];
+	[[data v:@"accessory-highlighted"] setArray:[data v:@"backup-accessories-highlighted"]];
+	[[data v:@"badge-array"] setArray:[data v:@"backup-badge-array"]];
+	[[data v:@"badge2-array"] setArray:[data v:@"backup-badge2-array"]];
 	[[data v:@"cell-subviews"] setDictionary:backup_subviews];
 
 	[data key:@"backup-accessories-highlighted" v:nil];
+	[data key:@"backup-badge-array" v:nil];
+	[data key:@"backup-badge2-array" v:nil];
 	[backup_texts release];
 	[backup_details release];
 	[backup_images release];
@@ -1461,6 +1483,8 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar*)search
 {
 	//	NSLog(@"search button clicked");
+	if (search.text.length == 0)
+		[self filter_remove];
 	[search resignFirstResponder];
 	self.view.contentOffset = CGPointMake(0, -44);
 	[button_mask removeFromSuperview];
