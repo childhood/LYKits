@@ -808,3 +808,15 @@
 }
 
 @end
+
+/*
+NSString* str_escape_utf8(NSString* s)
+{
+	return (NSString*)CFURLCreateStringByAddingPercentEscapes(
+				NULL,
+				(CFStringRef)s,
+				NULL,
+				(CFStringRef)@"!*'();:@&=+$,/?%#[]",
+				kCFStringEncodingUTF8);
+}
+*/

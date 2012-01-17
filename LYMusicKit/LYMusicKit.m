@@ -119,11 +119,13 @@
 						  [[item valueForProperty:MPMediaItemPropertyTitle] lowercaseString],
 						  [[item valueForProperty:MPMediaItemPropertyArtist] lowercaseString]];
 		[match setObject:item forKey:s];
+#if 0
 		if ([[[item valueForProperty:MPMediaItemPropertyArtist] lowercaseString] has_substring:@"adele"])
 			NSLog(@"DEBUG adele: '%@'\n'%@'\n'%@'\n'%@'", 
 		 [item valueForProperty:MPMediaItemPropertyTitle], 
 		 [item valueForProperty:MPMediaItemPropertyArtist], 
 		 s, item);
+#endif
 	}
 	[data key:@"media-music" v:dict];
 	[data key:@"media-match" v:match];
