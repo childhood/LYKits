@@ -785,8 +785,7 @@
 		return 0;
 	if ([s isEqualToString:@""])
 		return 0;
-	if ([[texts objectAtIndex:section] count] == 0)
-		return 0;
+	//	if ([[texts objectAtIndex:section] count] == 0) return 0;
 
 	if (header_label.hidden == NO)
 		return header_label.frame.size.height;
@@ -899,7 +898,8 @@
 
 		array = [image_urls object_at_index:indexPath.section];
 		if (array != nil)
-			[array removeObjectAtIndex:indexPath.row];
+			if (array.count > 0)
+				[array removeObjectAtIndex:indexPath.row];
 
 		array = [accessories object_at_index:indexPath.section];
 		if (array != nil)

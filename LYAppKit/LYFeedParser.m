@@ -24,12 +24,13 @@
 
 - (BOOL)parse:(NSString*)a_url
 {
-	NSLog(@"FEED preparing:\t'%@'", a_url);
 	if (a_url != nil)
 		if (is_google)
-			url = [@"http://www.google.com/reader/atom/feed/" stringByAppendingString:[a_url to_url]];
+			//url = [@"http://www.google.com/reader/atom/feed/" stringByAppendingString:[a_url to_url]];
+			url = [@"http://www.google.com/reader/public/atom/feed/" stringByAppendingString:[a_url escape]];
 		else
 			url = a_url;
+	NSLog(@"FEED preparing:\t'%@'", url);
 
 	[LYCache set:url key:@"feed-current-url"];
 	//	if (data != nil) [data release];
@@ -39,7 +40,7 @@
 
 	[LYLoading show];
 	data = [[NSMutableArray alloc] init];
-	parser = [[MWFeedParser alloc] initWithFeedURL:url];
+	parser = [[MWFeedParser alloc] initWithFeedURL:[NSURL URLWithString:url]];
 	parser.delegate = self;
 	parser.feedParseType = ParseTypeFull;
 	parser.connectionType = ConnectionTypeSynchronously;
