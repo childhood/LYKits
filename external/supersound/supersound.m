@@ -35,3 +35,12 @@ void se_play_caf_random(NSArray* names)
 
 	se_play_caf([names objectAtIndex:index]);
 }
+
+void supersound_bgm_play(NSString* name)
+{
+	NSBundle*		bundle = [NSBundle mainBundle];
+
+	//	NSLog(@"playing %@", [bundle pathForResource:name ofType:@"caf"]);
+	se_LoadBackgroundMusicTrack([[bundle pathForResource:name ofType:@"caf"] UTF8String], false, false);
+	se_StartBackgroundMusic();
+}
