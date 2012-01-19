@@ -56,8 +56,8 @@ define('AWS_SECRET_KEY', 'V+PxxcUpKNOCu+7ZPbTj1Y9gkNNA4Y9IBFmxj3Dy');
 $process_user	= false;
 $process_photo	= true;
 
-require('/Users/leo/prj/sdk/aws/sdk-1.4.3/sdk-1.4.3/sdk.class.php');
-//require('/Users/leo/prj/sdk/aws/sdk-1.5.0.1/sdk-1.5.0.1/sdk.class.php');
+//require('/Users/leo/prj/sdk/aws/sdk-1.4.3/sdk-1.4.3/sdk.class.php');
+require('/Users/leo/prj/sdk/aws/sdk-1.5.0.1/sdk-1.5.0.1/sdk.class.php');
 $sdb	= new AmazonSDB();
 $s3		= new AmazonS3();
 
