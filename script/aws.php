@@ -29,7 +29,7 @@ function loop_select($query)
 	echo "---- columns ----\n";
 	print_r($result['columns']);
 	echo "---- rows ----\n";
-	if (count($array) > 0)
+	if (count($result['rows']) > 0)
 	{
 		foreach ($result['rows'] as $array)
 		{
@@ -56,8 +56,8 @@ define('AWS_SECRET_KEY', 'V+PxxcUpKNOCu+7ZPbTj1Y9gkNNA4Y9IBFmxj3Dy');
 $process_user	= false;
 $process_photo	= true;
 
-//require('/Users/leo/prj/sdk/aws/sdk-1.4.3/sdk-1.4.3/sdk.class.php');
-require('/Users/leo/prj/sdk/aws/sdk-1.5.0.1/sdk-1.5.0.1/sdk.class.php');
+require('/Users/leo/prj/sdk/aws/sdk-1.4.3/sdk-1.4.3/sdk.class.php');
+//require('/Users/leo/prj/sdk/aws/sdk-1.5.0.1/sdk-1.5.0.1/sdk.class.php');
 $sdb	= new AmazonSDB();
 $s3		= new AmazonS3();
 
@@ -94,7 +94,13 @@ if ($argc > 1)
 	case 'select':
 		$query = '';
 		for ($i = 1; $i < $argc; $i++)
-			$query .= $argv[$i] . ' ';
+		{
+			if ($argv[$i] != 'aws.php')
+				$query .= $argv[$i] . ' ';
+			else
+				$query .= '*';
+		}
+		//	print_r($argv);
 		//	echo "$query\n";
 		loop_select($query);
 		die;
@@ -225,7 +231,7 @@ function reorganize_data($items)
 	$columns = array();
 
 	// Loop through each of the items
-	if (count($item) > 0)
+	if ($items != null)
 	{
 		foreach ($items as $item)
 		{
