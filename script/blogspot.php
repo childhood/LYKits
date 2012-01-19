@@ -4,7 +4,7 @@ $title = 'Untitled 1';
 $content = 'This is a test.<br>这是一个测试。<hr>Testing...';
 $labels = array('label2', 'label3');
 $user = 'superartstudio@gmail.com';
-$pass = 'Mtphtrdmtp!415926535';
+$pass = '';
 
 set_include_path('/Users/iphone/prj/sdk/zend/library');
 require_once 'Zend/Loader.php';

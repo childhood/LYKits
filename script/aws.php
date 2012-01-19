@@ -51,7 +51,7 @@ function loop_select($query)
 //	php test.php select 'count(*) from `posts` where `pos-a7` = "Australia"'
 
 define('AWS_KEY', 'AKIAIG737NOEC2VVPXQQ');
-define('AWS_SECRET_KEY', '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');
+define('AWS_SECRET_KEY', 'V+PxxcUpKNOCu+7ZPbTj1Y9gkNNA4Y9IBFmxj3DY');
 
 $process_user	= false;
 $process_photo	= true;
