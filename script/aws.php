@@ -22,6 +22,7 @@ function cmd_input($prompt = 'Value')
 function loop_select($query)
 {
 	global $sdb;
+	$total = array();
 	$result = $sdb->select($query);
 	$result = reorganize_data($result->body->Item());
 	sort($result['columns']);
@@ -35,6 +36,7 @@ function loop_select($query)
 		{
 			foreach ($array as $key => $attrs)
 			{
+				$total[] = $attrs;
 				echo str_pad("$key:", 16, ' ', STR_PAD_RIGHT);
 				if (is_array($attrs))
 					foreach ($attrs as $attr)
@@ -46,6 +48,7 @@ function loop_select($query)
 		}
 	}
 	echo "---- end ----\n";
+	print_r($attrs);
 }
 
 //	php test.php select 'count(*) from `posts` where `pos-a7` = "Australia"'

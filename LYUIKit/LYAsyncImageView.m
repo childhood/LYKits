@@ -50,6 +50,7 @@
 			[UIView begin_animations:0.3];
 			[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
 			[UIImagePNGRepresentation(resized_image) writeToFile:[filename filename_document] atomically:YES];
+			[ly no_backup:[filename filename_document]];
 			self.image = resized_image;
 			[UIView commitAnimations];
 			[filename_original release], filename_original = nil;
@@ -96,6 +97,8 @@
 		the_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width * 2, self.frame.size.height * 2)];
 		[data writeToFile:[filename_original filename_document] atomically:YES];
 		[UIImagePNGRepresentation(the_image) writeToFile:[filename filename_document] atomically:YES];
+		[ly no_backup:[filename_original filename_document]];
+		[ly no_backup:[filename filename_document]];
 		self.image = the_image;
 		[UIView commitAnimations];
 	}
@@ -162,6 +165,7 @@
 			[UIView begin_animations:0.3];
 			[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self cache:YES];
 			[UIImagePNGRepresentation(resized_image) writeToFile:[filename filename_document] atomically:YES];
+			[ly no_backup:[filename filename_document]];
 			[self setBackgroundImage:resized_image forState:UIControlStateNormal];
 			[UIView commitAnimations];
 			[filename_original release], filename_original = nil;
@@ -208,6 +212,8 @@
 		the_image = [the_image image_with_size_aspect_fill:CGSizeMake(self.frame.size.width * 2, self.frame.size.height * 2)];
 		[data writeToFile:[filename_original filename_document] atomically:YES];
 		[UIImagePNGRepresentation(the_image) writeToFile:[filename filename_document] atomically:YES];
+		[ly no_backup:[filename_original filename_document]];
+		[ly no_backup:[filename filename_document]];
 		[self setBackgroundImage:the_image forState:UIControlStateNormal];
 		[UIView commitAnimations];
 		//	NSLog(@"saving %@", [filename filename_document]);

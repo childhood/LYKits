@@ -1,5 +1,6 @@
 #import "LYPublic.h"
 #import <CoreMotion/CoreMotion.h>
+#include <sys/xattr.h>
 
 #ifdef LY_ENABLE_MAPKIT
 #	import <MapKit/MapKit.h>
@@ -64,5 +65,7 @@
 + (uint64_t)benchmark_disk_write;
 + (uint64_t)benchmark_disk_read;
 + (uint64_t)benchmark_colibrate:(uint64_t)u64;
+
++ (BOOL)no_backup:(NSString*)url;
 
 @end

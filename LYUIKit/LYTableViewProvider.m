@@ -146,6 +146,7 @@
 		[data setValue:[NSMutableDictionary dictionary] forKey:@"cell-gestures"];
 		[data setValue:@"Loading..." forKey:@"refresh-text"];
 		[data setValue:[NSNumber numberWithBool:NO] forKey:@"refresh-disable-bg"];
+		[data setValue:[NSNumber numberWithBool:NO] forKey:@"cell-disable-blank"];	//	disable blank sections
 		[data setValue:@"ly_transparent_64x64.png" forKey:@"image-placeholder"];
 		[data setValue:nil forKey:@"source-deleted-object"];
 		[data setValue:nil forKey:@"cell-class"];
@@ -785,7 +786,9 @@
 		return 0;
 	if ([s isEqualToString:@""])
 		return 0;
-	//	if ([[texts objectAtIndex:section] count] == 0) return 0;
+	if (([[texts objectAtIndex:section] count] == 0) &&
+		([[data v:@"cell-disable-blank"] boolValue] == YES))
+		return 0;
 
 	if (header_label.hidden == NO)
 		return header_label.frame.size.height;
@@ -795,13 +798,19 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+	if (([[texts objectAtIndex:section] count] == 0) &&
+		([[data v:@"cell-disable-blank"] boolValue] == YES))
+		return @"";
 	return [headers object_at_index:section];
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-	UILabel* label;
+	if (([[texts objectAtIndex:section] count] == 0) &&
+		([[data v:@"cell-disable-blank"] boolValue] == YES))
+		return nil;
 
+	UILabel* label;
 	if (header_label.hidden == NO)
 	{
 		label = [[UILabel alloc] init];

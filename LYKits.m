@@ -537,6 +537,16 @@ static LYKits*	ly_shared_manager = nil;
 		return 0;
 }
 
++ (BOOL)no_backup:(NSString*)url
+{
+    const char* filePath = url.UTF8String;
+    const char* attrName = "com.apple.MobileBackup";
+    u_int8_t attrValue = 1;
+    int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
+	//NSLog(@"NOBACKUP %i\n%@", result, url);
+    return result == 0;
+}
+
 @end
 
 /*

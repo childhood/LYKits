@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "LYCategory.h"
+#import "LYKits.h"
+//#import "LYCategory.h"
 
 @interface LYAsyncImageView: UIImageView 
 {

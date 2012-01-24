@@ -32,18 +32,18 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 	{
 		NSLog(@"SUPERADS is phone");
-		view_mobclix_phone1 = [self init_mobclix:@"MobclixAdViewiPhone_320x50" frame:CGRectMake(0, 0, 320, 50)];
-		view_mobclix_phone2 = [self init_mobclix:@"MobclixAdViewiPhone_300x250" frame:CGRectMake(0, 0, 300, 250)];
+		view_mobclix_phone1 = [self myinit_mobclix:@"MobclixAdViewiPhone_320x50" frame:CGRectMake(0, 0, 320, 50)];
+		view_mobclix_phone2 = [self myinit_mobclix:@"MobclixAdViewiPhone_300x250" frame:CGRectMake(0, 0, 300, 250)];
 		controller_mobclix_phone1 = [[UIViewController alloc] initWithView:view_mobclix_phone1];
 		controller_mobclix_phone2 = [[UIViewController alloc] initWithView:view_mobclix_phone2];
 	}
 	else
 	{
 		NSLog(@"SUPERADS is pad");
-		view_mobclix_pad1 = [self init_mobclix:@"MobclixAdViewiPad_468x60" frame:CGRectMake(0, 0, 468, 60)];
-		view_mobclix_pad2 = [self init_mobclix:@"MobclixAdViewiPad_300x250" frame:CGRectMake(0, 0, 300, 250)];
-		view_mobclix_pad3 = [self init_mobclix:@"MobclixAdViewiPad_120x600" frame:CGRectMake(0, 0, 120, 600)];
-		view_mobclix_pad4 = [self init_mobclix:@"MobclixAdViewiPad_728x90" frame:CGRectMake(0, 0, 728, 90)];
+		view_mobclix_pad1 = [self myinit_mobclix:@"MobclixAdViewiPad_468x60" frame:CGRectMake(0, 0, 468, 60)];
+		view_mobclix_pad2 = [self myinit_mobclix:@"MobclixAdViewiPad_300x250" frame:CGRectMake(0, 0, 300, 250)];
+		view_mobclix_pad3 = [self myinit_mobclix:@"MobclixAdViewiPad_120x600" frame:CGRectMake(0, 0, 120, 600)];
+		view_mobclix_pad4 = [self myinit_mobclix:@"MobclixAdViewiPad_728x90" frame:CGRectMake(0, 0, 728, 90)];
 		controller_mobclix_pad1 = [[UIViewController alloc] initWithView:view_mobclix_pad1];
 		controller_mobclix_pad2 = [[UIViewController alloc] initWithView:view_mobclix_pad2];
 		controller_mobclix_pad3 = [[UIViewController alloc] initWithView:view_mobclix_pad3];
@@ -64,7 +64,7 @@
 	return self;
 }
 
-- (MobclixAdView*)init_mobclix:(NSString*)a_class frame:(CGRect)rect
+- (MobclixAdView*)myinit_mobclix:(NSString*)a_class frame:(CGRect)rect
 {
 	MobclixAdView*	view_mobclix;
 

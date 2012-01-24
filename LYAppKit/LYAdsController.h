@@ -84,7 +84,7 @@
 @property (nonatomic, retain) UIViewController*	controller_mobclix_pad4;
 
 - (id)initWithID:(int)app;
-- (MobclixAdView*)init_mobclix:(NSString*)a_class frame:(CGRect)rect;
+- (MobclixAdView*)myinit_mobclix:(NSString*)a_class frame:(CGRect)rect;
 //	- (id)init_with_app:(int)app to:(UIView*)window adwhirl:(CGRect)rect_adwhirl mobclix:(CGRect)rect_mobclix;
 //	- (id)init_with_app:(int)app to:(UIView*)window adwhirl:(CGRect)rect_adwhirl mobclix:(CGRect)rect_mobclix controller:(UIViewController*)controller;
 - (void)hide_ads;
