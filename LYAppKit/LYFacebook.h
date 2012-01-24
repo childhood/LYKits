@@ -1,6 +1,38 @@
 #import "LYPublic.h"
 
 #ifdef LY_ENABLE_SDK_FACEBOOK
+#	import "FBConnect.h"
+
+/*
+	// launch
+	fb = [[LYFacebook alloc] init];
+
+- (IBAction)action_facebook_login
+{
+	[fb authorize];
+}
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+	if (fb) return [fb.facebook handleOpenURL:url]; else return NO;
+}
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+	if (fb) return [fb.facebook handleOpenURL:url]; else return NO; 
+}
+*/
+
+@interface LYFacebook: NSObject	<FBRequestDelegate, FBSessionDelegate>
+{
+	NSString* key;
+}
+@property (nonatomic, retain) NSMutableDictionary* data;
+@property (nonatomic, retain) Facebook *facebook;
+- (void)authorize;
+- (void)request:(NSString*)a_key;
+@end
+#endif	//	of LY_ENABLE_SDK_FACEBOOK
+
+#if 0	//	disable old facebook code
 #if 0
 #	import "FBConnect/FBConnect.h"
 #else
@@ -50,4 +82,4 @@
 //	- (void)facebook_check_permission;
 
 @end
-#endif	//	of LY_ENABLE_SDK_FACEBOOK
+#endif	//	disable old facebook code

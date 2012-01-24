@@ -1,6 +1,110 @@
 #import "LYFacebook.h"
-#ifdef LY_ENABLE_SDK_FACEBOOK
 
+#ifdef LY_ENABLE_SDK_FACEBOOK
+@implementation LYFacebook
+
+@synthesize data;
+@synthesize facebook;
+
+- (id)init
+{
+	self = [super init];
+	if (self)
+	{
+		facebook = [[Facebook alloc] initWithAppId:@"137789882939322" andDelegate:self];
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		if ([defaults objectForKey:@"FBAccessTokenKey"] && [defaults objectForKey:@"FBExpirationDateKey"])
+		{
+			facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
+			facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+		}
+		if ([facebook isSessionValid])
+			[self request:@"me"];
+		data = [[NSMutableDictionary alloc] init];
+	}
+	return self;
+}
+
+- (void)dealloc
+{
+	[data release];
+	[super dealloc];
+}
+
+- (void)request:(NSString*)a_key
+{
+	key = a_key;
+	[facebook requestWithGraphPath:key andDelegate:self];
+}
+
+- (void)authorize
+{
+	if (![facebook isSessionValid])
+	{
+		NSLog(@"FACEBOOK authorizing...");
+		[facebook authorize:[NSArray arrayWithObjects:@"offline_access", @"publish_stream", nil]];
+	}
+}
+
+#pragma mark delegate session
+
+- (void)fbDidLogin
+{
+	NSLog(@"FACEBOOK logged in");
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[facebook accessToken] forKey:@"FBAccessTokenKey"];
+    [defaults setObject:[facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+	[facebook requestWithGraphPath:@"me" andDelegate:self];
+}
+
+- (void)fbDidNotLogin:(BOOL)cancelled
+{
+	NSLog(@"FACEBOOK not logged in");
+}
+
+- (void)fbDidExtendToken:(NSString*)accessToken expiresAt:(NSDate*)expiresAt
+{
+	NSLog(@"FACEBOOK token extended");
+}
+
+- (void)fbDidLogout
+{
+	NSLog(@"FACEBOOK logged out");
+}
+
+- (void)fbSessionInvalidated
+{
+}
+
+#pragma mark delegate request
+
+- (void)requestLoading:(FBRequest *)request
+{
+	NSLog(@"FACEBOOK loading: %@", request);
+}
+
+- (void)request:(FBRequest*)request didReceiveResponse:(NSURLResponse*)response
+{
+	NSLog(@"FACEBOOK request got response: %@", response);
+}
+
+- (void)request:(FBRequest*)request didFailWithError:(NSError*)error
+{
+	NSLog(@"FACEBOOK request failed: %@", error);
+}
+
+- (void)request:(FBRequest*)request didLoad:(id)result
+{
+	NSLog(@"FACEBOOK request loaded: %@", key);
+	[data key:key v:result];
+}
+
+@end 
+#endif	//	of LY_ENABLE_SDK_FACEBOOK
+
+
+#if 0	//	disable old facebook code
 @implementation LYFacebook
 
 @synthesize title_failed;
@@ -231,4 +335,4 @@
 }
 
 @end
-#endif	//	of LY_ENABLE_SDK_FACEBOOK
+#endif	//	disable old facebook code
