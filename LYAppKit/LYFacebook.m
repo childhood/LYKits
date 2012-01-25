@@ -97,7 +97,10 @@
 - (void)request:(FBRequest*)request didLoad:(id)result
 {
 	NSLog(@"FACEBOOK request loaded: %@", key);
-	[data key:key v:result];
+	if (result != nil)
+		[data key:key v:result];
+	else
+		NSLog(@"WARNING got nil");
 }
 
 @end 
