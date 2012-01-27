@@ -9,6 +9,7 @@
 - (UIImage*)image_with_size_aspect:(CGSize)newSize;
 - (UIImage*)image_with_size_aspect_fill:(CGSize)newSize;
 - (UIImage*)image_with_size:(CGSize)newSize;
+- (UIImage*)image_with_shadow;
 - (UIImage*)image_blur_at:(CGPoint)point;
 
 - (UIImage*)image_overlay_center:(UIImage*)another_image;

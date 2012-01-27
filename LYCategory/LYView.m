@@ -62,6 +62,44 @@
 	}
 }
 
+- (void)set_text:(NSString*)text interval:(int)interval block:(LYBlockBoolString)callback
+{
+	[NSThread detachNewThreadSelector:@selector(set_text_animated_loop:) 
+							 toTarget:self 
+						   withObject:[NSArray arrayWithObjects:text, [NSNumber numberWithInteger:interval], callback, nil]];
+#if 0
+	[self performSelector:@selector(set_text_animated_loop:) 
+			   withObject:[NSArray arrayWithObjects:text, [NSNumber numberWithInteger:interval], callback, nil] 
+			   afterDelay:0];	//(float)interval / 1000000];
+#endif
+}
+
+- (void)set_text_animated_loop:(NSArray*)array
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	NSString* text	= [array i:0];
+	int interval	= [[array i:1] intValue];
+	LYBlockBoolString block = nil;
+	if (array.count > 2)
+		block = [array i:2];
+	for (int i = 1; i <= text.length; i++)
+	{
+		NSString* s = [text substringToIndex:i];
+		//[self perform_string:@"setText:" with:s];
+		//[self performSelector:@selector(setText:) withObject:s afterDelay:0];
+		[self performSelectorOnMainThread:@selector(setText:) withObject:s waitUntilDone:NO];
+		usleep(interval);
+		if (block != nil)
+		{
+			if (block(s) == NO)
+				break;
+			if ([self is_displayed] == NO)
+				break;
+		}
+	}
+	[pool release];
+}
+
 + (void)begin_animations:(CGFloat)duration
 {
 	[self beginAnimations:nil context:NULL];
@@ -261,6 +299,26 @@
 			printf("\t");
 		printf("DEBUG ended --------\n");
 	}
+}
+
+- (NSMutableArray*)all_subviews
+{
+	NSMutableArray* ret = [NSMutableArray array];
+	[ret addObjectsFromArray:self.subviews];
+	for (UIView* view in self.subviews)
+	{
+		NSArray*	array;
+		array = [view all_subviews];
+		[ret addObjectsFromArray:array];
+	}
+	return ret;
+}
+
+- (BOOL)is_displayed
+{
+	UIWindow*	window = [[[UIApplication sharedApplication] windows] i:0];
+	NSArray*	array = [window all_subviews];
+	return [array containsObject:self];
 }
 
 @end

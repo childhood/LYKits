@@ -1,5 +1,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIKit.h>
+#import "LYPublic.h"
 
 @interface UIView (LYView)
 
@@ -7,6 +8,8 @@
 - (UIImage*)snapshot;
 - (UIImage*)get_screenshot:(CGRect)screenRect;
 - (void)copy_style:(UIView*)target;
+
+- (void)set_text:(NSString*)text interval:(int)interval block:(LYBlockBoolString)callback;
 
 //	animation handling
 + (void)begin_animations:(CGFloat)duration;
@@ -42,6 +45,7 @@
 - (void)remove_subviews;
 - (void)release_subviews;
 - (void)debug_print_subviews:(BOOL)flag_seperator;
+- (BOOL)is_displayed;
 
 @end
 #if 0

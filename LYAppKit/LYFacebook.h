@@ -29,6 +29,12 @@
 @property (nonatomic, retain) Facebook *facebook;
 - (void)authorize;
 - (void)request:(NSString*)a_key;
+
+- (id)initWithKey:(NSString*)app_id;
+- (void)post:(NSString*)s;
+- (void)login;
+- (void)logout;
+
 @end
 #endif	//	of LY_ENABLE_SDK_FACEBOOK
 

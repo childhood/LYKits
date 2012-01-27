@@ -46,6 +46,24 @@
 	}
 }
 
+- (id)initWithKey:(NSString*)app_id
+{
+	self = [super init];
+	return self;
+}
+
+- (void)post:(NSString*)s
+{
+}
+
+- (void)login
+{
+}
+
+- (void)logout
+{
+}
+
 #pragma mark delegate session
 
 - (void)fbDidLogin

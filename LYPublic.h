@@ -5,8 +5,10 @@ typedef void(^LYBlockVoidError)(NSError* error);
 typedef void(^LYBlockVoidIntError)(int i, NSError* error);
 typedef void(^LYBlockVoidArrayError)(NSArray* array, NSError* error);
 typedef void(^LYBlockVoidDictError)(NSDictionary* dict, NSError* error);
+typedef void(^LYBlockVoidString)(NSString* str);
 typedef void(^LYBlockVoidStringError)(NSString* str, NSError* error);
 typedef void(^LYBlockVoidObjError)(id obj, NSError* error);
+typedef BOOL(^LYBlockBoolString)(NSString* str);
 typedef BOOL(^LYBlockBoolArrayError)(NSArray* array, NSError* error);
 
 //	disabled: use -fno-objc-arc instead
