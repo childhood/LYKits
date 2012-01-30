@@ -1,6 +1,8 @@
 #!/usr/bin/php
 <?php
 
+require('lib/lykits.php');
+
 function deep_ksort(&$arr) { 
 	ksort($arr); 
 	foreach ($arr as &$a) { 
@@ -10,19 +12,10 @@ function deep_ksort(&$arr) {
 	} 
 }
 
-function cmd_input($prompt = 'Value')
-{
-	echo "$prompt: ";
-	system('stty echo');
-	$ret = trim(fgets(STDIN));
-	system('stty echo');
-	return $ret;
-}
-
 function loop_select($query)
 {
 	global $sdb;
-	$total = array();
+	$all = array();
 	$result = $sdb->select($query);
 	$result = reorganize_data($result->body->Item());
 	sort($result['columns']);
@@ -36,11 +29,13 @@ function loop_select($query)
 		{
 			foreach ($array as $key => $attrs)
 			{
-				$total[] = $attrs;
 				echo str_pad("$key:", 16, ' ', STR_PAD_RIGHT);
 				if (is_array($attrs))
 					foreach ($attrs as $attr)
+					{
+						$all[] = $attr;
 						echo "  $attr\n";
+					}
 				else
 					echo "  $attrs\n";
 			}
@@ -48,19 +43,20 @@ function loop_select($query)
 		}
 	}
 	echo "---- end ----\n";
-	print_r($attrs);
+	if (strpos(strtolower($query), 'select * from') === false)
+	{
+		echo "---- raw data ----\n";
+		foreach ($all as $s)
+			echo "$s\n";
+		echo "---- raw end ----\n";
+	}
 }
 
 //	php test.php select 'count(*) from `posts` where `pos-a7` = "Australia"'
 
-define('AWS_KEY', 'AKIAIG737NOEC2VVPXQQ');
-define('AWS_SECRET_KEY', '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');
-
 $process_user	= false;
 $process_photo	= true;
 
-//require('/Users/leo/prj/sdk/aws/sdk-1.4.3/sdk-1.4.3/sdk.class.php');
-require('/Users/leo/prj/sdk/aws/sdk-1.5.0.1/sdk-1.5.0.1/sdk.class.php');
 $sdb	= new AmazonSDB();
 $s3		= new AmazonS3();
 
@@ -278,4 +274,7 @@ function reorganize_data($items)
 	);
 }
 
+/*
+select `text-title` from posts where `author-region` != 'na' and `author-app` = 'org.superarts.soshow' and `date-create` > '20110101-00:00:00' order by `date-create` desc
+ */
 ?>
