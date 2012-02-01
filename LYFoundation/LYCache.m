@@ -264,6 +264,7 @@ static LYCache *ly_cache_manager = nil;
 	NSMutableDictionary* dict = [NSMutableDictionary dictionaryWithDictionary:[self data]];
 	[dict removeObjectForKey:@"current_location"];
 	[dict writeToFile:[k_ly_cache_filename filename_private] atomically:YES];
+	[ly no_backup:[k_ly_cache_filename filename_private]];
 	//	NSLog(@"CACHE saved: %@\n%@", dict, [k_ly_cache_filename filename_private]);
 }
 

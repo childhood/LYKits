@@ -71,6 +71,29 @@
 	[self sortUsingDescriptors:[NSArray arrayWithObject:descriptor]];
 }
 
+- (void)sort_by_key:(NSString*)key int_ascending:(BOOL)b
+{
+	NSSortDescriptor*   descriptor;
+	descriptor = [NSSortDescriptor sortDescriptorWithKey:key ascending:b comparator:^(id s1, id s2)
+	{
+		int i1 = [s1 intValue];
+		int i2 = [s2 intValue];
+		if ((i1 == 0) && (i2 == 0))
+			return [s1 compare:s2];
+		if (i1 == 0)
+			i1 = INT_MAX;
+		if (i2 == 0)
+			i2 = INT_MAX;
+		if (i1 == i2)
+			return NSOrderedSame;
+		else if (i1 > i2)
+			return NSOrderedDescending;
+		else
+			return NSOrderedAscending;
+	}];
+	[self sortUsingDescriptors:[NSArray arrayWithObject:descriptor]];
+}
+
 - (BOOL)exchange_path:(NSIndexPath*)path1 with:(NSIndexPath*)path2
 {
 	id obj1 = [self object_at_path:path1];
