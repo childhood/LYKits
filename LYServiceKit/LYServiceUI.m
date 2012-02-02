@@ -60,6 +60,11 @@
 		provider.detail_label.hidden = NO;
 		provider.detail_label.lineBreakMode = UILineBreakModeWordWrap;
 		provider.detail_label.numberOfLines = 2;
+		if (table == table_wall)
+		{
+			provider.can_edit = YES;
+			[provider.data key:@"source-delegate-delete" v:[NSNumber numberWithBool:YES]];
+		}
 
 		UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 38, 20, 20)];
 		activity.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
@@ -417,6 +422,11 @@
 	{
 		[self reload_detail_nav:nav_public data:array_public provider:provider_public path:path];
 	}
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)path
+{
+	NSLog(@"deleting... %@", path);
 }
 
 @end

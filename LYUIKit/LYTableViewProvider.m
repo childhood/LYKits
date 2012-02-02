@@ -153,6 +153,7 @@
 		[data setValue:nil forKey:@"backup-accessories-highlighted"];
 		[data setValue:nil forKey:@"backup-badge-array"];
 		[data setValue:nil forKey:@"backup-badge2-array"];
+		[data setValue:[NSNumber numberWithBool:NO] forKey:@"source-delegate-delete"];
 		//	[data setValue:nil forKey:@"source-deleted-row"];
 
 		//	init preset ui
@@ -880,6 +881,8 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if ([[data v:@"state"] is:@"refresh"])
+		return NO;
 	for (NSIndexPath* path in [data v:@"edit-exclude"])
 		if ((indexPath.section == path.section) && (indexPath.row == path.row))
 			return NO;
@@ -929,6 +932,9 @@
 			else if ([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)])
 				objc_msgSend(delegate, @selector(tableView:commitEditingStyle:forRowAtIndexPath:), view, editingStyle, indexPath);
 		}
+		if (([[data v:@"source-delegate-delete"] boolValue] == YES) &&
+			([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)]))
+			objc_msgSend(delegate, @selector(tableView:commitEditingStyle:forRowAtIndexPath:), view, editingStyle, indexPath);
 
 		[view reloadData];
 	}
