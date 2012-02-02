@@ -21,7 +21,7 @@
 }
 */
 
-@interface LYFacebook: NSObject	<FBRequestDelegate, FBSessionDelegate>
+@interface LYFacebook: NSObject	<FBRequestDelegate, FBSessionDelegate, FBDialogDelegate>
 {
 	NSString* key;
 }

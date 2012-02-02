@@ -51,5 +51,6 @@
 
 - (void)report_score:(int64_t)score leaderboard:(NSString*)category;
 - (void)report_percent:(float)percent achievement:(NSString*)identifier;
+- (void)reset_achievement;
 
 @end

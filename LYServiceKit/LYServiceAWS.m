@@ -88,6 +88,8 @@
 }
 #endif
 
+#pragma mark put
+
 - (void)put:(NSString*)domain
 {
 	[self put:domain name:[LYRandom unique_string]];
@@ -132,6 +134,8 @@
 	return response.exception;
 }
 
+#pragma mark select
+
 - (void)select:(NSString*)query block:(LYBlockVoidObjError)callback
 {
 	SimpleDBSelectRequest* request_select = [[SimpleDBSelectRequest alloc] initWithSelectExpression:query];
@@ -174,6 +178,19 @@
 	[LYLoading hide];
 	return [[attr value] intValue];
 }
+
+#pragma mark delete
+
+- (void)delete:(NSString*)domain name:(NSString*)name
+{
+	SimpleDBDeleteAttributesRequest* request = [[SimpleDBDeleteAttributesRequest alloc] 
+		initWithDomainName:domain andItemName:name];
+	SimpleDBDeleteAttributesResponse* response = [sdb deleteAttributes:request];
+	[request release];
+	//	NSLog(@"SDB delete response: %@", response);
+}
+
+#pragma mark delegate
 
 - (void)request:(AmazonServiceRequest*)request didCompleteWithResponse:(AmazonServiceResponse*)response
 {

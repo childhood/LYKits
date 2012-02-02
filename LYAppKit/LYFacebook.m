@@ -54,6 +54,15 @@
 
 - (void)post:(NSString*)s
 {
+	//	TODO: dialog
+#if 1
+	//[facebook dialog:s andDelegate:self];
+	NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:s, @"message", nil];
+	[facebook requestWithGraphPath:@"me/feed" andParams:params andHttpMethod:@"POST" andDelegate:nil];
+#else
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:s, @"message", nil];
+    [facebook dialog:@"apprequests" andParams:params andDelegate:self];
+#endif
 }
 
 - (void)login
@@ -115,10 +124,17 @@
 - (void)request:(FBRequest*)request didLoad:(id)result
 {
 	NSLog(@"FACEBOOK request loaded: %@", key);
-	if (result != nil)
+	if ((result != nil) && (key != nil))
 		[data key:key v:result];
 	else
 		NSLog(@"WARNING got nil");
+}
+
+- (void)dialog:(FBDialog*)dialog didFailWithError:(NSError *)error
+{
+	NSLog(@"FACEBOOK dialog error: %@", error);
+	//NSLog(@"more info: %@", error.userInfo);
+	//[facebook dialog:@"test2" andDelegate:self];
 }
 
 @end 

@@ -33,6 +33,8 @@
 - (int)count_sync:(NSString*)query;
 - (NSMutableArray*)array_from_select:(SimpleDBSelectResponse*)response;
 
+- (void)delete:(NSString*)domain name:(NSString*)name;
+
 //- (void)insert_user:(NSDictionary*)dict block:(LYBlockVoidArrayError)callback;
 - (void)test;
 

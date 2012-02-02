@@ -124,6 +124,15 @@
 
 #pragma mark achievement
 
+- (void)reset_achievement
+{
+	[GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
+	{
+		if (error != nil)
+			NSLog(@"GC reset achievement error: %@", error);
+	}];
+}
+
 - (void)report_percent:(float)percent achievement:(NSString*)identifier
 {
 	if (is_authenticated == NO)

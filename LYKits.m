@@ -42,7 +42,9 @@ static LYKits*	ly_shared_manager = nil;
 		[data key:@"manager-motion" v:nil];
 		[data key:@"benchmark-base" v:nil];
 #ifdef LY_ENABLE_SERVICEKIT
+#ifdef LY_ENABLE_SDK_ASIHTTP
 		[data key:@"service-lyric" v:[[LYServiceLyricWiki alloc] init]];
+#endif
 #endif
 	}
 	return self;
