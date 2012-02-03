@@ -185,9 +185,10 @@
 {
 	SimpleDBDeleteAttributesRequest* request = [[SimpleDBDeleteAttributesRequest alloc] 
 		initWithDomainName:domain andItemName:name];
-	SimpleDBDeleteAttributesResponse* response = [sdb deleteAttributes:request];
-	[request release];
+	[sdb deleteAttributes:request];
+	//	SimpleDBDeleteAttributesResponse* response = [sdb deleteAttributes:request];
 	//	NSLog(@"SDB delete response: %@", response);
+	[request release];
 }
 
 #pragma mark delegate

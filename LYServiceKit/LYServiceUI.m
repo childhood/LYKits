@@ -55,6 +55,7 @@
 		provider.texts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
 		provider.details = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
 		provider.image_urls = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+		[provider.data key:@"meta-names" v:[[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil]];
 		provider.delegate = self;
 		provider.cell_height = 64;
 		provider.detail_label.hidden = NO;
@@ -83,11 +84,15 @@
 		//	NSLog(@"query result: %@", array);
 		[provider.data key:@"state" v:@""];
 		[[provider.texts i:0] removeAllObjects];
+		[[provider.details i:0] removeAllObjects];
+		[[[provider.data v:@"meta-names"] i:0] removeAllObjects];
 		for (NSDictionary* dict_item in array)
 		{
 			NSDictionary* dict = [dict_item v:@"attr-dict"];
 			NSString* s;
-
+			
+			[[[provider.data v:@"meta-name"] i:0] addObject:[dict_item v:@"name"]];
+			
 			s = [dict v:@"text-title"];
 			if ((s == nil) || [s is:@""])
 			{
@@ -424,9 +429,12 @@
 	}
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)path
+- (void)tableView:(UITableView *)table commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)path
 {
-	NSLog(@"deleting... %@", path);
+	if (table == table_wall)
+	{
+		NSLog(@"deleting %@", [[[provider_wall.data v:@"meta-names"] i:0] i:path.row]);
+	}
 }
 
 @end

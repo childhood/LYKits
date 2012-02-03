@@ -33,6 +33,7 @@ static LYKits*	ly_shared_manager = nil;
 	self = [super init];
 	if (self != nil)
 	{
+		Class c;
 		version = @"LYKits v0.1";
 		data = [[NSMutableDictionary alloc] init];
 		[data setValue:[NSNumber numberWithFloat:0] forKey:@"cell-delete-fix-x"];
@@ -41,13 +42,24 @@ static LYKits*	ly_shared_manager = nil;
 		[data setValue:[NSNumber numberWithFloat:0.15] forKey:@"animation-clock-flip-duration"];
 		[data key:@"manager-motion" v:nil];
 		[data key:@"benchmark-base" v:nil];
-#ifdef LY_ENABLE_SERVICEKIT
-#ifdef LY_ENABLE_SDK_ASIHTTP
-		[data key:@"service-lyric" v:[[LYServiceLyricWiki alloc] init]];
-#endif
-#endif
+		[data key:@"delegate" v:[[UIApplication sharedApplication] delegate]];
+
+		c = NSClassFromString(@"LYServiceLyricWiki");
+		if (c) [data key:@"service-lyric" v:[[c alloc] init]];
+
+		c = NSClassFromString(@"ATMHud");
+		if (c) [data key:@"ui-hud" v:[[c alloc] initWithDelegate:self]];
 	}
 	return self;
+}
+
+- (void)userDidTapHud:(id)a_hud
+{
+	[a_hud performSelector:@selector(hide)];
+	if ([[data v:@"delegate"] respondsToSelector:@selector(hud_dismiss:)])
+	{
+		[[data v:@"delegate"] performSelector:@selector(hud_dismiss:) withObject:a_hud];
+	}
 }
 
 + (NSMutableDictionary*)data
