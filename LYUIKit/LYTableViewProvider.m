@@ -149,11 +149,12 @@
 		[data setValue:[NSNumber numberWithBool:NO] forKey:@"cell-disable-blank"];	//	disable blank sections
 		[data setValue:@"ly_transparent_64x64.png" forKey:@"image-placeholder"];
 		[data setValue:nil forKey:@"source-deleted-object"];
+		[data setValue:nil forKey:@"source-delete-hint"];
 		[data setValue:nil forKey:@"cell-class"];
 		[data setValue:nil forKey:@"backup-accessories-highlighted"];
 		[data setValue:nil forKey:@"backup-badge-array"];
 		[data setValue:nil forKey:@"backup-badge2-array"];
-		[data setValue:[NSNumber numberWithBool:NO] forKey:@"source-delegate-delete"];
+		[data setValue:[NSNumber numberWithBool:NO] forKey:@"source-delete-delegate"];
 		//	[data setValue:nil forKey:@"source-deleted-row"];
 
 		//	init preset ui
@@ -889,54 +890,72 @@
 	return can_edit;
 }
 
+- (void)delete_table:(UITableView*)tableView path:(NSIndexPath*)indexPath
+{
+	UITableViewCellEditingStyle editingStyle = UITableViewCellEditingStyleDelete;
+	NSMutableArray* array;
+	array = [texts object_at_index:indexPath.section];
+	if (array != nil)
+		[array removeObjectAtIndex:indexPath.row];
+
+	array = [details object_at_index:indexPath.section];
+	if (array != nil)
+		[array removeObjectAtIndex:indexPath.row];
+
+	array = [images object_at_index:indexPath.section];
+	if (array != nil)
+		[array removeObjectAtIndex:indexPath.row];
+
+	array = [image_urls object_at_index:indexPath.section];
+	if (array != nil)
+		if (array.count > 0)
+			[array removeObjectAtIndex:indexPath.row];
+
+	array = [accessories object_at_index:indexPath.section];
+	if (array != nil)
+		if (array.count > 0)
+			[array removeObjectAtIndex:indexPath.row];
+
+	[view delete_path:indexPath animation:animation_delete];
+
+	//	modify source - TODO: support section
+	if ([data v:@"source-data"] != nil)
+	{
+		[data setObject:[[data v:@"source-data"] i:indexPath.row] forKey:@"source-deleted-object"];
+		//	[data setObject:[NSNumber numberWithInt:indexPath.row] forKey:@"source-deleted-row"];
+		//	NSLog(@"removing %i from %@", indexPath.row, [data v:@"source-data"]);
+		[[data v:@"source-data"] removeObjectAtIndex:indexPath.row];
+		if ([data v:@"source-filename"] != nil)
+			[[data v:@"source-data"] writeToFile:[data v:@"source-filename"] atomically:YES];
+		else if ([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)])
+			objc_msgSend(delegate, @selector(tableView:commitEditingStyle:forRowAtIndexPath:), view, editingStyle, indexPath);
+	}
+	if (([[data v:@"source-delete-delegate"] boolValue] == YES) &&
+		([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)]))
+		objc_msgSend(delegate, @selector(tableView:commitEditingStyle:forRowAtIndexPath:), view, editingStyle, indexPath);
+
+	[view reloadData];
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSMutableArray* array;
 
 	//	NSLog(@"commit editing style: %@", tableView);
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
-		array = [texts object_at_index:indexPath.section];
-		if (array != nil)
-			[array removeObjectAtIndex:indexPath.row];
-
-		array = [details object_at_index:indexPath.section];
-		if (array != nil)
-			[array removeObjectAtIndex:indexPath.row];
-
-		array = [images object_at_index:indexPath.section];
-		if (array != nil)
-			[array removeObjectAtIndex:indexPath.row];
-
-		array = [image_urls object_at_index:indexPath.section];
-		if (array != nil)
-			if (array.count > 0)
-				[array removeObjectAtIndex:indexPath.row];
-
-		array = [accessories object_at_index:indexPath.section];
-		if (array != nil)
-			if (array.count > 0)
-				[array removeObjectAtIndex:indexPath.row];
-
-		[view delete_path:indexPath animation:animation_delete];
-
-		//	modify source - TODO: support section
-		if ([data v:@"source-data"] != nil)
-		{
-			[data setObject:[[data v:@"source-data"] i:indexPath.row] forKey:@"source-deleted-object"];
-			//	[data setObject:[NSNumber numberWithInt:indexPath.row] forKey:@"source-deleted-row"];
-			//	NSLog(@"removing %i from %@", indexPath.row, [data v:@"source-data"]);
-			[[data v:@"source-data"] removeObjectAtIndex:indexPath.row];
-			if ([data v:@"source-filename"] != nil)
-				[[data v:@"source-data"] writeToFile:[data v:@"source-filename"] atomically:YES];
-			else if ([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)])
-				objc_msgSend(delegate, @selector(tableView:commitEditingStyle:forRowAtIndexPath:), view, editingStyle, indexPath);
-		}
-		if (([[data v:@"source-delegate-delete"] boolValue] == YES) &&
-			([delegate respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)]))
-			objc_msgSend(delegate, @selector(tableView:commitEditingStyle:forRowAtIndexPath:), view, editingStyle, indexPath);
-
-		[view reloadData];
+		NSString* s = [data v:@"source-delete-hint"];
+		if (s == nil)
+			[self delete_table:tableView path:indexPath];
+		else
+			[UIAlertView alertWithTitle:@"Warning"
+								message:s
+								confirm:@"OK"
+								 cancel:@"Cancel"
+								  block:^(int index)
+			{
+				if (index > 0)
+					[self delete_table:tableView path:indexPath];
+			}];
 	}
 }
 

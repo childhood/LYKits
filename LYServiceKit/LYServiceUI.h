@@ -61,6 +61,7 @@
 @property (nonatomic, retain) IBOutlet UINavigationController*	nav_public;
 
 - (IBAction)action_profile_type;
+- (IBAction)action_profile_login;
 - (void)load;
 - (void)reload_provider:(LYTableViewProvider**)a_provider table:(UITableView*)table query:(NSString*)query sdb:(LYServiceAWSSimpleDB*)sd data:(NSMutableArray*)array_data;
 

@@ -183,12 +183,14 @@
 
 - (void)delete:(NSString*)domain name:(NSString*)name
 {
+	[LYLoading show];
 	SimpleDBDeleteAttributesRequest* request = [[SimpleDBDeleteAttributesRequest alloc] 
 		initWithDomainName:domain andItemName:name];
 	[sdb deleteAttributes:request];
 	//	SimpleDBDeleteAttributesResponse* response = [sdb deleteAttributes:request];
 	//	NSLog(@"SDB delete response: %@", response);
 	[request release];
+	[LYLoading hide];
 }
 
 #pragma mark delegate

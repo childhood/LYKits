@@ -55,7 +55,7 @@
 		provider.texts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
 		provider.details = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
 		provider.image_urls = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
-		[provider.data key:@"meta-names" v:[[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil]];
+		[provider.data key:@"meta-names" v:[NSMutableArray arrayWithObjects:[NSMutableArray array], nil]];
 		provider.delegate = self;
 		provider.cell_height = 64;
 		provider.detail_label.hidden = NO;
@@ -64,7 +64,9 @@
 		if (table == table_wall)
 		{
 			provider.can_edit = YES;
-			[provider.data key:@"source-delegate-delete" v:[NSNumber numberWithBool:YES]];
+			[provider.data key:@"source-delete-delegate" v:[NSNumber numberWithBool:YES]];
+			[provider.data key:@"source-delete-hint" v:@"This item will be deleted, and cannot be recovered anymore!\n\nAre you sure?"];
+			[provider.footers addObject:@"Swipe to delete."];
 		}
 
 		UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, 38, 20, 20)];
@@ -91,7 +93,7 @@
 			NSDictionary* dict = [dict_item v:@"attr-dict"];
 			NSString* s;
 			
-			[[[provider.data v:@"meta-name"] i:0] addObject:[dict_item v:@"name"]];
+			[[[provider.data v:@"meta-names"] i:0] addObject:[dict_item v:@"name"]];
 			
 			s = [dict v:@"text-title"];
 			if ((s == nil) || [s is:@""])
@@ -161,6 +163,9 @@
 		field_profile_pin1.text = [@"ly-suar-profile-pin" setting_string];
 		field_profile_pin2.text = [@"ly-suar-profile-pin" setting_string];
 		label_profile_hint.text = [NSString stringWithFormat:@"You have logged in as %@", field_profile_name.text];
+		tab.selectedIndex = 1;
+		if (provider_wall == nil)
+			[self load_wall];
 	}
 }
 
@@ -186,8 +191,74 @@
 	}
 }
 
+- (IBAction)action_profile_login
+{
+	if ([field_profile_mail.text is_email] == NO)
+	{
+		[@"Invalid E-mail Address" show_alert_message:@"Please enter a valid e-mail address."];
+		[field_profile_mail becomeFirstResponder];
+		return;
+	}
+	if (field_profile_pin1.text.length < 5)
+	{
+		[@"Password Too Short" show_alert_message:@"The password must have at least 5 characters. Please try again."];
+		[field_profile_pin1 becomeFirstResponder];
+		return;
+	}
+
+	//	TODO: a lot of duplicated code here
+	[LYLoading enable_label:@"Logging in..."];
+	[[LYLoading shared] setNav:tab];
+	[LYLoading show];
+	NSString* query = [NSString stringWithFormat:@"select * from `users` where itemName() = '%@'",
+		field_profile_mail.text];
+	//	NSLog(@"query: %@", query);
+	[sdb_wall select:query block:^(id obj, NSError* error)
+	{
+		NSArray* array = (NSArray*)obj;
+		//	NSLog(@"login: %@", array);
+		[LYLoading performSelector:@selector(hide) withObject:nil afterDelay:0.5];
+		if (error != nil)
+		{
+			[@"Login Failed" show_alert_message:error.localizedDescription];
+			return;
+		}
+		if (array.count == 0)
+		{
+			[@"Login Failed" show_alert_message:@"Username not found. Please try again or choose \"Register\" to create a new profile."];
+			return;
+		}
+		if (![[[[array i:0] v:@"attr-dict"] v:@"pin"] is:field_profile_pin1.text])
+			[@"Login Failed" show_alert_message:@"Your username/password combination is not correct. Please try again or choose \"Register\" to create a new profile."];
+		else
+		{
+			[@"ly-suar-profile-name" setting_string:[[[array i:0] v:@"attr-dict"] v:@"name-display"]];
+			[@"ly-suar-profile-mail" setting_string:field_profile_mail.text];
+			[@"ly-suar-profile-pin" setting_string:field_profile_pin1.text];
+			field_profile_name.text = [@"ly-suar-profile-name" setting_string];
+			field_profile_pin2.text = [@"ly-suar-profile-pin" setting_string];
+			label_profile_hint.text = [NSString stringWithFormat:@"You have logged in as %@", field_profile_name.text];
+			[field_profile_mail resignFirstResponder];
+			[field_profile_pin1 resignFirstResponder];
+		}
+	}];
+}
+
 - (IBAction)action_profile_done
 {
+	if ([field_profile_mail.text is_email] == NO)
+	{
+		[@"Invalid E-mail Address" show_alert_message:@"Please enter a valid e-mail address."];
+		[field_profile_mail becomeFirstResponder];
+		return;
+	}
+	if (field_profile_pin1.text.length < 5)
+	{
+		[@"Password Too Short" show_alert_message:@"The password must have at least 5 characters. Please try again."];
+		[field_profile_pin1 becomeFirstResponder];
+		return;
+	}
+
 	if (segment_profile_type.selectedSegmentIndex == 0)
 	{
 		//	login
@@ -235,24 +306,28 @@
 			[field_profile_name becomeFirstResponder];
 			return;
 		}
+#if 0
 		if ([field_profile_mail.text is_email] == NO)
 		{
 			[@"Invalid E-mail Address" show_alert_message:@"Please enter a valid e-mail address."];
 			[field_profile_mail becomeFirstResponder];
 			return;
 		}
+#endif
 		if ([field_profile_pin1.text is:field_profile_pin2.text] == NO)
 		{
 			[@"Passwords Mismatch" show_alert_message:@"Please make sure the two passwords you've entered are identical."];
 			[field_profile_pin1 becomeFirstResponder];
 			return;
 		}
+#if 0
 		if (field_profile_pin1.text.length < 5)
 		{
 			[@"Password Too Short" show_alert_message:@"The password must have at least 5 characters. Please try again."];
 			[field_profile_pin1 becomeFirstResponder];
 			return;
 		}
+#endif
 		[LYLoading enable_label:@"Checking username..."];
 		[[LYLoading shared] setNav:nil];
 		[LYLoading show];
@@ -433,7 +508,9 @@
 {
 	if (table == table_wall)
 	{
-		NSLog(@"deleting %@", [[[provider_wall.data v:@"meta-names"] i:0] i:path.row]);
+		NSString* name = [[[provider_wall.data v:@"meta-names"] i:0] i:path.row];
+		NSLog(@"deleting %@", name);
+		[sdb_wall delete:@"posts" name:name];
 	}
 }
 
@@ -554,6 +631,35 @@
 			field_login_pin2.hidden = NO;
 			break;
 	}
+}
+
+- (IBAction)action_profile_login
+{
+	[LYLoading show_label:@"Logging in..."];
+	[[data v:@"db"] sdb_wall:@"user" verify:[NSDictionary dictionaryWithObjectsAndKeys:
+		field_login_mail.text,
+		@"email",
+		field_login_pin1.text,
+		@"pin",
+		nil] block:^(NSDictionary* dict, NSError* error)
+	{
+		NSLog(@"error: %@ - %@", error, dict);
+		if ((error == nil) && (dict.count > 0))
+		{
+			[@"ly-service-login-name" setting_string:[dict v:@"name-display"]];
+			[@"ly-service-login-mail" setting_string:field_login_mail.text];
+			[@"ly-service-login-pin" setting_string:field_login_pin1.text];
+			field_login_name.text = [@"ly-service-login-name" setting_string];
+			field_login_pin2.text = [@"ly-service-login-pin" setting_string];
+			[data key:@"user" v:dict];
+			[@"ly-service-login-user" setting_object:dict];
+		}
+		else
+		{
+			[@"Login Failed" show_alert_message:@"Your username/password combination is not correct. Please try again or choose \"Register\" to create a new account."];
+		}
+		[LYLoading performSelector:@selector(hide) withObject:nil afterDelay:0.5];
+	}];
 }
 
 - (IBAction)action_login_done
