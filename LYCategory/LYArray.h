@@ -1,4 +1,6 @@
 #import <Foundation/Foundation.h>
+#import "LYDictionary.h"
+#import "LYString.h"
 
 #ifdef LY_ENABLE_OPENAL
 #import "supersound.h"
@@ -18,6 +20,7 @@
 - (BOOL)contains_string:(NSString*)s;
 //	suppose obj is the Xth object in self, return the i+Xth object, with option report or not
 - (id)object_of:(id)obj offset:(int)i repeat:(BOOL)b;
+- (NSDictionary*)whose:(NSString*)key is:(NSString*)value;
 
 - (void)play_caf;
 

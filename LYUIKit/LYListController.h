@@ -3,18 +3,19 @@
 /*
  * usage:
  *
- * 	list_controller = [[LYListController alloc] initWithNav:nav_local];
- * 	list_controller.delegate = self;
+	list_controller = [[LYListController alloc] initWithNav:nav_local];
+	list_controller.delegate = self;
+ 
+	[list_controller refresh_named:@"country" dict:[ly dict_itunes_country]];
+	[list_controller.provider_table apply_alphabet];
+	[list_controller.table reloadData];
+	[list_controller show_table];
+ 
+- (void)list_selected:(NSString*)key
+{
+	[@"setting_country" setting_string:[list_controller.dict valueForKey:key]];
+}
  *
- *	[list_controller refresh_named:@"country" dict:[ly dict_itunes_country]];
- *	[list_controller.provider_table apply_alphabet];
- *	[list_controller.table reloadData];
- *	[list_controller show_table];
- *
- * 	- (void)list_selected:(NSString*)key
- * 	{
- *		[@"setting_country" setting_string:[list_controller.dict valueForKey:key]];
- * 	}
  */
 
 @class LYTableViewProvider;

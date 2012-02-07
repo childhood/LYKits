@@ -74,4 +74,18 @@
 	return [self object_at_index:index];
 }
 
+- (NSDictionary*)whose:(NSString*)key is:(NSString*)value
+{
+	for (id obj in self)
+	{
+		if ([obj isKindOfClass:[NSDictionary class]])
+		{
+			NSDictionary* dict = (NSDictionary*)obj;
+			if ([[dict v:key] is:value])
+				return dict;
+		}
+	}
+	return nil;
+}
+
 @end
