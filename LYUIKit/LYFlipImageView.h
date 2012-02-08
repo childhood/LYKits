@@ -1,4 +1,5 @@
 #import "LYKits.h"
+#import "supersound.h"
 
 @interface LYFlipImageView: UIImageView
 @property (nonatomic, retain) NSMutableDictionary*	data;

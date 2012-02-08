@@ -119,6 +119,20 @@
 	}
 
 	[self clock_flip];
+
+	NSLock* lock = [ly.data v:@"lock-flip-sound"];
+	if ([lock tryLock])
+	{
+		NSString* s = [ly.data v:@"clock-flip-progress"];
+		se_play_caf([NSString stringWithFormat:@"ly-flip-clock%@", s]);
+#if 0
+		if ([s is:@"1"])
+			[ly.data key:@"clock-flip-progress" v:@"2"];
+		else
+			[ly.data key:@"clock-flip-progress" v:@"1"];
+#endif
+		[self performSelector:@selector(sound_unlock) withObject:nil afterDelay:0.15];
+	}
 }
 
 - (NSString*)value
@@ -147,7 +161,13 @@
 	}
 	[data key:@"index" v:[NSNumber numberWithInt:index]];
 	[self performSelector:@selector(set_state:) withObject:@"" afterDelay:(f + 0.05) * (i - 1) + f];
+
 	return YES;
+}
+
+- (void)sound_unlock
+{
+	[[ly.data v:@"lock-flip-sound"] unlock];
 }
 
 - (void)set_state:(NSString*)s

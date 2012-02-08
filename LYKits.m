@@ -43,6 +43,8 @@ static LYKits*	ly_shared_manager = nil;
 		[data key:@"manager-motion" v:nil];
 		[data key:@"benchmark-base" v:nil];
 		[data key:@"delegate" v:[[UIApplication sharedApplication] delegate]];
+		[data key:@"lock-flip-sound" v:[NSLock new]];
+		[data key:@"clock-flip-progress" v:@"1"];
 
 		c = NSClassFromString(@"LYServiceLyricWiki");
 		if (c) [data key:@"service-lyric" v:[[c alloc] init]];
