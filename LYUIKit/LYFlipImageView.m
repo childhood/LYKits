@@ -125,7 +125,7 @@
 	{
 		NSString* s = [ly.data v:@"clock-flip-progress"];
 		se_play_caf([NSString stringWithFormat:@"ly-flip-clock%@", s]);
-#if 0
+#if 1
 		if ([s is:@"1"])
 			[ly.data key:@"clock-flip-progress" v:@"2"];
 		else

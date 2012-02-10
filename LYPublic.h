@@ -30,7 +30,7 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 //	#define LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_LANDSCAPE
 //	#define LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_ROTATE
 //	#define LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_ROTATEPHONE
-//	#define LY_ENABLE_CATEGORY_VIEWCONTROLLER_ROTATE	//	XXX: study needed
+//	#define LY_ENABLE_CATEGORY_VIEWCONTROLLER_ROTATE	//	XXX: don't use this
 //
 //	#define LY_ENABLE_IOS5								//	ARC & storyboard
 //	#define LY_ENABLE_SDK_FACEBOOK						//	XXX: replaced by SHK

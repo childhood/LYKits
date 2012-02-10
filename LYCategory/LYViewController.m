@@ -28,7 +28,7 @@
 #ifdef LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_ROTATE
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	//	NSLog(@"should rotate: %i, %f, %f", rotatable, screen_width(), screen_height());
+	//	NSLog(@"VIEW should rotate: %i, %f, %f", interfaceOrientation, screen_width(), screen_height());
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 	{
 		if (interfaceOrientation == UIInterfaceOrientationPortrait)
