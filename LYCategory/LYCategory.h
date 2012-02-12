@@ -44,6 +44,19 @@
 
 #pragma mark OTHERS
 
+@interface UIToolbar (LYToolBar)
+- (void)hide_item:(UIBarButtonItem*)item;
+@end
+
+@implementation UIToolbar (LYToolBar)
+- (void)hide_item:(UIBarButtonItem*)item
+{
+	NSMutableArray* items = [NSMutableArray arrayWithArray:self.items];
+	[items removeObject:item];
+	self.items = items;
+}
+@end
+
 #if 0
 @interface NSData (LYData)
 - (void)v:(NSString*)s;

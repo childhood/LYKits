@@ -64,6 +64,7 @@
 		[data key:@"selected-button" v:nil];
 		[data key:@"selected-index" v:nil];
 		[data key:@"selected-title" v:nil];
+		[data key:@"action-hold" v:[NSMutableArray array]];
 
 		count	= a_count;
 		column	= 1;
@@ -98,6 +99,19 @@
 
 			[button autoresizing_flexible_left:YES right:YES top:YES bottom:YES];
 			[button autoresizing_add_width:YES height:YES];
+
+			//	for (UIGestureRecognizer* gesture in button.gestureRecognizers) [button removeGestureRecognizer:gesture];
+			//	if ([[data v:@"action-hold"] count] > i)
+			{
+				//	NSString* s = [[data v:@"action-hold"] i:i];
+				//	if (s != nil)
+				{
+				//	initWithTarget:self action:NSSelectorFromString([[data v:@"action-hold"] i:i])];
+				}
+			}
+			UILongPressGestureRecognizer* hold = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(action_hold:)];
+			[button addGestureRecognizer:hold];
+			[hold release];
 
 			[buttons addObject:button];
 			[self.view addSubview:button];
@@ -269,6 +283,29 @@
 }
 
 #pragma mark actions
+
+- (void)action_hold:(UIGestureRecognizer*)gesture
+{
+	UIButton* button = (UIButton*)gesture.view;
+	if (gesture.state == UIGestureRecognizerStateCancelled)
+		return;
+	int index = [self get_button_index:button];
+	//NSLog(@"hold: %@", gesture);
+	NSString* action = [[data v:@"action-hold"] object_at_index:index];
+	if (action == nil)
+		action = [[data v:@"action-hold"] object_at_index:0];
+	if (action != nil)
+	{
+		if ([sender_type isEqualToString:@"title"])
+			[delegate perform_string:action with:[button titleForState:UIControlStateNormal]];
+		else if ([sender_type isEqualToString:@"index"])
+			[delegate perform_string:action with:[NSNumber numberWithInteger:index]];
+		else if ([sender_type isEqualToString:@"button"])
+			[delegate perform_string:action with:button];
+		else
+			[delegate perform_string:action];
+	}
+}
 
 - (void)action_down:(UIButton*)button with_event:(UIEvent*)event
 {

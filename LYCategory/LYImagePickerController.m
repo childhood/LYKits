@@ -62,8 +62,7 @@
 
 	if ([self associated:@"ly_delegate"] != nil)
 	   [[self associated:@"ly_delegate"] performSelector:@selector(imagePickerController:didFinishPickingMediaWithInfo:) withObject:a_picker withObject:info];
-	else
-		[self release];
+	//else [self release];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)a_picker
@@ -71,8 +70,7 @@
 	[self ly_dismiss];
 	if ([self associated:@"ly_delegate"] != nil)
 	   [[self associated:@"ly_delegate"] performSelector:@selector(imagePickerControllerDidCancel:) withObject:a_picker];
-	else
-		[self release];
+	//else [self release];
 }
 
 - (void)ly_dismiss
@@ -84,7 +82,7 @@
 	else
 	{
 		[[self associated:@"ly_pop"] dismissPopoverAnimated:YES];
-		[[self associated:@"ly_pop"] release];
+		//[[self associated:@"ly_pop"] release];
 	}
 }
 
