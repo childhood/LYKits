@@ -35,14 +35,14 @@
 - (IBAction)load_wall
 {
 	NSString* query = [NSString stringWithFormat:
-		@"select * from `posts` where `author-mail` = '%@' and `date-create` > '20110101-00:00:00' order by `date-create` desc",
+		@"select * from `posts` where `author-mail` = '%@' and `date-create` < '21000101-00:00:00' and `date-create` > '20110101-00:00:00' order by `date-create` desc",
 		[@"ly-suar-profile-mail" setting_string]];
 	[self reload_provider:&provider_wall table:table_wall query:query sdb:sdb_wall data:array_wall];
 }
 
 - (IBAction)load_public
 {
-	NSString* query = @"select * from `posts` where `date-create` > '20110101-00:00:00' order by `date-create` desc";
+	NSString* query = @"select * from `posts` where `date-create` < '21000101-00:00:00' and `date-create` > '20110101-00:00:00' order by `date-create` desc";
 	[self reload_provider:&provider_public table:table_public query:query sdb:sdb_public data:array_public];
 }
 
