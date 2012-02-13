@@ -136,4 +136,41 @@
 	//	flag_keep_width = b;
 }
 
+- (void)pagecontrol_reload
+{
+	UIPageControl* page = [self associated:@"ly-page-control"];
+	if (page != nil)
+	{
+		page.numberOfPages = self.contentInset.right / self.frame.size.width;
+		page.currentPage = self.contentOffset.x / self.frame.size.width;
+		page.hidesForSinglePage = NO;
+		[page addTarget:self action:@selector(pagecontrol_changed:) forControlEvents:UIControlEventValueChanged];
+#if 0
+		NSLog(@"width %f", self.contentInset.right);
+		NSLog(@"size %f", self.frame.size.width);
+		NSLog(@"count %i", page.numberOfPages);
+		NSLog(@"index %i", page.currentPage);
+#endif
+	}
+}
+
+- (void)pagecontrol_associate:(UIPageControl*)pagecontrol
+{
+	[self associate:@"ly-page-control" with:pagecontrol];
+	[self pagecontrol_reload];
+	self.delegate = (id<UIScrollViewDelegate>)self;
+}
+
+- (void)pagecontrol_changed:(UIPageControl*)page
+{
+	[UIView begin_animations:0.3];
+	self.contentOffset = CGPointMake(self.frame.size.width * page.currentPage, 0);
+	[UIView commitAnimations];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	[self pagecontrol_reload];
+}
+
 @end

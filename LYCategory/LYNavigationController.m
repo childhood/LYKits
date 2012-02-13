@@ -70,7 +70,8 @@
 */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	//	NSLog(@"NAV should rotate: %i, %f, %f", interfaceOrientation, screen_width(), screen_height());
+	//NSLog(@"NAV should rotate: %i, %f, %f", interfaceOrientation, screen_width(), screen_height());
+	//return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 	{
 		if (interfaceOrientation == UIInterfaceOrientationPortrait)

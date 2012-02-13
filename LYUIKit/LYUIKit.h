@@ -80,4 +80,5 @@ UIView* ly_alloc_view_loading(void);
 @end
 #endif
 
-
+@interface LYRotateViewController: UIViewController
+@end

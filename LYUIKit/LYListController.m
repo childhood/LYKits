@@ -232,4 +232,30 @@
 	[delegate perform_string:@"list_dismissed"];
 }
 
+#ifdef LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_LANDSCAPE
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+}
+#endif
+#ifdef LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_ROTATE
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	//	NSLog(@"VIEW should rotate: %i, %f, %f", interfaceOrientation, screen_width(), screen_height());
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+	{
+		if (interfaceOrientation == UIInterfaceOrientationPortrait)
+			return YES;
+		else
+#ifdef LY_ENABLE_CATEGORY_NAVIGATIONCONTROLLER_ROTATEPHONE
+			return YES;
+#else
+			return NO;
+#endif
+	}
+	else
+		return YES;
+}
+#endif
+
 @end

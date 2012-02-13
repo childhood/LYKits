@@ -14,4 +14,7 @@
 - (CGFloat)add_image_view:(UIImageView*)image_view height:(CGFloat)height;
 - (CGFloat)add_view:(UIView*)view height:(CGFloat)height;
 
+//	no delegate / event for both controls; use contentInset for self
+- (void)pagecontrol_associate:(UIPageControl*)pagecontrol;
+
 @end
