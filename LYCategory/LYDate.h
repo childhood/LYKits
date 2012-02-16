@@ -17,6 +17,10 @@
 + (NSDate*)tomorrow;
 - (NSDate*)yesterday;
 - (NSDate*)tomorrow;
+- (NSDate*)last_week;
+- (NSDate*)last_fortnight;
+- (NSDate*)last_month;
+- (NSDate*)last_year;
 - (NSDate*)next_week;
 - (NSDate*)next_fortnight;
 - (NSDate*)next_month;

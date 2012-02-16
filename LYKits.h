@@ -42,6 +42,10 @@
 + (void)perform_after:(NSTimeInterval)delay block:(void(^)(void))block;
 + (void)debug_dump_font;
 
++ (NSDate*)gregorian_date:(NSString*)str;
++ (NSString*)gregorian_string:(NSDate*)date;
++ (void)debug_dump_font;
+
 #ifdef LY_ENABLE_MUSICKIT
 + (NSInteger)media_count_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title;
 + (NSObject*)alloc_media_item_artist:(NSString*)artist album:(NSString*)album title:(NSString*)title;

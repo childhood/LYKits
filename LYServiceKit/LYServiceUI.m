@@ -113,9 +113,15 @@
 			if ((s == nil) || [s is:@""])
 			{
 				s = [dict v:@"date-create"];
-				s = [s local_medium_date_from:@"yyyyMMdd-HH:mm:ss"];
+				//	s = [s local_medium_date_from:@"yyyyMMdd-HH:mm:ss"];
 				if ((s == nil) || ([s is:@""]))
 					s = @"No description.";
+				else
+				{
+					NSDate* date = [ly gregorian_date:s];
+					s = [ly gregorian_string:date];
+					s = [s local_medium_date_from:@"yyyyMMdd-HH:mm:ss"];
+				}
 			}
 			if (table != table_wall)
 				s = [NSString stringWithFormat:@"By %@\n%@", [dict v:@"author-name"], s];
