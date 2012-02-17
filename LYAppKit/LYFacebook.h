@@ -25,13 +25,15 @@
 {
 	NSString* key;
 }
-@property (nonatomic, retain) NSMutableDictionary* data;
-@property (nonatomic, retain) Facebook *facebook;
-- (void)authorize;
+@property (nonatomic, retain) NSMutableDictionary*	data;
+@property (nonatomic, retain) id					delegate;
+@property (nonatomic, retain) Facebook*				facebook;
+- (BOOL)authorize;
 - (void)request:(NSString*)a_key;
 
 - (id)initWithKey:(NSString*)app_id;
 - (void)post:(NSString*)s;
+- (void)post_image:(UIImage*)image message:(NSString*)s;
 - (void)login;
 - (void)logout;
 
