@@ -3,8 +3,19 @@
 @implementation LYFeedParser
 
 @synthesize url;
+@synthesize ui;
 @synthesize data;
 @synthesize is_google;
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil)
+	{
+		ui = @"fullscreen";
+	}
+	return self;
+}
 
 - (id)initWithURL:(NSString*)a_url
 {
@@ -13,6 +24,7 @@
 	{
 		is_google = NO;
 		url = a_url;
+		ui = @"fullscreen";
 	}
 	return self;
 }
@@ -38,7 +50,8 @@
 	if (data != nil)
 		return YES;
 
-	[LYLoading show];
+	if ([ui is:@"fullscreen"])
+		[LYLoading show];
 	data = [[NSMutableArray alloc] init];
 	parser = [[MWFeedParser alloc] initWithFeedURL:[NSURL URLWithString:url]];
 	parser.delegate = self;
@@ -111,13 +124,15 @@
 - (void)feedParserDidFinish:(MWFeedParser *)parser
 {
 	//	NSLog(@"FEED finished: %@", data);
-	[LYLoading hide];
+	if ([ui is:@"fullscreen"])
+		[LYLoading hide];
 }
 
 - (void)feedParser:(MWFeedParser *)parser didFailWithError:(NSError *)error
 {
 	NSLog(@"FEED failed: %@", error);
-	[LYLoading hide];
+	if ([ui is:@"fullscreen"])
+		[LYLoading hide];
 	[data release];
 	data = nil;
 }

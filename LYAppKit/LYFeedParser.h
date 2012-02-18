@@ -13,6 +13,7 @@
 	BOOL		is_google;
 }
 @property (nonatomic, retain) NSString*			url;
+@property (nonatomic, retain) NSString*			ui;
 @property (nonatomic, retain) NSMutableArray*	data;
 @property (nonatomic) BOOL	is_google;
 

@@ -45,6 +45,7 @@ static LYKits*	ly_shared_manager = nil;
 		[data key:@"delegate" v:[[UIApplication sharedApplication] delegate]];
 		[data key:@"lock-flip-sound" v:[NSLock new]];
 		[data key:@"clock-flip-progress" v:@"1"];
+		[data key:@"hud-disable-autohide" v:@"no"];
 
 		c = NSClassFromString(@"LYServiceLyricWiki");
 		if (c) [data key:@"service-lyric" v:[[c alloc] init]];
@@ -57,7 +58,9 @@ static LYKits*	ly_shared_manager = nil;
 
 - (void)userDidTapHud:(id)a_hud
 {
-	[a_hud performSelector:@selector(hide)];
+	if ([[data v:@"hud-disable-autohide"] is:@"no"])
+		[a_hud performSelector:@selector(hide)];
+
 	if ([[data v:@"delegate"] respondsToSelector:@selector(hud_dismiss:)])
 	{
 		[[data v:@"delegate"] performSelector:@selector(hud_dismiss:) withObject:a_hud];
