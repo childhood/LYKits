@@ -4,6 +4,7 @@
 @implementation LYFacebook
 
 @synthesize data;
+@synthesize delegate;
 @synthesize facebook;
 
 - (id)init
@@ -12,6 +13,7 @@
 	if (self)
 	{
 		facebook = [[Facebook alloc] initWithAppId:@"137789882939322" andDelegate:self];
+		delegate = nil;
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		if ([defaults objectForKey:@"FBAccessTokenKey"] && [defaults objectForKey:@"FBExpirationDateKey"])
 		{
@@ -37,13 +39,16 @@
 	[facebook requestWithGraphPath:key andDelegate:self];
 }
 
-- (void)authorize
+- (BOOL)authorize
 {
 	if (![facebook isSessionValid])
 	{
 		NSLog(@"FACEBOOK authorizing...");
-		[facebook authorize:[NSArray arrayWithObjects:@"offline_access", @"publish_stream", nil]];
+		[facebook authorize:[NSArray arrayWithObjects:@"offline_access", @"publish_stream", @"user_about_me", @"user_photos", nil]];
+		return YES;
 	}
+	else
+		return NO;
 }
 
 - (id)initWithKey:(NSString*)app_id
@@ -65,6 +70,17 @@
 #endif
 }
 
+- (void)post_image:(UIImage*)image message:(NSString*)s
+{
+	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+		image, @"source", 
+		s, @"message",             
+		nil];
+	//	[facebook requestWithGraphPath:[NSString stringWithFormat:@"/me/photos?access_token=%@", self.facebook.accessToken]
+	//						 andParams:params andHttpMethod:@"POST" andDelegate:self];
+	[facebook requestWithGraphPath:@"/me/photos/" andParams:params andHttpMethod:@"POST" andDelegate:self];
+}
+
 - (void)login
 {
 }
@@ -83,6 +99,8 @@
     [defaults setObject:[facebook expirationDate] forKey:@"FBExpirationDateKey"];
     [defaults synchronize];
 	[facebook requestWithGraphPath:@"me" andDelegate:self];
+	if (delegate != nil)
+		[delegate perform_string:@"facebook_logged_in"];
 }
 
 - (void)fbDidNotLogin:(BOOL)cancelled
@@ -128,6 +146,8 @@
 		[data key:key v:result];
 	else
 		NSLog(@"WARNING got nil");
+	if (delegate != nil)
+		[delegate perform_string:@"facebook_request_loaded"];
 }
 
 - (void)dialog:(FBDialog*)dialog didFailWithError:(NSError *)error

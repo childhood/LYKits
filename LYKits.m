@@ -211,6 +211,34 @@ static LYKits*	ly_shared_manager = nil;
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC*delay), dispatch_get_current_queue(), block);
 }
 
++ (NSDate*)gregorian_date:(NSString*)str
+{
+	NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setCalendar:calendar];
+	[formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+	[formatter setDateFormat:@"yyyyMMdd-HH:mm:ss"];
+
+	NSDate* date = [formatter dateFromString:str];
+	[calendar release];
+	[formatter release];
+	return date;
+}
+
++ (NSString*)gregorian_string:(NSDate*)date
+{
+	NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setCalendar:calendar];
+	[formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+	[formatter setDateFormat:@"yyyyMMdd-HH:mm:ss"];
+
+	NSString* str = [formatter stringFromDate:date];
+	[calendar release];
+	[formatter release];
+	return str;
+}
+
 + (void)debug_dump_font
 {
 	for (NSString* family in [UIFont familyNames])
