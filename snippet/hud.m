@@ -5,6 +5,7 @@
 	hud = [ly.data v:@"ui-hud"];
 	[nav.view addSubview:hud.view];
 
+	[nav.view bringSubviewToFront:hud.view];
 	[hud setFixedSize:CGSizeMake(240, 160)];
 	[hud setCaption:@"msg"];
 	[hud show];
