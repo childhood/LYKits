@@ -224,6 +224,7 @@
 	return ret;
 }
 
+//	XXX error don't use this
 - (UIImage*)image_blur_at:(CGPoint)point
 {
 	CGRect             bnds = CGRectZero;
