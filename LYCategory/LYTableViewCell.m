@@ -16,6 +16,7 @@
 	}
 }
 
+#ifdef LY_CATEGORY_ENABLE_CELL_TRANSITION
 - (void)didTransitionToState:(UITableViewCellStateMask)state
 {
 	//	[super didTransitionToState:state];
@@ -35,5 +36,6 @@
 		}
 	}
 }
+#endif
 
 @end
