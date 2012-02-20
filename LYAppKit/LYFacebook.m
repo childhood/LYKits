@@ -12,7 +12,8 @@
 	self = [super init];
 	if (self)
 	{
-		facebook = [[Facebook alloc] initWithAppId:@"137789882939322" andDelegate:self];
+		//facebook = [[Facebook alloc] initWithAppId:@"137789882939322" andDelegate:self];
+		facebook = [[Facebook alloc] initWithAppId:@"181544001949403" andDelegate:self];
 		delegate = nil;
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		if ([defaults objectForKey:@"FBAccessTokenKey"] && [defaults objectForKey:@"FBExpirationDateKey"])
