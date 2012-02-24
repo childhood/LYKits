@@ -120,3 +120,41 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 #define MQGCController LYGCController
 #define MQModalAppController LYModalAppController
 #define MQStoreController LYStoreController
+
+//	ARC helper
+#ifndef ly_retain
+#	if __has_feature(objc_arc)
+#		define ly_retain(x) (x)
+#		define ly_release(x)
+#		define ly_autorelease(x) (x)
+#		define ly_super_dealloc
+#	else
+#		define __ly_weak
+#		define ly_weak assign
+#		define ly_retain(x) [(x) retain]
+#		define ly_release(x) [(x) release]
+#		define ly_autorelease(x) [(x) autorelease]
+#		define ly_super_dealloc [super dealloc]
+#	endif
+#endif
+
+//  weak reference support
+#ifndef ly_weak
+#	if defined __IPHONE_OS_VERSION_MIN_REQUIRED
+#		if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_4_3
+#			define __ly_weak __weak
+#			define ly_weak weak
+#		else
+#			define __ly_weak __unsafe_unretained
+#			define ly_weak unsafe_unretained
+#		endif
+#	elif defined __MAC_OS_X_VERSION_MIN_REQUIRED
+#		if __MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_6
+#			define __ly_weak __weak
+#			define ly_weak weak
+#		else
+#			define __ly_weak __unsafe_unretained
+#			define ly_weak unsafe_unretained
+#		endif
+#	endif
+#endif

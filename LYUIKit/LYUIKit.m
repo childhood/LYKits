@@ -88,7 +88,6 @@ UIView* ly_alloc_view_loading(void)
 	return view;
 }
 
-
 #if 0
 //	TODO replace with LYMiniAppsController
 static LYMiniApps *ly_mini_apps_shared_controller = nil;
