@@ -6,6 +6,7 @@
 - (void)set_title:(NSString*)title;
 - (void)set_image_named:(NSString*)filename;
 - (void)set_background_named:(NSString*)filename;
+- (void)auto_resize;
 
 - (void)reload_setting;
 

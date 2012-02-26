@@ -19,6 +19,20 @@
 	self.selected = [[self associated:@"ly-setting-name"] setting_bool];
 }
 
+- (void)auto_resize
+{
+	CGSize size;
+	self.titleLabel.textAlignment = UITextAlignmentCenter;
+	self.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+	self.titleLabel.font = [self.titleLabel.font fontWithSize:[ly screen_width]];
+	do {
+		self.titleLabel.font = [self.titleLabel.font fontWithSize:self.titleLabel.font.pointSize - 1];
+		size = [[self titleForState:UIControlStateNormal] sizeWithFont:self.titleLabel.font constrainedToSize:CGSizeMake(self.frame.size.width * 0.9, INT_MAX) lineBreakMode:self.titleLabel.lineBreakMode];
+	}	while ((size.height > self.frame.size.height * 0.9) && (self.titleLabel.font.pointSize > 4));
+}
+
+#pragma mark state control
+
 - (void)pressed
 {
 	self.selected = !self.selected;
@@ -26,8 +40,6 @@
 	//	NSLog(@"toggle: %@ - %i", [self associated:@"ly-setting-name"], self.selected);
 	[[self associated:@"ly-setting-target"] perform_string:[self associated:@"ly-setting-action"] with:self];
 }
-
-#pragma mark state control
 
 - (void)switch_state:(UIControlState)state1 state:(UIControlState)state2
 {

@@ -16,7 +16,6 @@
 		else
 			carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, [ly screen_width], [ly screen_height])];
 
-		NSLog(@"xxx %@", carousel);
 		carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		carousel.type = iCarouselTypeTimeMachine;
 		carousel.delegate = self;
