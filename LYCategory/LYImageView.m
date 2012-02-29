@@ -108,8 +108,9 @@
 	UIImage* image_back_top;
 	UIImage* image_back_bottom;
 	CGSize size;
+	CGFloat scale = [[UIScreen mainScreen] scale];
 
-	size = CGSizeMake([self.image size].width, [self.image size].height/2);
+	size = CGSizeMake([self.image size].width * scale, [self.image size].height/2 * scale);
 	//size = CGSizeMake(self.frame.size.width, self.frame.size.height / 2);
 	UIGraphicsBeginImageContext(size);
 	[self.image drawAtPoint:CGPointMake(0.0, 0.0)];
@@ -118,7 +119,7 @@
 	//image_front_bottom = [UIGraphicsGetImageFromCurrentImageContext() retain];			
 	UIGraphicsEndImageContext();
 
-	size = CGSizeMake([self.highlightedImage size].width, [self.highlightedImage size].height/2);
+	size = CGSizeMake([self.highlightedImage size].width * scale, [self.highlightedImage size].height/2 * scale);
 	UIGraphicsBeginImageContext(size);
 	[self.highlightedImage drawAtPoint:CGPointMake(0.0, 0.0)];
 	image_back_top = [UIGraphicsGetImageFromCurrentImageContext() retain];			
