@@ -42,7 +42,11 @@
 			if ((popover_controller != nil) && (is_pad()))
 				[self associate:@"ly_pop" with:[[popover_controller alloc] initWithContentViewController:self]];
 			//	NSLog(@"pop: %@", [self associated:@"ly_pop"]);
-			[[self associated:@"ly_pop"] presentPopoverFromRect:nav.view.frame inView:nav.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			UIView* parent = [self associated:@"ly-parent"];
+			if (parent == nil)
+				parent = nav.view;
+			//	NSLog(@"parent frame: %@", NSStringFromCGRect(parent.frame));
+			[[self associated:@"ly_pop"] presentPopoverFromRect:parent.frame inView:nav.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
 	}
 
@@ -54,10 +58,18 @@
 	UIImage* image = [info valueForKey:@"UIImagePickerControllerEditedImage"];
 	if (image == nil)
 		image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
+	[LYLoading show];
 	image = [image apply_orientation];
-	//	image = [UIImage imageWithCGImage:image.CGImage scale:1 orientation:image.imageOrientation];
+	NSLog(@"image size 1: %@", NSStringFromCGSize(image.size));
+	//image = [image image_with_size_aspect_fill:CGSizeMake([ly screen_width], [ly screen_height])];
+	CGFloat ratio = image.size.width / [ly screen_width] / [[UIScreen mainScreen] scale];
+	if (ratio < 1)
+		ratio = 1;
+	image = [UIImage imageWithCGImage:image.CGImage scale:ratio orientation:image.imageOrientation];
+	NSLog(@"image size 2: %@", NSStringFromCGSize(image.size));
 	//	NSLog(@"orientation: %i", image.imageOrientation);
 	[[self associated:@"ly-image"] setImage:image];
+	[LYLoading hide];
 	[self ly_dismiss];
 
 	if ([self associated:@"ly_delegate"] != nil)

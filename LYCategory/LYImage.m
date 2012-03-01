@@ -82,7 +82,8 @@
 	{
 		UIImageView *tempImageView = [[UIImageView alloc] initWithImage:originalImage];
 
-		UIGraphicsBeginImageContext(tempImageView.frame.size);
+		//UIGraphicsBeginImageContext(tempImageView.frame.size);
+		UIGraphicsBeginImageContextWithOptions(tempImageView.frame.size, NO, 0.0);
 		CGContextRef context = UIGraphicsGetCurrentContext();
 		CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, tempImageView.frame.size.height);
 		CGContextConcatCTM(context, flipVertical);  
@@ -103,7 +104,8 @@
 	{
 		UIImageView *tempImageView = [[UIImageView alloc] initWithImage:originalImage];
 
-		UIGraphicsBeginImageContext(tempImageView.frame.size);
+		//UIGraphicsBeginImageContext(tempImageView.frame.size);
+		UIGraphicsBeginImageContextWithOptions(tempImageView.frame.size, NO, 0.0);
 		CGContextRef context = UIGraphicsGetCurrentContext();
 		CGAffineTransform flipVertical = CGAffineTransformMake(-1, 0, 0, 1, tempImageView.frame.size.width, 0);
 		CGContextConcatCTM(context, flipVertical);  
@@ -136,7 +138,8 @@
 		h = hh;
 	}
 	//	NSLog(@"new image size: %f, %f", w, h);
-	UIGraphicsBeginImageContext(newSize);
+	//UIGraphicsBeginImageContext(newSize);
+	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
 	[[UIImage image_flip_horizontally:self] drawInRect:CGRectMake((ww - w) / 2, (hh - h) / 2, w, h)];
 	UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();    
 	UIGraphicsEndImageContext();
@@ -163,7 +166,8 @@
 		h = hh;
 	}
 	//	NSLog(@"new image size: %f, %f", w, h);
-	UIGraphicsBeginImageContext(newSize);
+	//UIGraphicsBeginImageContext(newSize);
+	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
 	[self drawInRect:CGRectMake((ww - w) / 2, (hh - h) / 2, w, h)];
 	UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();    
 	UIGraphicsEndImageContext();
@@ -174,7 +178,8 @@
 
 - (UIImage*)image_with_size:(CGSize)newSize
 {
-	UIGraphicsBeginImageContext(newSize);
+	//UIGraphicsBeginImageContext(newSize);
+	UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
 	[self drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
 	UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();    
 	UIGraphicsEndImageContext();
@@ -211,7 +216,8 @@
 
 - (UIImage*)image_overlay:(UIImage*)another_image rect:(CGRect)a_rect mode:(CGBlendMode)mode alpha:(CGFloat)alpha
 {
-	UIGraphicsBeginImageContext(self.size);  
+	//UIGraphicsBeginImageContext(self.size);  
+	UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.0);
 
 	CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);
 
@@ -241,7 +247,8 @@
 
 	bnds = rect;
 
-	UIGraphicsBeginImageContext(bnds.size);
+	//UIGraphicsBeginImageContext(bnds.size);
+	UIGraphicsBeginImageContextWithOptions(bnds.size, NO, 0.0);
 	ctxt = UIGraphicsGetCurrentContext();
 
 	// Cut out a sample out the image
