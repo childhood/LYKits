@@ -35,11 +35,14 @@
 	return self;
 }
 
+#if __has_feature(objc_arc)
+#else
 - (void)dealloc
 {
 	[super dealloc];
-	[data release];
+	ly_release(data);
 }
+#endif
 
 - (void)set_sequence_numbers
 {
@@ -90,7 +93,8 @@
 
 	if ([[data v:@"mode"] is:@"text"])
 	{
-		[self.image release];
+		//[self.image release];
+		ly_release(self.image);
 		self.image = nil;
 		UILabel* label1 = [data v:@"label1"];
 		label1.text = [sequence i:index];
@@ -107,7 +111,8 @@
 
 	if ([[data v:@"mode"] is:@"text"])
 	{
-		[self.highlightedImage release];
+		//[self.highlightedImage release];
+		ly_release(self.highlightedImage);
 		self.highlightedImage = nil;
 		UILabel* label2 = [data v:@"label2"];
 		label2.text = [sequence i:index];
@@ -124,7 +129,12 @@
 	if ([lock tryLock])
 	{
 		NSString* s = [ly.data v:@"clock-flip-progress"];
+#ifdef k_ly_flip_enable_oal	
+		[[ly.data v:@"oal-audio"] playEffect:[NSString stringWithFormat:@"ly-flip-clock%@.caf", s]];
+#endif	
+#ifdef k_ly_flip_enable_supersound
 		se_play_caf([NSString stringWithFormat:@"ly-flip-clock%@", s]);
+#endif
 #if 1
 		if ([s is:@"1"])
 			[ly.data key:@"clock-flip-progress" v:@"2"];

@@ -92,8 +92,10 @@
 #if 1
 	UIImage* image1;
 	UIImage* image2;
-	image1 = [[self.image image_with_size:self.frame.size] retain];
-	image2 = [[self.highlightedImage image_with_size:self.frame.size] retain];
+	//image1 = [[self.image image_with_size:self.frame.size] retain];
+	//image2 = [[self.highlightedImage image_with_size:self.frame.size] retain];
+	image1 = ly_retain([self.image image_with_size:self.frame.size]);
+	image2 = ly_retain([self.highlightedImage image_with_size:self.frame.size]);
 	//[self.image release];
 	//[self.highlightedImage release];
 	//self.image = nil;
@@ -115,7 +117,8 @@
 	//UIGraphicsBeginImageContext(size);
 	UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
 	[self.image drawAtPoint:CGPointMake(0.0, 0.0)];
-	image_front_top = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	//image_front_top = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	image_front_top = ly_retain(UIGraphicsGetImageFromCurrentImageContext());
 	//[self.image drawAtPoint:CGPointMake(0.0, -[self.image size].height/2)];
 	//image_front_bottom = [UIGraphicsGetImageFromCurrentImageContext() retain];			
 	UIGraphicsEndImageContext();
@@ -124,14 +127,16 @@
 	//UIGraphicsBeginImageContext(size);
 	UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
 	[self.highlightedImage drawAtPoint:CGPointMake(0.0, 0.0)];
-	image_back_top = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	//image_back_top = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	image_back_top = ly_retain(UIGraphicsGetImageFromCurrentImageContext());
 	[self.highlightedImage drawAtPoint:CGPointMake(0.0, -[self.highlightedImage size].height/2)];
 #if 0
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, size.height / 2);
 	CGContextConcatCTM(context, flipVertical);  
 #endif
-	image_back_bottom = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	//image_back_bottom = [UIGraphicsGetImageFromCurrentImageContext() retain];			
+	image_back_bottom = ly_retain(UIGraphicsGetImageFromCurrentImageContext());
 	UIGraphicsEndImageContext();
 
 	UIImageView* view_top = [[UIImageView alloc] initWithImage:image_back_top];
@@ -144,7 +149,8 @@
 	[self associate:@"ly-clock-flip-animation" with:view_animation];
 
 	UIImageView* view_animation2 = [[UIImageView alloc] initWithImage:[UIImage image_flip_vertically:image_back_bottom]];
-	[image_back_bottom release];
+	//[image_back_bottom release];
+	ly_release(image_back_bottom);
 	[view_animation2 set_y:size.height / 2];
 	[self associate:@"ly-clock-flip-animation2" with:view_animation2];
 
@@ -172,8 +178,10 @@
 	CGFloat f = [[[ly data] v:@"animation-clock-flip-duration"] floatValue];
 	UIImageView* view_animation1 = [self associated:@"ly-clock-flip-animation"];
 	[view_animation1 removeFromSuperview];
-	[view_animation1.image release];
-	[view_animation1 release];
+	//[view_animation1.image release];
+	ly_release(view_animation1.image);
+	//[view_animation1 release];
+	ly_release(view_animation1);
 
 	UIImageView* view_animation = [self associated:@"ly-clock-flip-animation2"];
 	[self addSubview:view_animation];
@@ -198,13 +206,16 @@
 {
 	UIImageView* view_top = [self associated:@"ly-clock-flip-top"];
 	[view_top removeFromSuperview];
-	[view_top.image release];
-	[view_top release];
+	//[view_top.image release];
+	ly_release(view_top.image);
+	//[view_top release];
+	ly_release(view_top);
 
 	UIImageView* view_animation = [self associated:@"ly-clock-flip-animation2"];
 	[view_animation removeFromSuperview];
 	//[view_animation.image release];
-	[view_animation release];
+	//[view_animation release];
+	ly_release(view_animation);
 
 	UIImage* image = self.highlightedImage;
 	self.highlightedImage = self.image;

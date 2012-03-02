@@ -92,7 +92,8 @@
 
 		UIImage *flipedImage = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
-		[tempImageView release];
+		//[tempImageView release];
+		ly_release(tempImageView);
 
 		return flipedImage;
 	}
@@ -114,7 +115,8 @@
 
 		UIImage *flipedImage = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
-		[tempImageView release];
+		//[tempImageView release];
+		ly_release(tempImageView);
 
 		return flipedImage;
 	}
@@ -331,8 +333,8 @@
 
 - (UIImage*)image_filter:(NSString*)filter_name dict:(NSDictionary*)dict
 {
-	CIImage* input_image = [[CIImage alloc] initWithImage:self];
-	[input_image autorelease];
+	CIImage* input_image = ly_autorelease([[CIImage alloc] initWithImage:self]);
+	//[input_image autorelease];
 	//CIContext* context = [CIContext contextWithOptions:nil];
 	//return [UIImage imageWithCGImage:[context createCGImage:input_image fromRect:input_image.extent]];
 
@@ -386,7 +388,8 @@
 {
 	CIImage* ci = [[CIImage alloc] initWithImage:image];
 	UIImage* ret = [self image_filter:filter_name key:key v:ci];
-	[ci release];
+	//[ci release];
+	ly_release(ci);
 	return ret;
 }
 
