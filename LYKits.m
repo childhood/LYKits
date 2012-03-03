@@ -52,6 +52,14 @@ static LYKits*	ly_shared_manager = nil;
 
 		c = NSClassFromString(@"ATMHud");
 		if (c) [data key:@"ui-hud" v:[[c alloc] initWithDelegate:self]];
+
+		c = NSClassFromString(@"OALSimpleAudio");
+		if (c)
+		{
+			[data key:@"oal-audio" v:[c sharedInstance]];
+			//[OALSimpleAudio sharedInstance].allowIpod = NO;
+			//[OALSimpleAudio sharedInstance].honorSilentSwitch = YES;
+		}
 	}
 	return self;
 }

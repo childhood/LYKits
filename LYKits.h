@@ -73,3 +73,9 @@
 + (BOOL)no_backup:(NSString*)url;
 
 @end
+
+/*
+	[OALSimpleAudio sharedInstance];
+	[[ly.data v:@"oal-audio"] preloadEffect:@"ly-flip-clock1.caf"];
+	[[ly.data v:@"oal-audio"] playEffect:[NSString stringWithFormat:@"ly-flip-clock%@.caf", s]];
+*/

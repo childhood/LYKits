@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "LYPublic.h"
 
 @interface UIImage (LYImage)
 
