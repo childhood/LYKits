@@ -1,6 +1,6 @@
 #import "LYKits.h"
 
-#define k_ly_flip_enable_oal			1
+//#define k_ly_flip_enable_oal			1
 //#define k_ly_flip_enable_supersound		1
 
 #ifdef k_ly_flip_enable_oal
