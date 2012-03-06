@@ -32,7 +32,7 @@
 @property (nonatomic) BOOL				debug;
 
 #if 1
-+ (id)shared;
++ (LYStateMachine*)shared;
 + (void)start_accelerometer:(CGFloat)interval;
 + (void)stop_accelerometer;
 + (void)resume_accelerometer;

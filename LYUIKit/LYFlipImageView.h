@@ -1,13 +1,10 @@
 #import "LYKits.h"
 
-//#define k_ly_flip_enable_oal			1
-//#define k_ly_flip_enable_supersound		1
-
-#ifdef k_ly_flip_enable_oal
+#ifdef LY_ENABLE_OBJECTAL
 #	import "OALSimpleAudio.h"
 #endif
 
-#ifdef k_ly_flip_enable_supersound
+#ifdef LY_ENABLE_OPENAL
 #	import "supersound.h"
 #endif
 

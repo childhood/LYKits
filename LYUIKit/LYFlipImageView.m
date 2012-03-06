@@ -129,10 +129,10 @@
 	if ([lock tryLock])
 	{
 		NSString* s = [ly.data v:@"clock-flip-progress"];
-#ifdef k_ly_flip_enable_oal	
+#ifdef LY_ENABLE_OBJECTAL	
 		[[ly.data v:@"oal-audio"] playEffect:[NSString stringWithFormat:@"ly-flip-clock%@.caf", s]];
 #endif	
-#ifdef k_ly_flip_enable_supersound
+#ifdef LY_ENABLE_OPENAL
 		se_play_caf([NSString stringWithFormat:@"ly-flip-clock%@", s]);
 #endif
 #if 1

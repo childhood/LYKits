@@ -14,7 +14,7 @@ static LYStateMachine *ly_state_machine_shared_manager = nil;
 @synthesize debug;
 
 #if 1
-+ (id)shared
++ (LYStateMachine*)shared
 {
 	@synchronized(self)
 	{
@@ -59,7 +59,8 @@ static LYStateMachine *ly_state_machine_shared_manager = nil;
 
 + (void)set_state:(NSString*)a_state
 {
-	[[LYStateMachine shared] setState:a_state];
+	//[[LYStateMachine shared] setState:a_state];
+	[LYStateMachine shared].state = a_state;
 }
 
 + (NSString*)prefix

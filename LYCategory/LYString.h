@@ -1,6 +1,10 @@
 #import <UIKit/UIKit.h>
 #import "LYCategory.h"
 
+#ifdef LY_ENABLE_OBJECTAL
+#	import "OALSimpleAudio.h"
+#endif
+
 #ifdef LY_ENABLE_OPENAL
 #import "supersound.h"
 #endif

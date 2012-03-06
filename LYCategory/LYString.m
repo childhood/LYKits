@@ -608,6 +608,9 @@
 
 - (void)play_caf
 {
+#ifdef LY_ENABLE_OBJECTAL	
+	[[ly.data v:@"oal-audio"] playEffect:[NSString stringWithFormat:self]];
+#endif
 #ifdef LY_ENABLE_OPENAL
 	se_play_caf(self);
 #endif

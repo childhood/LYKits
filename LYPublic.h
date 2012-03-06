@@ -45,6 +45,7 @@ void ly_upload_file(NSString* filename, NSString* arg_id, NSString* desc);
 //	#define LY_ENABLE_SDK_TOUCHJSON
 //	#define LY_ENABLE_SDK_AWS
 //
+//	#define LY_ENABLE_OBJECTAL
 //	#define LY_ENABLE_OPENAL
 
 //	Optional modules:	supersound, map, music
