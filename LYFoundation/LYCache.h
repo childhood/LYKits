@@ -44,6 +44,8 @@
 + (NSString*)string_for_url:(NSString*)url;
 + (NSString*)download_string_for_url:(NSString*)url;
 #ifdef LY_ENABLE_SDK_ASIHTTP
++ (void)async_download_file:(NSString*)string_url to:(NSString*)dir;
++ (void)async_download_files:(NSArray*)urls to:(NSString*)dir;
 + (NSString*)async_download_string:(NSString*)url block:(void (^)(BOOL success))a_block;
 + (NSString*)async_download_string:(NSString*)url block:(void (^)(BOOL success))a_block progress:(UIProgressView*)progress;
 #endif

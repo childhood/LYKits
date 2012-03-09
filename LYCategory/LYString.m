@@ -133,6 +133,12 @@
     return [file_manager fileExistsAtPath:[self filename_bundle]];
 }
 
+- (BOOL)file_exists_absolute
+{
+    NSFileManager *file_manager = [NSFileManager defaultManager];
+    return [file_manager fileExistsAtPath:self];
+}
+
 - (BOOL)create_dir_absolute
 {
 	NSFileManager*	manager = [NSFileManager defaultManager];

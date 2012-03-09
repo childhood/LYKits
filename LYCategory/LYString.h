@@ -43,6 +43,7 @@
 - (BOOL)file_exists;
 - (BOOL)file_exists_documents;
 - (BOOL)file_exists_bundle;
+- (BOOL)file_exists_absolute;
 - (BOOL)create_dir_absolute;
 - (BOOL)create_dir;
 - (BOOL)file_remove;

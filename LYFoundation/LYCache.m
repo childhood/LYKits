@@ -147,6 +147,38 @@ static LYCache *ly_cache_manager = nil;
 }
 
 #ifdef LY_ENABLE_SDK_ASIHTTP
+
++ (void)async_download_file:(NSString*)string_url to:(NSString*)dir
+{
+	NSURL* url = [NSURL URLWithString:string_url];
+	NSString* filename = [[string_url pathComponents] lastObject];
+	NSString* filename_full = [NSString stringWithFormat:@"%@/%@", dir, filename];
+	[dir create_dir_absolute];
+	if ([filename_full file_exists_absolute])
+	{
+		NSLog(@"async download skipped: %@", filename);
+		return;
+	}
+	__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+	request.timeOutSeconds = 60;
+	[request setDownloadDestinationPath:filename_full];
+	[request setCompletionBlock:^
+	{
+		NSLog(@"async download done: %@", filename_full);
+		[ly no_backup:filename_full];
+	}];
+	[request startAsynchronous];
+	NSLog(@"async download started: %@", string_url);
+}
+
++ (void)async_download_files:(NSArray*)urls to:(NSString*)dir
+{
+	for (NSString* url in urls)
+	{
+		[LYCache async_download_file:url to:dir];
+	}
+}
+
 + (NSString*)async_download_string:(NSString*)url block:(void (^)(BOOL success))a_block
 {
 	return [LYCache async_download_string:url block:a_block progress:nil];
