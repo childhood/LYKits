@@ -93,11 +93,16 @@
 		objectAtIndex:0] stringByAppendingPathComponent:self];
 }
 
-- (NSString*)filename_private
+- (NSString*)filename_private:(NSString*)dir
 {
-	NSString* private = [[@"" filename_library] stringByAppendingString:@"/doc-private"];
+	NSString* private = [[@"" filename_library] stringByAppendingFormat:@"/doc-private/%@", dir];
 	[private create_dir_absolute];
 	return [private stringByAppendingPathComponent:self];
+}
+
+- (NSString*)filename_private
+{
+	return [self filename_private:@"./"];
 }
 
 - (NSString*)filename_bundle

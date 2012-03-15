@@ -39,6 +39,7 @@
 - (NSString*)filename_library;
 - (NSString*)filename_bundle;
 - (NSString*)filename_private;
+- (NSString*)filename_private:(NSString*)dir;
 - (BOOL)is_directory;
 - (BOOL)file_exists;
 - (BOOL)file_exists_documents;
