@@ -175,7 +175,7 @@
 		temp = nil;
 		
 		// Add <br /> s
-		if ([scanner scanString:@"\r\n" intoString:nil]) {
+		if ([scanner scanString:@"\r\n" intoString:@"\n"]) {
 			
 			// Combine \r\n into just 1 <br />
 			[result appendString:@"<br />"];
